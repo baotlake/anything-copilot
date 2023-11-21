@@ -1,3 +1,5 @@
+import { MessageType } from "@/types";
+
 type MessageSender = chrome.runtime.MessageSender;
 
 type UpdatedOption = {
@@ -20,6 +22,37 @@ export async function tabUpdated({ tabId, status, timeout }: UpdatedOption) {
       r();
     }, timeout || 30 * 1000);
     chrome.tabs.onUpdated.addListener(handleUpdate);
+  });
+}
+
+type WaitMessageOption = {
+  type: string;
+  tabId?: number;
+  timeout?: number;
+};
+
+export async function waitMessage<T = unknown>({
+  type,
+  tabId,
+  timeout,
+}: WaitMessageOption): Promise<T> {
+  return new Promise<T>((r, reject) => {
+    let timer = 0;
+    const handleMessage = (message: any, sender: MessageSender) => {
+      const sameId = typeof tabId == "number" ? tabId == sender.tab?.id : true;
+      if (sameId && message.type == type) {
+        chrome.runtime.onMessage.removeListener(handleMessage);
+        r(message);
+        clearTimeout(timer);
+      }
+    };
+    chrome.runtime.onMessage.addListener(handleMessage);
+    if (timeout) {
+      timer = setTimeout(() => {
+        chrome.runtime.onMessage.removeListener(handleMessage);
+        reject();
+      }, timeout);
+    }
   });
 }
 
@@ -54,7 +87,9 @@ export async function checkContent(tabId: number) {
       chrome.runtime.onMessage.addListener(handleMessage);
     });
 
-    const res = await chrome.tabs.sendMessage(tabId, { type: "hi-content" });
+    const res = await chrome.tabs.sendMessage(tabId, {
+      type: MessageType.hiContent,
+    });
     alive = !!res;
 
     console.log("hi-content response: ", alive, res);

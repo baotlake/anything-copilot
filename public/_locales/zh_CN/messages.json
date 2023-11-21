@@ -1,5 +1,14 @@
 {
-  "A": {
-    "message": "A"
+  "name": {
+    "message": "Anything Copilot - 无限应用、AI助手"
+  },
+  "short_name": {
+    "message": "Anything Copilot"
+  },
+  "description": {
+    "message": "免费将 ChatGPT 官方网页或其他任何页面变为您的 AI 助手，GPTs、GPT4 任何新功能都能立即体验。也能与开源大模型、文心一言对话，用 Google Translate 翻译甚至抖音刷短视频"
+  },
+  "toggle_minimize_desc": {
+    "message": "切换显示/隐藏Copilot窗口"
   }
 }

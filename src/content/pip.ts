@@ -1,4 +1,4 @@
-import type { PipOptions } from "@/types/pip";
+import { PipEventName, type PipOptions } from "@/types/pip";
 import {
   querySome,
   copyStyleSheets,
@@ -7,12 +7,12 @@ import {
   removePrerenderRules,
 } from "@/utils/dom";
 
-export const pipEventName = "anything-copilot-pip";
-
 function fetchDoc(input: URL | RequestInfo, init?: RequestInit) {
   const headers = {
     Accept:
       "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+    // "User-Agent":
+    //   "Mozilla/5.0 (Linux; Android 10; Pixel 4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Mobile Safari/537.36",
   };
   return fetch(input, {
     ...init,
@@ -22,6 +22,8 @@ function fetchDoc(input: URL | RequestInfo, init?: RequestInit) {
     },
   });
 }
+
+let initWindow = null as any;
 
 export async function pip(options: PipOptions) {
   let { mode, selector, url, isCopyStyle } = options;
@@ -33,9 +35,13 @@ export async function pip(options: PipOptions) {
   }
 
   const pipWindow = await window.documentPictureInPicture.requestWindow({
-    width: 350,
+    width: 420,
     height: 800,
   });
+
+  initWindow = { ...pipWindow };
+
+  // test(pipWindow.document, pipWindow);
 
   if (isCopyStyle) {
     copyStyleSheets(pipWindow, document);
@@ -76,9 +82,9 @@ export async function copilotNavigateTo(url: string) {
 
   const res = await fetchDoc(url);
   const html = await res.text();
+  // resetWindow(pipWindow);
   writeHtml(pipWindow, html);
-  navGuard(pipWindow);
-  history.replaceState(null, "", url);
+  pipWindow.history.replaceState(pipWindow.history.state, "", url);
 }
 
 type ReopenOptions = {
@@ -121,6 +127,7 @@ function writeHtml(pipWindow: Window, html: string) {
   pipWindow.document.open();
   pipWindow.document.write(escaped);
   pipWindow.document.close();
+  document.dispatchEvent(new CustomEvent(PipEventName.loaded));
 
   const base = document.createElement("base");
   base.target = "_blank";
@@ -172,4 +179,54 @@ function navGuard(pipWindow: Window) {
 
   pipWindow.addEventListener("beforeunload", handleBeforeUnload);
   pipWindow.addEventListener("click", handleClick);
+}
+
+function resetWindow(win: Window) {
+  // const iframe = document.createElement("iframe");
+  // iframe.style.display = "none";
+  // win.document.body.appendChild(iframe);
+  // const iframeWindow = iframe.contentWindow;
+  // if (iframeWindow) {
+  //   for (let k of Object.keys(win)) {
+  //     if (!(k in iframeWindow)) {
+  //       delete win[k as any];
+  //     }
+  //   }
+  // }
+
+  Object.keys(win).forEach((k) => {
+    if (k == "location") return;
+    try {
+      win[k as any] = initWindow[k];
+    } catch (e) {
+      console.error(e);
+    }
+  });
+
+  Object.keys(win.document).forEach((k) => {
+    if (k == "location") return;
+    try {
+      win.document[k as "body"] = initWindow.document[k];
+    } catch (e) {
+      console.error(e);
+    }
+  });
+}
+
+function test(doc: Document, win: Window) {
+  doc.addEventListener("DOMContentLoaded", (e) => {
+    console.warn("DOMContentLoaded", e);
+  });
+
+  win.addEventListener("beforeunload", (e) => {
+    console.warn("beforeunload", e);
+  });
+
+  win.addEventListener("load", (e) => {
+    console.warn("load", e);
+  });
+
+  win.addEventListener("unload", (e) => {
+    console.warn("unload", e);
+  });
 }

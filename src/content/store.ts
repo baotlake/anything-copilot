@@ -28,3 +28,11 @@ export const items = reactive([
     title: "Tiktok",
   },
 ]);
+
+export const pipWindowRef = ref<Window | null>(null);
+export const pipWindowInfo = ref<chrome.windows.Window | null>(null);
+
+export const pipLoading = reactive({
+  isLoading: true,
+  splashScreen: true,
+});

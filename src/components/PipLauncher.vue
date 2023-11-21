@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { pipEventName } from "@/content/pip";
+import { PipEventName } from "@/types/pip";
 import { reactive, ref } from "vue";
+import IconClose from "./icons/IconClose.vue";
 
 const emit = defineEmits(["close"]);
 
@@ -8,7 +9,7 @@ const host = ref(location.host);
 
 function handleClick() {
   document.dispatchEvent(
-    new CustomEvent(pipEventName, {
+    new CustomEvent(PipEventName.pip, {
       detail: {
         url: location.href,
         mode: "write-html",
@@ -45,7 +46,7 @@ function handleClose(e: MouseEvent) {
         ]"
         @click="handleClose"
       >
-        ×
+        <IconClose class="w-4 h-4" />
       </div>
     </div>
     <div class="text-2xl font-bold text-center mt-24 opacity-60">

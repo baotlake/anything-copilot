@@ -1,15 +1,25 @@
-import { pip, pipEventName } from "./pip";
+import { PipEventName } from "@/types/pip";
+import { copilotNavigateTo, pip } from "./pip";
 
-function handleEvent(event: any) {
+function handlePipEvent(event: CustomEvent | Event) {
   console.log(event);
-  try {
-    pip(event.detail);
-  } catch (e) {
-    console.error(e);
+  if ("detail" in event) {
+    try {
+      pip(event.detail);
+    } catch (e) {
+      console.error(e);
+    }
   }
 }
 
-document.addEventListener(pipEventName, handleEvent);
+function handleLoadDocEvent(event: CustomEvent | Event) {
+  if ("detail" in event) {
+    copilotNavigateTo(event.detail.url);
+  }
+}
+
+document.addEventListener(PipEventName.pip, handlePipEvent);
+document.addEventListener(PipEventName.loadDoc, handleLoadDocEvent);
 
 window.addEventListener("securitypolicyviolation", (e) => {
   console.warn(e);

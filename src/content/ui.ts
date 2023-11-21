@@ -1,25 +1,33 @@
-import { createApp } from "vue";
+import { createApp, type Component } from "vue";
+import { createI18n } from "vue-i18n";
 import App from "./App.vue";
+import { MessageType } from "@/types";
 import "@/assets/main.css";
 
-export function mountApp() {
-  const outter = document.createElement("anything-copilot");
-  const shadowRoot = outter.attachShadow({ mode: "open" });
-  const appContainer = document.createElement("div");
+const isSelf = chrome.runtime.id === location.host;
+
+export function mount(App: Component, doc = document) {
+  const outter = doc.createElement("anything-copilot");
+  const root = isSelf ? outter : outter.attachShadow({ mode: "open" });
+  const appContainer = doc.createElement("div");
   appContainer.id = "app";
 
-  const link = document.createElement("link");
+  const link = doc.createElement("link");
   link.rel = "stylesheet";
   link.href = chrome.runtime.getURL("/index.css");
-  shadowRoot.append(link);
-  shadowRoot.append(appContainer);
-  document.documentElement.append(outter);
-  createApp(App).mount(appContainer);
+  root.append(link);
+  root.append(appContainer);
+  doc.documentElement.append(outter);
 
-  // chrome.runtime.sendMessage({
-  //   type: "get-content-css",
-  //   url: "/index.css",
-  // });
+  const app = createApp(App);
+  const i18n = createI18n({});
+  app.use(i18n);
+  app.mount(appContainer);
+}
+
+export function mountApp(doc = document) {
+  mount(App, doc);
+  chrome.runtime.sendMessage({ type: MessageType.contentMount });
 }
 
 export function waitMountApp() {

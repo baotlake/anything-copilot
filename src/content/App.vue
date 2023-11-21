@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { contentCss, pipLauncher } from "./store";
+import { pipLauncher } from "./store";
 import PipLauncher from "@/components/PipLauncher.vue";
 </script>
 
