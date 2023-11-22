@@ -1,4 +1,9 @@
-# picture-in-picture
+# Anything Copilot - Any web page as copilot
+
+Use the official ChatGPT website or any other webpage for free as your AI copilot, including GPTs, GPT-4, or any new features.
+
+- [Edge Add-ons](https://microsoftedge.microsoft.com/addons/detail/anything-copilot/lbeehbkcmjaopnlccpjcdgamcabhnanl)
+- [Chrome web store](https://chromewebstore.google.com/u/1/detail/anything-copilot-any-web/lilckelmopbcffmglfmfhelaajhjpcff)
 
 This template should help get you started developing with Vue 3 in Vite.
 
