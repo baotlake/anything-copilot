@@ -1,0 +1,14 @@
+{
+  "name": {
+    "message": "Anything Copilot - Mitmeülesandejuht"
+  },
+  "short_name": {
+    "message": "Anything Copilot"
+  },
+  "description": {
+    "message": "Kasutage ametlikku ChatGPT veebisaiti või mis tahes muud veebilehte oma tehisintellektist kaasjuhina tasuta."
+  },
+  "toggle_minimize_desc": {
+    "message": "Vaheta kaasjuhi akna kuvamist/peitmist"
+  }
+}

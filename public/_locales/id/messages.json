@@ -1,0 +1,14 @@
+{
+  "name": {
+    "message": "Anything Copilot - Aplikasi web, kopilot AI"
+  },
+  "short_name": {
+    "message": "Anything Copilot"
+  },
+  "description": {
+    "message": "Gunakan situs web resmi ChatGPT atau halaman web lainnya secara gratis sebagai kopilot AI Anda."
+  },
+  "toggle_minimize_desc": {
+    "message": "Aktifkan/Tutup tampilan jendela Kopilot"
+  }
+}

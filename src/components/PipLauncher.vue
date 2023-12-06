@@ -1,27 +1,29 @@
 <script setup lang="ts">
-import { PipEventName } from "@/types/pip";
-import { reactive, ref } from "vue";
-import IconClose from "./icons/IconClose.vue";
+import { dispatchContentEvent } from "@/content/event"
+import { reactive, ref } from "vue"
+import IconClose from "./icons/IconClose.vue"
+import { useI18n } from "@/utils/i18n"
 
-const emit = defineEmits(["close"]);
+const { t } = useI18n()
 
-const host = ref(location.host);
+const emit = defineEmits(["close"])
+
+const host = ref(location.host)
 
 function handleClick() {
-  document.dispatchEvent(
-    new CustomEvent(PipEventName.pip, {
-      detail: {
-        url: location.href,
-        mode: "write-html",
-      },
-    })
-  );
-  emit("close");
+  dispatchContentEvent({
+    type: "pip",
+    detail: {
+      url: location.href,
+      mode: "write-html",
+    },
+  })
+  emit("close")
 }
 
 function handleClose(e: MouseEvent) {
-  e.stopPropagation();
-  emit("close");
+  e.stopPropagation()
+  emit("close")
 }
 </script>
 
@@ -58,7 +60,7 @@ function handleClose(e: MouseEvent) {
           class="w-36 h-36 rounded-full animate-ping bg-[var(--color-background-soft)]"
         ></div>
 
-        <div class="font-bold text-base">Click Here</div>
+        <div class="font-bold text-base">{{ t("clickHere") }}</div>
       </div>
     </div>
   </div>

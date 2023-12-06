@@ -81,12 +81,12 @@ type UpdatePipWinOption = {
   windowInfo: Partial<chrome.windows.UpdateInfo>;
 };
 
-async function updatePipWin({ windowId, windowInfo }: UpdatePipWinOption) {
+async function updateWindow({ windowId, windowInfo }: UpdatePipWinOption) {
   await chrome.windows.update(windowId, windowInfo);
 }
 
 function handleMessage(message: any, sender: chrome.runtime.MessageSender) {
-  console.log("bg message: ", message, sender);
+  console.log("bg message: ", message, sender, Date.now());
   switch (message?.type) {
     case MessageType.bgOpenPip:
       openPipBackground(message.url);
@@ -100,12 +100,11 @@ function handleMessage(message: any, sender: chrome.runtime.MessageSender) {
     case MessageType.getPipWinInfo:
       getPipWindow(sender.tab?.id!, message.options);
       break;
-    case MessageType.minimizePipWin:
-      minimizePip(message.options);
-      console.log(message, sender);
+    case MessageType.updateWindow:
+      updateWindow(message.options);
       break;
-    case MessageType.updatePipWin:
-      updatePipWin(message.options);
+    case MessageType.removeWindow:
+      chrome.windows.remove(message.options.windowId);
       break;
   }
 }

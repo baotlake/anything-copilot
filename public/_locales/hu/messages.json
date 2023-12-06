@@ -1,0 +1,14 @@
+{
+  "name": {
+    "message": "Anything Copilot - Többfeladatos segítő"
+  },
+  "short_name": {
+    "message": "Anything Copilot"
+  },
+  "description": {
+    "message": "Használd az hivatalos ChatGPT weboldalt vagy bármely más weboldalt ingyen az AI autóvezetőddé."
+  },
+  "toggle_minimize_desc": {
+    "message": "Váltás az Autóvezető ablak megjelenítése/elrejtése között"
+  }
+}

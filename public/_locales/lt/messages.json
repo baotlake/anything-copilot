@@ -1,0 +1,14 @@
+{
+  "name": {
+    "message": "Anything Copilot - Multitasking assistant"
+  },
+  "short_name": {
+    "message": "Anything Copilot"
+  },
+  "description": {
+    "message": "Naudokite oficialią ChatGPT svetainę ar bet kurią svetainę kaip savo AI bendražygį."
+  },
+  "toggle_minimize_desc": {
+    "message": "Perjungti rodyti/paslėpti kolegos langą"
+  }
+}

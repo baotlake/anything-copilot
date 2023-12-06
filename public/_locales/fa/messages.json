@@ -1,0 +1,14 @@
+{
+  "name": {
+    "message": "Anything Copilot - کمک کننده چند وظیفه"
+  },
+  "short_name": {
+    "message": "Anything Copilot"
+  },
+  "description": {
+    "message": "از وب سایت رسمی چت جی پی تی یا هر صفحه وب دیگر به عنوان همراه راننده خود برای رایگان استفاده کنید."
+  },
+  "toggle_minimize_desc": {
+    "message": "تغییر حالت نمایش / عدم نمایش پنجره همراه راننده"
+  }
+}

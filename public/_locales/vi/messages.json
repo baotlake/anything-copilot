@@ -1,0 +1,14 @@
+{
+  "name": {
+    "message": "Anything Copilot - Ứng dụng web, phi công AI"
+  },
+  "short_name": {
+    "message": "Anything Copilot"
+  },
+  "description": {
+    "message": "Sử dụng trang web chính thức của ChatGPT hoặc bất kỳ trang web nào khác miễn phí như là phi công AI của bạn."
+  },
+  "toggle_minimize_desc": {
+    "message": "Mở/đóng cửa sổ Copilot"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "name": {
+    "message": "Anything Copilot - Enhver webside som kopilot"
+  },
+  "short_name": {
+    "message": "Anything Copilot"
+  },
+  "description": {
+    "message": "Brug den officielle ChatGPT-hjemmeside eller en anden webside gratis som din AI-kopilot."
+  },
+  "toggle_minimize_desc": {
+    "message": "Skift visning/skjul Copilot-vindue"
+  }
+}

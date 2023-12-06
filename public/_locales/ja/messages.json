@@ -1,0 +1,14 @@
+{
+  "name": {
+    "message": "Anything Copilot - 無限アプリ、AIアシスタント"
+  },
+  "short_name": {
+    "message": "Anything Copilot"
+  },
+  "description": {
+    "message": "ChatGPTの公式ウェブサイトや他のページを無料でAIアシスタントにする。GPTやGPT4の新機能を即座に体験できる。オープンソースの大規模モデルや文心一言と対話し、Google翻訳やTikTokで短い動画を見ることもできます。"
+  },
+  "toggle_minimize_desc": {
+    "message": "Copilotウィンドウを切り替える"
+  }
+}

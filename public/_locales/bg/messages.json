@@ -1,0 +1,14 @@
+{
+  "name": {
+    "message": "Anything Copilot - Уеб приложение, AI съпилот"
+  },
+  "short_name": {
+    "message": "Anything Copilot"
+  },
+  "description": {
+    "message": "Използвайте официалния уебсайт на ChatGPT или всяка друга уеб страница безплатно като вашия AI съпилот."
+  },
+  "toggle_minimize_desc": {
+    "message": "Превключване на показването/скриването на прозореца на Съпилот"
+  }
+}

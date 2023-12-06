@@ -1,0 +1,14 @@
+{
+  "name": {
+    "message": "Anything Copilot - Penolong Pelbagai Tugas"
+  },
+  "short_name": {
+    "message": "Anything Copilot"
+  },
+  "description": {
+    "message": "Gunakan laman web rasmi ChatGPT atau laman web lain secara percuma sebagai pembantu pemandu AI anda."
+  },
+  "toggle_minimize_desc": {
+    "message": "Togol papar/sorok tetingkap Pembantu"
+  }
+}

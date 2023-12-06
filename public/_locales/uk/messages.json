@@ -1,0 +1,14 @@
+{
+  "name": {
+    "message": "Anything Copilot - Багатозадачний помічник"
+  },
+  "short_name": {
+    "message": "Anything Copilot"
+  },
+  "description": {
+    "message": "Безкоштовно використовуйте офіційний веб-сайт ChatGPT або будь-яку іншу веб-сторінку як Штучний розум."
+  },
+  "toggle_minimize_desc": {
+    "message": "Перемкнути вікно Співкерманича (показати/приховати)"
+  }
+}

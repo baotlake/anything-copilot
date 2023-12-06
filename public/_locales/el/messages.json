@@ -1,0 +1,14 @@
+{
+  "name": {
+    "message": "Anything Copilot - Πολυεργαλείο βοηθός"
+  },
+  "short_name": {
+    "message": "Anything Copilot"
+  },
+  "description": {
+    "message": "Χρησιμοποιήστε τον επίσημο ιστότοπο του ChatGPT ή οποιαδήποτε ιστοσελίδα ως τον AI συνοδηγό σας."
+  },
+  "toggle_minimize_desc": {
+    "message": "Εναλλαγή εμφάνισης/απόκρυψης του παραθύρου του Συνοδηγού"
+  }
+}

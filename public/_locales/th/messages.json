@@ -1,0 +1,14 @@
+{
+  "name": {
+    "message": "Anything Copilot - Multitasking assistant"
+  },
+  "short_name": {
+    "message": "Anything Copilot"
+  },
+  "description": {
+    "message": "ใช้เว็บไซต์ ChatGPT อย่างเป็นทางการหรือหน้าเว็บใดก็ได้ฟรีเป็น Copilot ของ AI ของคุณ เช่น GPTs, GPT-4 หรือคุณสมบัติใหม่ ๆ"
+  },
+  "toggle_minimize_desc": {
+    "message": "สลับแสดง / ซ่อนหน้าต่าง Copilot"
+  }
+}

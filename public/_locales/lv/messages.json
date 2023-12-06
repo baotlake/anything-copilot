@@ -1,0 +1,14 @@
+{
+  "name": {
+    "message": "Anything Copilot - Daudzfunkciju palīgs"
+  },
+  "short_name": {
+    "message": "Anything Copilot"
+  },
+  "description": {
+    "message": "Bezmaksas izmantojiet oficiālo ChatGPT mājaslapu vai jebkuru citu tīmekļa lapu kā savu AI līdzpilotu."
+  },
+  "toggle_minimize_desc": {
+    "message": "Pārslēgt Kopilota loga rādīšanu/paslēpšanu"
+  }
+}

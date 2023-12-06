@@ -1,0 +1,14 @@
+{
+  "name": {
+    "message": "Anything Copilot - பலவின்பமுள்ள உதவி"
+  },
+  "short_name": {
+    "message": "Anything Copilot"
+  },
+  "description": {
+    "message": "உங்கள் அறிவியல் உதவி காப்பாற்ற பதிவாக்க ஆமின் இயந்திரத்தைஅல்லது எங்கேரும் புதிய அம்சங்களை உள்ளதாக்கலாம்."
+  },
+  "toggle_minimize_desc": {
+    "message": "காப்பாற்ற சாளரத்தை முதல்வரிக்கவும்"
+  }
+}

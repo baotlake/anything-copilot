@@ -1,0 +1,14 @@
+{
+  "name": {
+    "message": "Anything Copilot - App web, copilota AI"
+  },
+  "short_name": {
+    "message": "Anything Copilot"
+  },
+  "description": {
+    "message": "Utilizza il sito web ufficiale di ChatGPT o qualsiasi altra pagina web gratuitamente come tuo copilota AI."
+  },
+  "toggle_minimize_desc": {
+    "message": "Attiva/disattiva visualizzazione/nascondi finestra Copilot"
+  }
+}

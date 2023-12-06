@@ -1,0 +1,14 @@
+{
+  "name": {
+    "message": "Anything Copilot - Web app, AI copilot"
+  },
+  "short_name": {
+    "message": "Anything Copilot"
+  },
+  "description": {
+    "message": "Gamitin ang opisyal na website ng ChatGPT o anumang ibang webpage nang libre bilang iyong AI copilot."
+  },
+  "toggle_minimize_desc": {
+    "message": "I-on ang pagpapalit ng pagpapakita/pagtatago ng bintana ng Copilot"
+  }
+}

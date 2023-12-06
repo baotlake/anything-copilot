@@ -1,0 +1,14 @@
+{
+  "name": {
+    "message": "Anything Copilot - የድርሻ ፕሌይን በተጠቀሰው የአንድ ጽ/ቤት"
+  },
+  "short_name": {
+    "message": "Anything Copilot"
+  },
+  "description": {
+    "message": "በቀጥታ ችሎታው ተጠቀሰ ከአስማዋ የ ChatGPT ድርጅትን ለመጠቀም ወደሚከተለው GPTs, GPT-4, ወይም የሞተ አጠቃላይ ድርሻ ለተቀጥለው ተጠቀሰው የ AI ፕሌይን ማጥፋት ይችላሉ።"
+  },
+  "toggle_minimize_desc": {
+    "message": "የርስ/የአጠቃላይ ሪዘምን መቀያ"
+  }
+}

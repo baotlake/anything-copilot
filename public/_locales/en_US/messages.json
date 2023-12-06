@@ -1,0 +1,14 @@
+{
+  "name": {
+    "message": "Anything Copilot - Any web page as copilot"
+  },
+  "short_name": {
+    "message": "Anything Copilot"
+  },
+  "description": {
+    "message": "Use the official ChatGPT website or any other webpage for free as your AI copilot, including GPTs, GPT-4, or any new features."
+  },
+  "toggle_minimize_desc": {
+    "message": "Toggle show/hide Copilot window"
+  }
+}

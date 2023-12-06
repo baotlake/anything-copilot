@@ -1,0 +1,14 @@
+{
+  "name": {
+    "message": "Anything Copilot - Webapp, AI copiloot"
+  },
+  "short_name": {
+    "message": "Anything Copilot"
+  },
+  "description": {
+    "message": "Gebruik de officiële ChatGPT-website of een andere webpagina gratis als uw AI copiloot, inclusief GPT's, GPT-4 of nieuwe functies."
+  },
+  "toggle_minimize_desc": {
+    "message": "Klap het Copilot-venster in/uit"
+  }
+}

@@ -8,7 +8,7 @@ const manifest = {
   // short_name: "__MSG_short_name__",
   // no more than 132 characters
   description: "__MSG_description__",
-  version: "1.1.1",
+  version: "1.1.2",
   action: {
     default_icon: {
       16: "logo.png",

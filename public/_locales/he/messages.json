@@ -1,0 +1,14 @@
+{
+  "name": {
+    "message": "Anything Copilot - כל דף אינטרנט כמסע נהג"
+  },
+  "short_name": {
+    "message": "Anything Copilot"
+  },
+  "description": {
+    "message": "השתמש באתר הרשמי של ChatGPT או בכל דף אינטרנט אחר ללא תשלום כמסע נהג שלך, כולל GPTs, GPT-4 או כל תכונות חדשות."
+  },
+  "toggle_minimize_desc": {
+    "message": "שינוי הצגה/הסתרה של חלון הגיבור המלכודת"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "name": {
+    "message": "Anything Copilot - أي صفحة ويب كمساعد"
+  },
+  "short_name": {
+    "message": "Anything Copilot"
+  },
+  "description": {
+    "message": "استخدم موقع ChatGPT الرسمي أو أي صفحة ويب أخرى مجانًا كمساعد ذكاء اصطناعي، بما في ذلك GPTs وGPT-4 وأي ميزات جديدة."
+  },
+  "toggle_minimize_desc": {
+    "message": "تبديل عرض/إخفاء نافذة المساعد"
+  }
+}

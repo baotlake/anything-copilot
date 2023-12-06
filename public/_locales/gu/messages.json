@@ -1,0 +1,14 @@
+{
+  "name": {
+    "message": "Anything Copilot - વેબ ઍપ, AI કોપાયલોટ"
+  },
+  "short_name": {
+    "message": "Anything Copilot"
+  },
+  "description": {
+    "message": "Use the official ChatGPT website or any webpage as your AI copilot."
+  },
+  "toggle_minimize_desc": {
+    "message": "કોપાયલોટ વિંડો બતાવવા/છુપાવવા ટૉગલ કરો"
+  }
+}

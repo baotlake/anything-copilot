@@ -1,105 +1,112 @@
-import { mount, waitMountApp } from "./ui";
+import { mount, waitMountApp } from "./ui"
+import { contentCss, pipLauncher, pipLoading, pipWindow } from "@/store"
+import { MessageType } from "@/types"
+import Copilot from "./Copilot.vue"
+import { waitMessage } from "@/utils/ext"
 import {
-  contentCss,
-  pipLauncher,
-  pipLoading,
-  pipWindowInfo,
-  pipWindowRef,
-} from "./store";
-import { MessageType } from "@/types";
-import Copilot from "./Copilot.vue";
-import { waitMessage } from "@/utils/ext";
-import { PipEventName } from "@/types/pip";
+  dispatchContentEvent,
+  addContentEventListener,
+  removeContentEventListener,
+} from "@/content/event"
+// import { PipEventName } from "@/types/pip"
 
 function handleMessage(
   message: any,
   sender: chrome.runtime.MessageSender,
   sendResponse: (res: any) => void
 ) {
-  console.log(message, sender);
+  console.log(message, sender)
   switch (message?.type) {
     case MessageType.pip:
-      document.dispatchEvent(
-        new CustomEvent(PipEventName.pip, { detail: message.options })
-      );
-      break;
+      dispatchContentEvent({
+        type: "pip",
+        detail: message.options,
+      })
+      break
     case "content-css":
-      contentCss.value = message.payload?.value || "";
-      break;
+      contentCss.value = message.payload?.value || ""
+      break
     case MessageType.pipLaunch:
-      pipLauncher.visible = true;
-      break;
+      pipLauncher.visible = true
+      break
     case MessageType.hiContent:
       chrome.runtime.sendMessage({
         type: MessageType.contentHere,
-      });
-      sendResponse({ type: MessageType.contentHere });
-      break;
+      })
+      sendResponse({ type: MessageType.contentHere })
+      break
     case MessageType.pipWinInfo:
-      pipWindowInfo.value = message.window;
+      pipWindow.windowsWindow = message.window
       chrome.storage.local.set({
         pipWindowId: message.window.id,
-      });
-      break;
+      })
+      break
   }
 }
 
 async function handlePipEvent(event: any) {
-  const pipWindow = await new Promise<Window | null>((r) => {
-    const docPip = window.documentPictureInPicture;
+  const win = await new Promise<Window | null>((r) => {
+    const docPip = window.documentPictureInPicture
     const handleEnter = () => {
-      r(docPip.window);
-      docPip?.removeEventListener("enter", handleEnter);
-    };
-    docPip?.addEventListener("enter", handleEnter);
-  });
+      r(docPip.window)
+      docPip?.removeEventListener("enter", handleEnter)
+    }
+    docPip?.addEventListener("enter", handleEnter)
+  })
 
-  console.log("content pip event: ", event);
+  console.log("content pip event: ", event)
 
-  if (pipWindow) {
-    pipWindowRef.value = pipWindow;
-    mount(Copilot, pipWindow.document);
+  if (win) {
+    pipWindow.window = win
+    mount(Copilot, win.document)
 
     await new Promise<void>((r) => {
-      document.addEventListener(PipEventName.loaded, (e) => {
-        console.log("load", e);
-        r();
-      });
-    });
+      const handlePipLoaded = (e: Event) => {
+        console.log("load", e)
+        r()
+        removeContentEventListener("loaded", handlePipLoaded)
+      }
+      addContentEventListener("loaded", handlePipLoaded)
+    })
 
     // may be 0 if not wait document is loaded
     chrome.runtime.sendMessage({
       type: MessageType.getPipWinInfo,
       options: {
-        width: pipWindow.outerWidth,
-        height: pipWindow.outerHeight,
+        width: win.outerWidth,
+        height: win.outerHeight,
       },
-    });
+    })
 
-    pipWindow.addEventListener("pagehide", () => {
+    win.addEventListener("pagehide", () => {
       chrome.storage.local.set({
-        pipWindowId: undefined,
-      });
-    });
+        pipWindowId: 0,
+      })
+    })
   }
 }
 
 async function handlePipLoadedEvent(e: Event) {
-  console.log("e: ", e);
-  pipLoading.splashScreen = false;
-  pipLoading.isLoading = false;
-  const pipWindow = window.documentPictureInPicture.window;
-  if (pipWindow) {
-    mount(Copilot, pipWindow.document);
+  console.log("e: ", e)
+  pipLoading.splashScreen = false
+  pipLoading.isLoading = false
+  const win = window.documentPictureInPicture.window
+  if (win) {
+    mount(Copilot, win.document)
   }
 }
 
 async function handlePopLoadDocEvent(e: CustomEvent | Event) {
-  pipLoading.isLoading = true;
+  pipLoading.isLoading = true
 }
 
-chrome.runtime.onMessage.addListener(handleMessage);
-document.addEventListener(PipEventName.pip, handlePipEvent);
-document.addEventListener(PipEventName.loaded, handlePipLoadedEvent);
-document.addEventListener(PipEventName.loadDoc, handlePopLoadDocEvent);
-waitMountApp();
+chrome.runtime?.onMessage.addListener(handleMessage)
+addContentEventListener("pip", handlePipEvent)
+addContentEventListener("loaded", handlePipLoadedEvent)
+addContentEventListener("load-doc", handlePopLoadDocEvent)
+waitMountApp()
+
+// dev
+if (location.host == chrome.runtime.id && location.hash == "#copilot") {
+  mount(Copilot, window.document)
+}

@@ -1,0 +1,14 @@
+{
+  "name": {
+    "message": "Anything Copilot - 무한 어플리케이션, AI 어시스턴트"
+  },
+  "short_name": {
+    "message": "Anything Copilot"
+  },
+  "description": {
+    "message": "Use the official ChatGPT website or any webpage as your AI copilot."
+  },
+  "toggle_minimize_desc": {
+    "message": "CoPilot 창 표시/숨기기 전환"
+  }
+}

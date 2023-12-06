@@ -1,0 +1,14 @@
+{
+  "name": {
+    "message": "Anything Copilot - Aplicație web, copilot AI"
+  },
+  "short_name": {
+    "message": "Anything Copilot"
+  },
+  "description": {
+    "message": "Folosiți site-ul oficial ChatGPT sau orice altă pagină web gratuit ca și copilot AI."
+  },
+  "toggle_minimize_desc": {
+    "message": "Comutați între afișarea/ascunderea ferestrei Copilot"
+  }
+}

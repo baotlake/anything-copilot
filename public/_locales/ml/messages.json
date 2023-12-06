@@ -1,0 +1,14 @@
+{
+  "name": {
+    "message": "Anything Copilot - Multitasking assistant"
+  },
+  "short_name": {
+    "message": "Anything Copilot"
+  },
+  "description": {
+    "message": "സർക്കാർഗെറ്റ് വെബ് സൈറ്റുകൾ അല്ലെങ്കിൽ മറ്റ് ഏതെങ്കിലും വെബ് പേജ് സൌജന്യമായാൽ നിങ്ങളുടെ ഏ.ഐ. കോ-പയ്ലറ്റായാക്കാം."
+  },
+  "toggle_minimize_desc": {
+    "message": "കോ-പയ്ലറ്റ് വിൻഡോ കാണാൻ/മറയ്ക്കാൻ ടോഗിൾ ചെയ്യുക"
+  }
+}

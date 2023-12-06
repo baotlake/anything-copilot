@@ -1,0 +1,14 @@
+{
+  "name": {
+    "message": "Anything Copilot - वेब ऐप, AI को-पायलट"
+  },
+  "short_name": {
+    "message": "Anything Copilot"
+  },
+  "description": {
+    "message": "ChatGPT वेबसाइट या किसी अन्य वेब पृष्ठ का प्रयोग निशुल्क रूप से अपने AI को-पायलट के रूप में करें।"
+  },
+  "toggle_minimize_desc": {
+    "message": "को-पायलट विंडो का दिखाएँ/छुपाएँ टॉगल करें"
+  }
+}

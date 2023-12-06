@@ -1,6 +1,10 @@
 <script setup lang="ts">
-import { pipLauncher } from "./store";
+import { pipLauncher } from "@/store";
 import PipLauncher from "@/components/PipLauncher.vue";
+
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
 </script>
 
 <template>

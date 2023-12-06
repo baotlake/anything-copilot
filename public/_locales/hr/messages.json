@@ -1,0 +1,14 @@
+{
+  "name": {
+    "message": "Anything Copilot - Web aplikacija, AI suvozač"
+  },
+  "short_name": {
+    "message": "Anything Copilot"
+  },
+  "description": {
+    "message": "Besplatno koristite službenu ChatGPT web stranicu ili bilo koju drugu web stranicu kao svoj AI suvozač."
+  },
+  "toggle_minimize_desc": {
+    "message": "Uključivanje/isključivanje prikaza suvozačevog prozora"
+  }
+}

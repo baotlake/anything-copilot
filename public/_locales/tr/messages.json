@@ -1,0 +1,14 @@
+{
+  "name": {
+    "message": "Anything Copilot - Çoklu Görevli Yardımcı"
+  },
+  "short_name": {
+    "message": "Anything Copilot"
+  },
+  "description": {
+    "message": "Resmi ChatGPT sitesini veya herhangi bir web sayfasını ücretsiz olarak yapay zeka yardımcınız olarak kullanın."
+  },
+  "toggle_minimize_desc": {
+    "message": "Yardımcı pencereyi göster/gizle"
+  }
+}

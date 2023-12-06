@@ -29,8 +29,12 @@ export const items = reactive([
   },
 ]);
 
-export const pipWindowRef = ref<Window | null>(null);
-export const pipWindowInfo = ref<chrome.windows.Window | null>(null);
+export const pipWindow = reactive({
+  id: 0,
+  window: null as Window | null,
+  windowsWindow: null as chrome.windows.Window | null,
+  tab: null as chrome.tabs.Tab | null,
+});
 
 export const pipLoading = reactive({
   isLoading: true,

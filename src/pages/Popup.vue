@@ -1,85 +1,67 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, computed, reactive, watch } from "vue";
-import { emptyTab, checkContent } from "@/utils/ext";
-import { items } from "@/content/store";
-import IconHide from "@/components/icons/IconHide.vue";
-import IconArrowCircleRight from "@/components/icons/IconArrowCircleRight.vue";
-import IconClose from "@/components/icons/IconClose.vue";
+import { ref, onMounted, onUnmounted, computed, reactive, watch } from "vue"
+import { emptyTab, checkContent } from "@/utils/ext"
+import { items, pipWindow } from "@/store"
+import PipWindowActions from "@/components/popup/PipWindowActions.vue"
+import IconThumbUp from "@/components/icons/IconThumbUp.vue"
+import IconThumbDown from "@/components/icons/IconThumbDown.vue"
+import IconGithub from "@/components/icons/IconGithub.vue"
+import IconDiscord from "@/components/icons/IconDiscord.vue"
+import IconXLogo from "@/components/icons/IconXLogo.vue"
+import { useI18n } from "@/utils/i18n"
+import { getStoreUrl } from "@/utils/store"
 
-const activeTab = ref<chrome.tabs.Tab>(emptyTab);
-const manifest = reactive(chrome.runtime.getManifest());
-const avaiable = ref(false);
+const { t } = useI18n()
 
-const pipWindowId = ref(0);
-
-const pipWindowInfo = reactive({
-  windowId: 0,
-  isOpen: false,
-  favIconUrl: "",
-  title: "",
-});
+const activeTab = ref<chrome.tabs.Tab>(emptyTab)
+const manifest = reactive(chrome.runtime.getManifest())
+const avaiable = ref(false)
 
 const handleLocalChange = (changes: {
-  [key: string]: chrome.storage.StorageChange;
+  [key: string]: chrome.storage.StorageChange
 }) => {
   if (changes.pipWindowId) {
-    pipWindowId.value = changes.pipWindowId.newValue;
+    pipWindow.id = changes.pipWindowId.newValue
   }
-};
-
-watch(pipWindowId, async (id) => {
-  if (id) {
-    const tabs = await chrome.tabs.query({ windowId: id });
-    console.log("pip window tabs: ", tabs);
-    if (tabs && tabs.length == 1) {
-      pipWindowInfo.isOpen = true;
-      pipWindowInfo.favIconUrl = tabs[0].favIconUrl || "";
-      pipWindowInfo.title = tabs[0].title || "";
-    }
-
-    return;
-  }
-
-  pipWindowInfo.isOpen = false;
-});
+}
 
 onMounted(() => {
   chrome.tabs.query({ active: true, currentWindow: true }).then((tabs) => {
-    console.log(tabs);
-    if (tabs[0]) activeTab.value = tabs[0];
+    console.log(tabs)
+    if (tabs[0]) activeTab.value = tabs[0]
 
     checkContent(tabs[0].id!).then((value) => {
-      avaiable.value = value;
-    });
-  });
+      avaiable.value = value
+    })
+  })
 
   chrome.storage.local
     .get({ pipWindowId: null })
     .then(({ pipWindowId: id }) => {
       if (id) {
-        pipWindowId.value = id;
+        pipWindow.id = id
       }
-    });
+    })
 
-  chrome.storage.local.onChanged.addListener(handleLocalChange);
-});
+  chrome.storage.local.onChanged.addListener(handleLocalChange)
+})
 
 onUnmounted(() => {
-  chrome.storage.local.onChanged.removeListener(handleLocalChange);
-});
+  chrome.storage.local.onChanged.removeListener(handleLocalChange)
+})
 
 const host = computed({
   get: () => {
-    if (!activeTab.value.url) return "";
-    const u = new URL(activeTab.value.url);
-    return u.host;
+    if (!activeTab.value.url) return ""
+    const u = new URL(activeTab.value.url)
+    return u.host
   },
   set: () => {},
-});
+})
 
 async function handleWriteHtml() {
-  const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
-  const tab = tabs[0];
+  const tabs = await chrome.tabs.query({ active: true, currentWindow: true })
+  const tab = tabs[0]
   if (tab) {
     chrome.tabs.sendMessage(tab.id!, {
       type: "pip",
@@ -87,96 +69,87 @@ async function handleWriteHtml() {
         url: tab.url,
         mode: "write-html",
       },
-    });
+    })
   }
 }
 
 async function handleClickLaunch(url: string) {
-  console.log(activeTab.value);
+  console.log(activeTab.value)
   chrome.runtime.sendMessage({
     type: "bg-pip-launch",
     url,
-  });
+  })
 }
 
-async function handleUpdatePip(state: "normal" | "minimized") {
-  chrome.windows.update(pipWindowId.value, {
-    state,
-  });
+function feedback() {
+  open("https://tawk.to/anythingcopilot", "_blank")
 }
-
-async function closePip() {
-  await chrome.windows.update(pipWindowId.value, { state: "normal" });
-  chrome.windows.remove(pipWindowId.value);
+function fivestar() {
+  open(
+    getStoreUrl({
+      id: chrome.runtime.id,
+      name: "anything-copilot",
+      reviews: true,
+    })
+  ),
+    "_blank"
 }
 </script>
 
 <template>
   <main class="w-[300px] p-4 mx-auto">
-    <div>
-      <span class="font-bold opacity-50">Anything Copilot</span>
-      <span class="mx-2 text-sm opacity-50">{{ manifest.version }}</span>
-    </div>
-
-    <div v-if="pipWindowInfo.isOpen">
-      <div class="text-sm flex items-center truncate mt-6">
-        <span
-          class="w-4 h-4 inline-block mr-2 rounded"
-          :style="{
-            background:
-              'center / contain url(' + pipWindowInfo.favIconUrl + ')',
-          }"
-        ></span>
-        <span>{{ pipWindowInfo.title }}</span>
+    <div class="flex">
+      <div class="mr-auto">
+        <span class="font-bold opacity-50">Anything Copilot</span>
+        <span class="mx-2 text-sm opacity-50">{{ manifest.version }}</span>
       </div>
-      <div class="flex gap-2">
+      <div class="flex items-center gap-1">
         <button
-          class="primary-btn flex items-center mt-2 rounded-lg p-2 px-3"
-          @click="handleUpdatePip('minimized')"
+          class="p-1 rounded-lg hover:animate-ping hover:text-rose-600 hover:bg-rose-600/20"
+          @click="fivestar"
         >
-          <IconHide />
+          <IconThumbUp class="w-5 h-5 opacity-60" />
         </button>
+
         <button
-          class="primary-btn flex items-center mt-2 rounded-lg p-2 px-3"
-          @click="handleUpdatePip('normal')"
+          class="p-1 rounded-lg hover:animate-bounce hover:text-blue-600 hover:bg-blue-600/20"
+          @click="feedback"
         >
-          <IconArrowCircleRight />
-        </button>
-        <button
-          class="primary-btn flex items-center mt-2 rounded-lg p-2 px-3"
-          @click="closePip"
-        >
-          <IconClose />
+          <IconThumbDown class="w-5 h-5 opacity-60" />
         </button>
       </div>
     </div>
 
-    <div class="text-sm truncate mt-6">
-      {{ host }}
-      <span class="text-rose-800" v-if="!avaiable">{{
-        "is protected by browser"
-      }}</span>
+    <PipWindowActions />
+
+    <div class="flex items-center text-sm mt-6">
+      <span
+        class="w-4 h-4 inline-block mr-2 rounded"
+        :style="{
+          background:
+            '#8882 center / contain url(' + activeTab?.favIconUrl + ')',
+        }"
+      ></span>
+      <span class="inline-block truncate">{{ host }}</span>
     </div>
+
     <button
       :class="[
-        'primary-btn w-full flex items-center mt-2 rounded-lg p-2 px-3',
+        'w-full bg-sky-800 text-white flex items-center mt-2 rounded-lg p-2 px-3',
         {
           'cursor-not-allowed': !avaiable,
         },
       ]"
       @click="handleWriteHtml"
     >
-      <span
-        class="w-5 h-5 inline-block mr-3 rounded"
-        :style="{
-          background: 'center / contain url(' + activeTab.favIconUrl + ')',
-        }"
-      >
-      </span>
-      <span class="text-base">Open in Copilot window</span>
+      <span class="text-base">{{ t("openInPip") }}</span>
     </button>
 
-    <div class="text-sm mt-6">other</div>
+    <div v-if="!avaiable" class="text-sm leading-4 text-rose-800">
+      {{ t("protectedTabTips") }}
+    </div>
+
+    <div class="text-sm mt-6">{{ t("other") }}</div>
     <button
       v-for="item of items"
       class="primary-btn w-full flex items-center mt-3 rounded-lg p-2 px-3"
@@ -192,7 +165,32 @@ async function closePip() {
       <span class="text-base">{{ item.title }}</span>
     </button>
 
-    <div class="mt-6"></div>
+    <div class="mt-3 flex items-center justify-center opacity-60">
+      <a
+        class="px-1.5"
+        href="https://github.com/baotlake/anything-copilot"
+        target="_blank"
+        ref="noreferrer"
+      >
+        <IconGithub class="w-[15px] h-[15px] text-[rgb(var(--fg-rgb))]" />
+      </a>
+      <a
+        class="px-1.5"
+        href="https://discord.gg/aYSxbF8em9"
+        target="_blank"
+        ref="noreferrer"
+      >
+        <IconDiscord class="w-[16px] h-[16px] text-[rgb(var(--fg-rgb))]" />
+      </a>
+      <a
+        class="px-1.5"
+        href="https://twitter.com/baotlake"
+        target="_blank"
+        ref="noreferrer"
+      >
+        <IconXLogo class="w-[12px] h-[12px] text-[rgb(var(--fg-rgb))]" />
+      </a>
+    </div>
   </main>
 </template>
 

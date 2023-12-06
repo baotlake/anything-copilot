@@ -1,0 +1,14 @@
+{
+  "name": {
+    "message": "Anything Copilot - वेब अ‍ैप, AI सहकारीस्वरूपी"
+  },
+  "short_name": {
+    "message": "Anything Copilot"
+  },
+  "description": {
+    "message": "ChatGPT या अधिकृत वेबसाइट किंवा इतर कोणत्याही वेब पृष्ठावर मुफ्त म्हणून आपल्या AI सहकारीस्वरूपी म्हणून वापरा."
+  },
+  "toggle_minimize_desc": {
+    "message": "सहाय्यक विंडो दाखवण्याचे/लपवण्याचे स्विच करा"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "name": {
+    "message": "Anything Copilot - Multifunktionsassistent"
+  },
+  "short_name": {
+    "message": "Anything Copilot"
+  },
+  "description": {
+    "message": "Använd den officiella ChatGPT-webbplatsen eller vilken annan webbsida som helst gratis som din AI-co-pilot."
+  },
+  "toggle_minimize_desc": {
+    "message": "Växla visa/dölj co-pilot-fönstret"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "name": {
+    "message": "Anything Copilot - ওয়েব অ্যাপ, এআই কো-পাইলট"
+  },
+  "short_name": {
+    "message": "Anything Copilot"
+  },
+  "description": {
+    "message": "অফিসিয়াল চ্যাটজিপিটি ওয়েবসাইট বা অন্য কোনও ওয়েবপেজ বিনামূল্যে আপনার এআই কো-পাইলট হিসাবে ব্যবহার করুন।"
+  },
+  "toggle_minimize_desc": {
+    "message": "কো-পাইলট উইন্ডো দেখার / আড়ালম্বন করার টগল করুন"
+  }
+}

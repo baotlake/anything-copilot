@@ -1,0 +1,14 @@
+{
+  "name": {
+    "message": "Anything Copilot - Assistent de multitasques"
+  },
+  "short_name": {
+    "message": "Anything Copilot"
+  },
+  "description": {
+    "message": "Utilitza el lloc web oficial de ChatGPT o qualsevol altra pàgina web de franc com el teu copilot d'IA."
+  },
+  "toggle_minimize_desc": {
+    "message": "Commuta ocultar/mostrar finestra del Copilot"
+  }
+}

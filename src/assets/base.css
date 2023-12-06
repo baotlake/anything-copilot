@@ -39,6 +39,9 @@
   --color-heading: var(--vt-c-text-light-1);
   --color-text: var(--vt-c-text-light-1);
 
+  --bg-rgb: 255, 255, 255;
+  --fg-rgb: 0, 0, 0;
+
   --section-gap: 160px;
 }
 
@@ -54,6 +57,9 @@
 
     --color-heading: var(--vt-c-text-dark-1);
     --color-text: var(--vt-c-text-dark-2);
+
+    --bg-rgb: 0, 0, 0;
+    --fg-rgb: 255, 255, 255;
   }
 }
 

@@ -1,0 +1,14 @@
+{
+  "name": {
+    "message": "Anything Copilot - Monitoimintavastaanottaja"
+  },
+  "short_name": {
+    "message": "Anything Copilot"
+  },
+  "description": {
+    "message": "Käytä virallista ChatGPT-verkkosivustoa tai mitä tahansa muuta verkkosivua ilmaiseksi tekoäly-apukuskina."
+  },
+  "toggle_minimize_desc": {
+    "message": "Vaihda Copilot-ikkunan näyttö/piilotus"
+  }
+}

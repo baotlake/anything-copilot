@@ -1,0 +1,14 @@
+{
+  "name": {
+    "message": "Anything Copilot - Víceúlohový asistent"
+  },
+  "short_name": {
+    "message": "Anything Copilot"
+  },
+  "description": {
+    "message": "Použijte oficiální webovou stránku ChatGPT nebo jakoukoli jinou webovou stránku jako svého AI spolujezdce."
+  },
+  "toggle_minimize_desc": {
+    "message": "Přepnout zobrazení/skrytí okna Spolujezdce"
+  }
+}

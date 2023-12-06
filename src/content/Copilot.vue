@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import Multitasking from "@/components/Multitasking.vue";
-import PipSplash from "@/components/PipSplash.vue";
-import { pipLoading } from "./store";
-import LoadingBar from "@/components/LoadingBar.vue";
+import Multitasking from "@/components/Multitasking.vue"
+import PipSplash from "@/components/PipSplash.vue"
+import { pipLoading } from "@/store"
+import LoadingBar from "@/components/LoadingBar.vue"
 </script>
 
 <template>

@@ -1,0 +1,14 @@
+{
+  "name": {
+    "message": "Anything Copilot - Multitasking-assistent"
+  },
+  "short_name": {
+    "message": "Anything Copilot"
+  },
+  "description": {
+    "message": "Bruk den offisielle ChatGPT-nettsiden eller en annen nettside gratis som din AI medpilot."
+  },
+  "toggle_minimize_desc": {
+    "message": "Bytt vis/skjul Medpilot-vinduet"
+  }
+}

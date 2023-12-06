@@ -1,0 +1,14 @@
+{
+  "name": {
+    "message": "Anything Copilot - Multitasking assistant"
+  },
+  "short_name": {
+    "message": "Anything Copilot"
+  },
+  "description": {
+    "message": "Tumia tovuti rasmi ya ChatGPT au ukurasa wowote mwingine wa wavuti bure kama mpalaji wako wa AI."
+  },
+  "toggle_minimize_desc": {
+    "message": "Badilisha kuonyesha/ficha dirisha la Mpangilio"
+  }
+}
