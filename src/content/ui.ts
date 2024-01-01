@@ -14,7 +14,7 @@ export function mount(App: Component, doc = document) {
 
   const link = doc.createElement("link")
   link.rel = "stylesheet"
-  link.href = chrome.runtime?.getURL("/index.css")
+  link.href = chrome.runtime?.getURL("/assets/index.css")
   root.append(link)
   root.append(appContainer)
   doc.documentElement.append(outter)

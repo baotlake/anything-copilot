@@ -2,7 +2,7 @@
   "extends": "@tsconfig/node18/tsconfig.json",
   "include": [
     "utils",
-    "manifest.ts",
+    "./src/manifest.ts",
     "package.json",
     "vite.config.*",
     "vitest.config.*",

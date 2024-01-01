@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { pipLauncher } from "@/store";
-import PipLauncher from "@/components/PipLauncher.vue";
+import { pipLauncher } from "@/store"
+import PipLauncher from "@/components/PipLauncher.vue"
 
-import { useI18n } from "vue-i18n";
+import { useI18n } from "vue-i18n"
+import ChatDocsAddon from "@/components/chatdocs/ChatDocsAddon.vue"
 
-const { t } = useI18n();
+const { t } = useI18n()
 </script>
 
 <template>
@@ -12,6 +13,8 @@ const { t } = useI18n();
     v-if="pipLauncher.visible"
     @close="pipLauncher.visible = false"
   />
+
+  <ChatDocsAddon />
 </template>
 
 <style scoped></style>

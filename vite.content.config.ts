@@ -1,9 +1,9 @@
-import { defineConfig } from "vite";
-import { fileURLToPath, URL } from "node:url";
-import { dirname, resolve } from "node:path";
-import vue from "@vitejs/plugin-vue";
-import vueJsx from "@vitejs/plugin-vue-jsx";
-import vueI18n from "@intlify/unplugin-vue-i18n/vite";
+import { defineConfig } from "vite"
+import { fileURLToPath, URL } from "node:url"
+import { dirname, resolve } from "node:path"
+import vue from "@vitejs/plugin-vue"
+import vueJsx from "@vitejs/plugin-vue-jsx"
+import vueI18n from "@intlify/unplugin-vue-i18n/vite"
 
 export default defineConfig({
   server: {
@@ -12,6 +12,7 @@ export default defineConfig({
   define: {
     __INTLIFY_JIT_COMPILATION__: true,
     __INTLIFY_DROP_MESSAGE_COMPILER__: true,
+    __DEV__: process.env.NODE_ENV === "development",
   },
   plugins: [
     vue(),
@@ -38,9 +39,10 @@ export default defineConfig({
         content: "./src/content/index.ts",
       },
       output: {
-        assetFileNames: "[name].[ext]",
-        entryFileNames: "[name].js",
+        assetFileNames: "assets/[name].[ext]",
+        chunkFileNames: "js/[name]-chunk.js",
+        entryFileNames: "js/[name].js",
       },
     },
   },
-});
+})

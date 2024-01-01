@@ -1,4 +1,6 @@
-const contentCss = "index.css";
+const __DEV__ = process.env.NODE_ENV == "development"
+
+const contentCss = "/assets/index.css"
 
 const manifest = {
   manifest_version: 3,
@@ -16,7 +18,7 @@ const manifest = {
       32: "logo.png",
     },
     default_title: "__MSG_short_name__",
-    default_popup: "popup.html",
+    default_popup: "src/pages/popup.html",
   },
   default_locale: "en",
   icons: {
@@ -33,18 +35,18 @@ const manifest = {
   content_scripts: [
     {
       matches: ["<all_urls>"],
-      js: ["main.js"],
+      js: ["/js/content-main.js"],
       run_at: "document_start",
       world: "MAIN",
     },
     {
       matches: ["<all_urls>"],
-      js: ["content.js"],
+      js: ["/js/content.js"],
       run_at: "document_start",
     },
   ],
-  options_page: "guide.html",
-  permissions: ["tabs", "scripting", "activeTab", "storage"],
+  options_page: __DEV__ ? "/src/pages/guide.html" : "",
+  permissions: ["tabs", "scripting", "activeTab", "storage", "offscreen"],
   host_permissions: ["<all_urls>"],
   minimum_chrome_version: "111",
   commands: {
@@ -58,16 +60,15 @@ const manifest = {
   },
   web_accessible_resources: [
     {
-      resources: [contentCss],
+      resources: [contentCss, "logo.svg"],
       matches: ["<all_urls>"],
     },
   ],
-  content_security_policy:
-    process.env.NODE_ENV == "development"
-      ? {
-          extension_pages: `script-src 'self' http://localhost:3000;`,
-        }
-      : undefined,
-};
+  content_security_policy: __DEV__
+    ? {
+        extension_pages: `script-src 'self' http://localhost:3000;`,
+      }
+    : undefined,
+}
 
-export default manifest;
+export default manifest

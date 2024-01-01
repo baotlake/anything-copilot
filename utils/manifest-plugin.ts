@@ -1,11 +1,11 @@
-import { resolve } from "path";
-import type { PluginOption } from "vite";
+import { resolve } from "path"
+import type { PluginOption } from "vite"
 
 export default function makeManifest(
   manifest: any,
   config: {
-    isDev: boolean;
-    assetKeys?: string[];
+    isDev: boolean
+    assetKeys?: string[]
   }
 ): PluginOption {
   return {
@@ -13,26 +13,26 @@ export default function makeManifest(
     generateBundle(output, bundle) {
       if (config.assetKeys) {
         for (let key of config.assetKeys) {
-          const id = resolve(manifest[key]).replace(/\\/g, "/");
+          const id = resolve(manifest[key]).replace(/\\/g, "/")
           const chunk = Object.values(bundle).find(
             (b) => b.type === "chunk" && b.facadeModuleId == id
-          );
+          )
           if (chunk) {
-            manifest[key] = chunk.fileName;
+            manifest[key] = chunk.fileName
           }
         }
-      }
+      } 
 
-      const content = JSON.stringify(manifest, null, 2);
+      const content = JSON.stringify(manifest, null, 2)
       try {
         this.emitFile({
           type: "asset",
           source: content,
           fileName: "manifest.json",
-        });
+        })
       } catch (e) {
-        console.error("manifest-plugin error: ", e);
-        console.error("Failed to emit asset file, possibly a naming conflict");
+        console.error("manifest-plugin error: ", e)
+        console.error("Failed to emit asset file, possibly a naming conflict")
       }
     },
     // buildStart() {
@@ -48,5 +48,5 @@ export default function makeManifest(
     //     console.error("Failed to emit asset file, possibly a naming conflict");
     //   }
     // },
-  };
+  }
 }

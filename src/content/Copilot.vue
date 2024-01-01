@@ -3,6 +3,7 @@ import Multitasking from "@/components/Multitasking.vue"
 import PipSplash from "@/components/PipSplash.vue"
 import { pipLoading } from "@/store"
 import LoadingBar from "@/components/LoadingBar.vue"
+import ChatDocsAddon from "@/components/chatdocs/ChatDocsAddon.vue"
 </script>
 
 <template>
@@ -21,6 +22,8 @@ import LoadingBar from "@/components/LoadingBar.vue"
   >
     <LoadingBar />
   </div>
+
+  <ChatDocsAddon />
 </template>
 
 <style scoped></style>

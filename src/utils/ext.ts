@@ -48,7 +48,7 @@ export async function waitMessage<T = unknown>({
     };
     chrome.runtime.onMessage.addListener(handleMessage);
     if (timeout) {
-      timer = setTimeout(() => {
+      timer = window.setTimeout(() => {
         chrome.runtime.onMessage.removeListener(handleMessage);
         reject();
       }, timeout);
@@ -129,4 +129,46 @@ export async function checkContent(tabId: number) {
   } catch (e) {
     return false;
   }
+}
+
+
+type StoreUrlOptions = {
+  id: string
+  name: string
+  reviews?: boolean
+}
+
+export function getChromeWebStoreUrl({ id, name, reviews }: StoreUrlOptions) {
+  const u = new URL("https://chromewebstore.google.com/")
+  const slug = name.replace(/[\s/]+/g, "-") || "-"
+  u.pathname = `/detail/${slug}/${id}`
+  if (reviews) {
+    u.pathname = u.pathname + "/reviews"
+  }
+
+  return u.href
+}
+
+export function getEdgeAddonsUrl({ id, name, reviews }: StoreUrlOptions) {
+  const u = new URL("https://microsoftedge.microsoft.com")
+  const slug = name.replace(/[\s/]+/g, "-") || "-"
+  u.pathname = `/addons/detail/${slug}/${id}`
+
+  return u.href
+}
+
+export function getStoreUrl(options: StoreUrlOptions) {
+  const id = chrome.runtime.id
+  if (id.startsWith("lilckelmo")) {
+    return getChromeWebStoreUrl(options)
+  }
+
+  if (id.startsWith("lbeehbkc")) {
+    return getEdgeAddonsUrl(options)
+  }
+
+  return getEdgeAddonsUrl({
+    ...options,
+    id: "lbeehbkcmjaopnlccpjcdgamcabhnanl",
+  })
 }

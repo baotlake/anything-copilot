@@ -1,4 +1,5 @@
 @import "./base.css";
+@import "./utilities.css";
 
 #app {
   margin: 0 auto;
@@ -30,4 +31,18 @@ a,
     grid-template-columns: 1fr 1fr;
     padding: 0 2rem;
   } */
+}
+
+.scrollbar::-webkit-scrollbar {
+  background: transparent;
+  width: 12px;
+}
+.scrollbar::-webkit-scrollbar-thumb {
+  background: transparent;
+  transition: all 0.3s;
+}
+.scrollbar:hover::-webkit-scrollbar-thumb {
+  border: 4px solid transparent;
+  background: rgba(var(--fg-rgb), 0.1);
+  background-clip: content-box;
 }

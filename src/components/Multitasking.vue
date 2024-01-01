@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, watch, onMounted } from "vue"
+import { ref, computed, watch, onMounted, onUnmounted } from "vue"
 import IconMinimize from "@/components/icons/IconMinimize.vue"
 import IconSplitRight from "@/components/icons/IconSplitscreenRight.vue"
 import IconClose from "@/components/icons/IconClose.vue"
@@ -8,7 +8,6 @@ import { pipWindow } from "@/store"
 import { throttle } from "lodash-es"
 import IconRefresh from "./icons/IconRefresh.vue"
 import { dispatchContentEvent } from "@/content/event"
-import { onUnmounted } from "vue"
 import { useI18n } from "@/utils/i18n"
 import IconHide from "./icons/IconHide.vue"
 
@@ -71,11 +70,11 @@ watch(open, (value, oldValue, onCleanup) => {
 
 const menuPointerEnter = () => {
   clearTimeout(timer.value)
-  timer.value = setTimeout(() => (open.value = true), 200)
+  timer.value = window.setTimeout(() => (open.value = true), 200)
 }
 const menuPointerLeave = () => {
   clearTimeout(timer.value)
-  timer.value = setTimeout(() => (open.value = false), 200)
+  timer.value = window.setTimeout(() => (open.value = false), 200)
 }
 
 const btnPointerEnter = () => {
@@ -86,7 +85,7 @@ const btnPointerLeave = () => {
   if (pinOpen.value) {
     return
   }
-  timer.value = setTimeout(() => (open.value = false), 350)
+  timer.value = window.setTimeout(() => (open.value = false), 350)
 }
 
 const minimize = () => {

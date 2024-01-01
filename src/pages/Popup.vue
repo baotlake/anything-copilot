@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, computed, reactive, watch } from "vue"
-import { emptyTab, checkContent } from "@/utils/ext"
+import { emptyTab, checkContent, getStoreUrl } from "@/utils/ext"
 import { items, pipWindow } from "@/store"
 import PipWindowActions from "@/components/popup/PipWindowActions.vue"
 import IconThumbUp from "@/components/icons/IconThumbUp.vue"
@@ -9,7 +9,6 @@ import IconGithub from "@/components/icons/IconGithub.vue"
 import IconDiscord from "@/components/icons/IconDiscord.vue"
 import IconXLogo from "@/components/icons/IconXLogo.vue"
 import { useI18n } from "@/utils/i18n"
-import { getStoreUrl } from "@/utils/store"
 
 const { t } = useI18n()
 

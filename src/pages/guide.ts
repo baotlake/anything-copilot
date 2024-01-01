@@ -1,17 +1,10 @@
-import "@/assets/main.css";
+import "@/assets/main.css"
 
-import { createApp } from "vue";
-import Guide from "./Popup.vue";
+import { createApp } from "vue"
+import Guide from "./Popup.vue"
+import { i18n } from "@/utils/i18n"
 
-createApp(Guide).mount("#app");
+const app = createApp(Guide)
 
-function injectContent() {
-  const mainScript = document.createElement("script");
-  mainScript.src = "/main.js";
-  const script = document.createElement("script");
-  script.src = "/content.js";
-  document.head.append(mainScript);
-  document.head.append(script);
-}
-
-injectContent();
+app.use(i18n)
+app.mount("#app")

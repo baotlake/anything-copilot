@@ -63,7 +63,28 @@ module.exports = {
         9: "36px",
         10: "40px",
       },
+      colors: {
+        primary: {
+          DEFAULT: "hsl(var(--primary-hsl) / <alpha-value>)",
+          200: "hsl(var(--primary-hue) var(--primary-s) 80% / <alpha-value>)",
+          300: "hsl(var(--primary-hue) var(--primary-s) 70% / <alpha-value>)",
+          400: "hsl(var(--primary-hue) var(--primary-s) 60% / <alpha-value>)",
+          500: "hsl(var(--primary-hue) var(--primary-s) 50% / <alpha-value>)",
+          600: "hsl(var(--primary-hue) var(--primary-s) 40% / <alpha-value>)",
+          700: "hsl(var(--primary-hue) var(--primary-s) 30% / <alpha-value>)",
+          800: "hsl(var(--primary-hue) var(--primary-s) 20% / <alpha-value>)",
+          900: "hsl(var(--primary-hue) var(--primary-s) 15% / <alpha-value>)",
+        },
+        background: {
+          DEFAULT: "hsl(var(--bg-hsl) / <alpha-value>)",
+          soft: "hsl(var(--bg-hue) var(--bg-s) var(--bg-soft-l) / <alpha-value>)",
+          mute: "hsl(var(--bg-hue) var(--bg-s) var(--bg-mute-l) / <alpha-value>)",
+        },
+        foreground: {
+          DEFAULT: "hsl(var(--fg-hsl) / <alpha-value>)",
+        },
+      },
     },
   },
   plugins: [],
-};
+}

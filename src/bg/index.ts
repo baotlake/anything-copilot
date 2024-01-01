@@ -1,12 +1,18 @@
-import { MessageType } from "@/types";
-import { waitMessage, tabUpdated } from "@/utils/ext";
+import {
+  MessageType,
+  ServiceFunc,
+  type ParseDocOptions,
+  type InvokeMessage,
+} from "@/types"
+import { waitMessage, tabUpdated } from "@/utils/ext"
+import { offscreen } from "./offscreen"
 
 async function openPipBackground(url: string) {
   const tab = await chrome.tabs.create({
     url: url,
-  });
+  })
 
-  await tabUpdated({ tabId: tab.id!, status: "complete" });
+  await tabUpdated({ tabId: tab.id!, status: "complete" })
 
   chrome.tabs.sendMessage(tab.id!, {
     type: "pip",
@@ -14,12 +20,13 @@ async function openPipBackground(url: string) {
       url: url,
       mode: "write-html",
     },
-  });
+  })
 }
 
+/** @deprecated */
 async function getContentCss(id: number, url: string) {
-  const res = await fetch(url);
-  const text = await res.text();
+  const res = await fetch(url)
+  const text = await res.text()
 
   chrome.tabs.sendMessage(id, {
     type: "content-css",
@@ -27,107 +34,150 @@ async function getContentCss(id: number, url: string) {
       url: url,
       value: text,
     },
-  });
+  })
 }
 
 async function pipLaunch(url: string) {
-  const tab = await chrome.tabs.create({ url });
+  const tab = await chrome.tabs.create({ url })
   await waitMessage({
     tabId: tab.id!,
     type: MessageType.contentMount,
-  });
+  })
   chrome.tabs.sendMessage(tab.id!, {
     type: MessageType.pipLaunch,
     url: url,
-  });
+  })
 }
 
 type QueryOptions = {
-  windowId?: number;
-  width?: number;
-  height?: number;
-};
+  windowId?: number
+  width?: number
+  height?: number
+}
 async function getPipWindow(
   id: number,
   { windowId, width, height }: QueryOptions
 ) {
   if (windowId) {
-    const win = await chrome.windows.get(windowId);
+    const win = await chrome.windows.get(windowId)
     chrome.tabs.sendMessage(id, {
       type: MessageType.pipWinInfo,
       window: win,
-    });
-    return win;
+    })
+    return win
   }
 
-  const windows = await chrome.windows.getAll({});
-  const win = windows.find((w) => w.width === width && w.height === height);
+  const windows = await chrome.windows.getAll({})
+  const win = windows.find((w) => w.width === width && w.height === height)
   chrome.tabs.sendMessage(id, {
     type: MessageType.pipWinInfo,
     window: win,
-  });
-  return win;
+  })
+  return win
 }
 
 type MinimizeOptions = {
-  windowId: number;
-};
+  windowId: number
+}
 async function minimizePip({ windowId }: MinimizeOptions) {
-  await chrome.windows.update(windowId, { state: "minimized" });
+  await chrome.windows.update(windowId, { state: "minimized" })
 }
 
 type UpdatePipWinOption = {
-  windowId: number;
-  windowInfo: Partial<chrome.windows.UpdateInfo>;
-};
+  windowId: number
+  windowInfo: Partial<chrome.windows.UpdateInfo>
+}
 
 async function updateWindow({ windowId, windowInfo }: UpdatePipWinOption) {
-  await chrome.windows.update(windowId, windowInfo);
+  await chrome.windows.update(windowId, windowInfo)
+}
+
+async function parseDoc(
+  options: ParseDocOptions,
+  sender: chrome.runtime.MessageSender
+) {
+  const result = await offscreen.parseDoc(options)
+  chrome.tabs.sendMessage(sender.tab?.id!, {
+    // type: MessageType.parseDoc
+  })
+}
+
+async function handleInvokeRequest(
+  message: any,
+  sender: chrome.runtime.MessageSender
+) {
+  const { key, func, args } = message as InvokeMessage
+
+  let result = null
+  let error = null
+  try {
+    switch (func) {
+      case ServiceFunc.parseDoc:
+        result = await offscreen.parseDoc(args[0])
+        break
+    }
+  } catch (err) {
+    error = err
+  }
+
+  chrome.tabs.sendMessage(sender.tab?.id!, {
+    type: MessageType.invokeResponse,
+    key,
+    success: !error,
+    payload: !error ? result : error,
+  })
 }
 
 function handleMessage(message: any, sender: chrome.runtime.MessageSender) {
-  console.log("bg message: ", message, sender, Date.now());
+  console.log("bg message: ", message, sender, Date.now())
   switch (message?.type) {
     case MessageType.bgOpenPip:
-      openPipBackground(message.url);
-      break;
+      openPipBackground(message.url)
+      break
     case "get-content-css":
-      getContentCss(sender.tab?.id || 0, message.url);
-      break;
+      getContentCss(sender.tab?.id || 0, message.url)
+      break
     case MessageType.bgPipLaunch:
-      pipLaunch(message.url);
-      break;
+      pipLaunch(message.url)
+      break
     case MessageType.getPipWinInfo:
-      getPipWindow(sender.tab?.id!, message.options);
-      break;
+      getPipWindow(sender.tab?.id!, message.options)
+      break
     case MessageType.updateWindow:
-      updateWindow(message.options);
-      break;
+      updateWindow(message.options)
+      break
     case MessageType.removeWindow:
-      chrome.windows.remove(message.options.windowId);
-      break;
+      chrome.windows.remove(message.options.windowId)
+      break
+    case MessageType.setupOffscreenDocument:
+      return offscreen.setup()
+    case MessageType.fromOffscreen:
+      return offscreen.handleOffscreenMessage(message)
+    case MessageType.invokeRequest:
+      handleInvokeRequest(message, sender)
+      break
   }
 }
 
-chrome.runtime.onMessage.addListener(handleMessage);
+chrome.runtime.onMessage.addListener(handleMessage)
 
 async function handleToggleMinimize() {
-  const { pipWindowId } = await chrome.storage.local.get({ pipWindowId: null });
-  if (!pipWindowId) return;
-  const windowInfo = await chrome.windows.get(pipWindowId);
-  if (!windowInfo) return;
+  const { pipWindowId } = await chrome.storage.local.get({ pipWindowId: null })
+  if (!pipWindowId) return
+  const windowInfo = await chrome.windows.get(pipWindowId)
+  if (!windowInfo) return
   await chrome.windows.update(pipWindowId, {
     state: windowInfo.state == "minimized" ? "normal" : "minimized",
-  });
+  })
 }
 
 function handleCommand(command: string) {
-  console.log("command: ", command);
+  console.log("command: ", command)
   switch (command) {
     case "toggleMinimize":
-      handleToggleMinimize();
-      break;
+      handleToggleMinimize()
+      break
   }
 }
 
-chrome.commands.onCommand.addListener(handleCommand);
+chrome.commands.onCommand.addListener(handleCommand)

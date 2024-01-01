@@ -8,6 +8,7 @@ import {
   addContentEventListener,
   removeContentEventListener,
 } from "@/content/event"
+import { contentService } from "@/utils/service"
 // import { PipEventName } from "@/types/pip"
 
 function handleMessage(
@@ -40,6 +41,9 @@ function handleMessage(
       chrome.storage.local.set({
         pipWindowId: message.window.id,
       })
+      break
+    case MessageType.invokeResponse:
+      contentService.handleMessage(message)
       break
   }
 }

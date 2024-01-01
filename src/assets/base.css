@@ -42,6 +42,24 @@
   --bg-rgb: 255, 255, 255;
   --fg-rgb: 0, 0, 0;
 
+  --bg-hue: 200;
+  --bg-s: 5%;
+  --bg-l: 100%;
+  --bg-soft-l: 96%;
+  --bg-mute-l: 90%;
+
+  --fg-hue: 200;
+  --fg-s: 0%;
+  --fg-l: 0%;
+
+  --primary-hue: 36;
+  --primary-s: 100%;
+  --primary-l: 50%;
+
+  --primary-hsl: var(--primary-hue) var(--primary-s) var(--primary-l);
+  --bg-hsl: var(--bg-hue) var(--bg-s) var(--bg-l);
+  --fg-hsl: var(--fg-hue) var(--fg-s) var(--fg-l);
+
   --section-gap: 160px;
 }
 
@@ -60,6 +78,21 @@
 
     --bg-rgb: 0, 0, 0;
     --fg-rgb: 255, 255, 255;
+
+    --bg-hue: 200;
+    --bg-s: 0%;
+    --bg-l: 10%;
+    --bg-soft-l: 14%;
+    --bg-mute-l: 20%;
+
+    --fg-hue: 200;
+    --fg-s: 0%;
+    --fg-l: 100%;
+  }
+
+  input,
+  textarea {
+    color-scheme: dark;
   }
 }
 
