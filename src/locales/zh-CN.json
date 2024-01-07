@@ -37,5 +37,7 @@
     "startChatting": "你可以开始聊天了！",
     "autoSending": "自动发送",
     "chooseContentRelevant": "选择与你想了解的主题更相关的内容"
-  }
+  },
+  "selected": "已选择",
+  "page": "页"
 }

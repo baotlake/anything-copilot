@@ -24,7 +24,7 @@
   "chatDocs": {
     "supportFormat": "Support PDF, DOCX",
     "files": "Files/Text",
-    "selectFile": "ተመን ወደምለዋዋጥ ወደሚነካ ወደሚገኝ ስእሎች መቀነስ ይቻላል",
+    "selectFile": "ስለዚህ ፋይል እንዳይምረጡ ወደኋላ ያግኙ ወደኋላ ያምር",
     "msgSettings": "መልእክት ቅንዓት",
     "editPrompt": "ማስቀመጥ ስለሚችል",
     "maxLength": "የማከም ስልክ",
@@ -37,5 +37,7 @@
     "chooseContentRelevant": "ከመረጡ የሚያሳውቁ ተግባራዎችን ለመረጡ ይችላሉ"
   },
   "newFeature": "አዲስ አማራ",
-  "chatDocsTips": "የ ChatGPT, Bard, MS Copilot ይጠቀሙ..."
+  "chatDocsTips": "የ ChatGPT, Bard, MS Copilot ይጠቀሙ...",
+  "selected": "ተመን ቀይር ተመን ይምረጡ",
+  "page": "ገጾች"
 }

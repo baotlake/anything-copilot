@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, reactive, ref, watch } from "vue"
+import { onMounted, onUnmounted, reactive, ref, computed } from "vue"
 import IconNoteStackAdd from "@/components/icons/IconNoteStackAdd.vue"
 import IconClose from "@/components/icons/IconClose.vue"
 import { chatDocsPanel, docsAddon } from "@/store"
 import ChatDocsPanel from "@/components/chatdocs/ChatDocsPanel.vue"
 import { watchEffect } from "vue"
 import { useI18n } from "@/utils/i18n"
+import { sitesConfig } from "./chat"
 
 const { t } = useI18n()
 const logoUrl = chrome.runtime.getURL("/logo.svg")
@@ -16,6 +17,12 @@ const position = reactive({
   rect: new DOMRect(0, 0, 0, 0),
   tx: 0,
   ty: 0,
+})
+
+const supported = computed(() => {
+  return sitesConfig.some(
+    (s) => s.host == location.host && s.path.test(location.pathname)
+  )
 })
 
 let timer = 0
@@ -31,6 +38,7 @@ watchEffect(() => {
 })
 
 function onDragOver(e: DragEvent) {
+  if (!supported.value) return
   docsAddon.visible = true
   clearTimeout(timer)
   timer = window.setTimeout(() => (docsAddon.visible = false), 180)

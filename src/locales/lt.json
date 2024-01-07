@@ -24,7 +24,7 @@
   "chatDocs": {
     "supportFormat": "Palaikomi PDF, DOCX",
     "files": "Failai/Tekstas",
-    "selectFile": "Vilkite arba spustelėkite, norėdami pasirinkti failą",
+    "selectFile": "Vilkite arba pasirinkite failus",
     "msgSettings": "Žinutės nustatymai",
     "editPrompt": "Redaguoti užklausą",
     "maxLength": "Maksimalus ilgis",
@@ -37,5 +37,7 @@
     "chooseContentRelevant": "Pasirinkite turinį, kuris yra labiau susijęs su jumis dominančia tema"
   },
   "newFeature": "Nauja funkcija",
-  "chatDocsTips": "Palaiko ChatGPT, Bard, MS Copilot..."
+  "chatDocsTips": "Palaiko ChatGPT, Bard, MS Copilot...",
+  "selected": "Pasirinkta",
+  "page": "Puslapis"
 }

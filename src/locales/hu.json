@@ -24,7 +24,7 @@
   "chatDocs": {
     "supportFormat": "PDF, DOCX támogatás",
     "files": "Fájlok/Szöveg",
-    "selectFile": "Húzza vagy kattintson a fájl kiválasztásához",
+    "selectFile": "Húzza vagy válassza ki a fájlokat",
     "msgSettings": "Üzenet beállítások",
     "editPrompt": "Ugró ablak szerkesztése",
     "maxLength": "Maximális hossz",
@@ -37,5 +37,7 @@
     "chooseContentRelevant": "Válassza ki a témához relevánsabb tartalmat, amiről szeretne tanulni"
   },
   "newFeature": "Új funkció",
-  "chatDocsTips": "Támogatja a ChatGPT, Bard, MS Copilot..."
+  "chatDocsTips": "Támogatja a ChatGPT, Bard, MS Copilot...",
+  "selected": "Kiválasztva",
+  "page": "Oldal"
 }

@@ -41,6 +41,22 @@ const host = computed({
 //   return false
 // })
 
+watch(
+  () => pipWindow.id,
+  async (id) => {
+    console.log("pip window tabs: ", id)
+    if (id) {
+      const tabs = await chrome.tabs.query({ windowId: id })
+      if (tabs && tabs.length == 1) {
+        pipWindow.tab = tabs[0]
+      }
+
+      return
+    }
+    pipWindow.tab = null
+  }
+)
+
 onMounted(() => {
   chrome.tabs.query({ active: true, currentWindow: true }).then((tabs) => {
     console.log(tabs)
@@ -144,34 +160,36 @@ function showChatDocs() {
       </div>
     </div>
 
-    <PipWindowActions />
+    <PipWindowActions v-if="pipWindow.tab && pipWindow.tab.id" />
 
-    <div class="flex items-center text-sm mt-6">
-      <span
-        class="w-4 h-4 inline-block mr-2 rounded"
-        :style="{
-          background:
-            '#8882 center / contain url(' + activeTab?.favIconUrl + ')',
-        }"
-      ></span>
-      <span class="inline-block truncate">{{ host }}</span>
-    </div>
+    <template v-else>
+      <div class="flex items-center text-sm mt-6">
+        <span
+          class="w-4 h-4 inline-block mr-2 rounded"
+          :style="{
+            background:
+              '#8882 center / contain url(' + activeTab?.favIconUrl + ')',
+          }"
+        ></span>
+        <span class="inline-block truncate">{{ host }}</span>
+      </div>
 
-    <button
-      :class="[
-        'w-full bg-sky-800 text-white flex items-center mt-2 rounded-lg p-2 px-3',
-        {
-          'cursor-not-allowed': !avaiable,
-        },
-      ]"
-      @click="handleWriteHtml"
-    >
-      <span class="text-base">{{ t("openInPip") }}</span>
-    </button>
+      <button
+        :class="[
+          'w-full bg-sky-800 text-white flex items-center mt-2 rounded-lg p-2 px-3',
+          {
+            'cursor-not-allowed': !avaiable,
+          },
+        ]"
+        @click="handleWriteHtml"
+      >
+        <span class="text-base">{{ t("openInPip") }}</span>
+      </button>
 
-    <div v-if="!avaiable" class="text-sm leading-4 text-rose-800">
-      {{ t("protectedTabTips") }}
-    </div>
+      <div v-if="!avaiable" class="text-sm leading-4 text-rose-800">
+        {{ t("protectedTabTips") }}
+      </div>
+    </template>
 
     <div class="mt-6">
       <div class="my-3 flex items-center">

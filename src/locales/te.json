@@ -24,7 +24,7 @@
   "chatDocs": {
     "supportFormat": "యొక్క మద్దతు PDF, DOCX",
     "files": "ఫైళ్ళు/వచనం",
-    "selectFile": "ఫైల్ ఎంచుకోవడానికి అథవా నొక్కండా క్లిక్ చేయడానికి లాగండి",
+    "selectFile": "ఫైళ్లను వలయాక లేదా ఎంచుకోండి",
     "msgSettings": "సందేశం సెట్టింగ్స్",
     "editPrompt": "సవరించండి ప్రాంప్ట్",
     "maxLength": "అత్యధిక పొడవు",
@@ -37,5 +37,7 @@
     "chooseContentRelevant": "మీరు కలిగిన విషయానికి అనుసంధానం కలిగిన కంటెంట్ ఎంచుకోండి"
   },
   "newFeature": "కొత్త లక్షణం",
-  "chatDocsTips": "మద్దతు ChatGPT, Bard, MS Copilot..."
+  "chatDocsTips": "మద్దతు ChatGPT, Bard, MS Copilot...",
+  "selected": "ఎంచుకోబడింది",
+  "page": "పేజీ"
 }

@@ -24,7 +24,7 @@
   "chatDocs": {
     "supportFormat": "Suporta PDF, DOCX",
     "files": "Fitxers/Text",
-    "selectFile": "Arrossega o fes clic per seleccionar un fitxer",
+    "selectFile": "Arrossegueu o seleccioneu fitxers",
     "msgSettings": "Configuració del missatge",
     "editPrompt": "Edita la indicació",
     "maxLength": "Longitud màxima",
@@ -37,5 +37,7 @@
     "chooseContentRelevant": "Trieu contingut més rellevant pel tema que voleu aprendre"
   },
   "newFeature": "Nova característica",
-  "chatDocsTips": "Suporta ChatGPT, Bard, MS Copilot..."
+  "chatDocsTips": "Suporta ChatGPT, Bard, MS Copilot...",
+  "selected": "Seleccionat",
+  "page": "Pàgina"
 }

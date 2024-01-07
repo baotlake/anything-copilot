@@ -24,7 +24,7 @@
   "chatDocs": {
     "supportFormat": "Toetab PDF-i, DOCX-i",
     "files": "Failid/Tekst",
-    "selectFile": "Lohista või klõpsa faili valimiseks",
+    "selectFile": "Lohistage või valige failid",
     "msgSettings": "Sõnumiseaded",
     "editPrompt": "Muuda Viidet",
     "maxLength": "Maksimaalne Pikkus",
@@ -37,5 +37,7 @@
     "chooseContentRelevant": "Valige teema kohta rohkem seotud sisu"
   },
   "newFeature": "Uus funktsioon",
-  "chatDocsTips": "Toetab ChatGPT, Bard, MS Copilot..."
+  "chatDocsTips": "Toetab ChatGPT, Bard, MS Copilot...",
+  "selected": "Valitud",
+  "page": "Lehekülg"
 }

@@ -24,7 +24,7 @@
   "chatDocs": {
     "supportFormat": "Prise en charge PDF, DOCX",
     "files": "Fichiers/Texte",
-    "selectFile": "Faites glisser ou cliquez pour choisir un fichier",
+    "selectFile": "Faites glisser ou sélectionnez des fichiers",
     "msgSettings": "Paramètres du message",
     "editPrompt": "Éditer l'invite",
     "maxLength": "Longueur maximale",
@@ -37,5 +37,7 @@
     "chooseContentRelevant": "Choisissez un contenu plus pertinent pour le sujet que vous souhaitez apprendre"
   },
   "newFeature": "Nouvelle fonctionnalité",
-  "chatDocsTips": "Prise en charge de ChatGPT, Bard, MS Copilot..."
+  "chatDocsTips": "Prise en charge de ChatGPT, Bard, MS Copilot...",
+  "selected": "Sélectionné",
+  "page": "Page"
 }

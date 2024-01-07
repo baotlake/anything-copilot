@@ -3,12 +3,15 @@ import IconClose from "@/components/icons/IconClose.vue"
 import IconProgressActivity from "@/components/icons/IconProgressActivity.vue"
 import IconNoteStack from "@/components/icons/IconNoteStack.vue"
 import type { chatDocsPanel } from "@/store"
+import { useI18n } from "@/utils/i18n"
 
 defineProps<{
   item: (typeof chatDocsPanel.docMap)[0]
 }>()
 
 defineEmits(["remove", "pick"])
+
+const { t } = useI18n()
 </script>
 
 <template>
@@ -22,7 +25,7 @@ defineEmits(["remove", "pick"])
       <IconProgressActivity v-if="item?.loading" class="w-8 h-8 animate-spin" />
       <IconNoteStack v-else class="w-8 h-8" />
     </div>
-    <div class="w-full min-w-0">
+    <div class="w-full min-w-0 cursor-pointer" @click="$emit('pick')">
       <div class="flex items-center mb-1">
         <div class="mr-auto text-base truncate">
           {{ item.name }}
@@ -35,15 +38,14 @@ defineEmits(["remove", "pick"])
           <IconClose class="w-3.5 h-3.5" />
         </button>
       </div>
-      <div class="text-sm">
+      <div class="text-sm text-primary">
         <span
-          >已选择{{ item.contents.filter((v) => v.selected).length }}/{{
+          >{{ t("selected") }}:
+          {{ item.contents.filter((v) => v.selected).length }}/{{
             item.contents.length
-          }}页</span
+          }}
+          {{ t("page") }}</span
         >
-        <button class="text-primary px-2" @click="$emit('pick')">
-          选择范围
-        </button>
       </div>
     </div>
   </div>

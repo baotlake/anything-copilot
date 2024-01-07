@@ -24,7 +24,7 @@
   "chatDocs": {
     "supportFormat": "PDF, DOCX Desteği",
     "files": "Dosyalar/Metin",
-    "selectFile": "Bir dosya seçmek için sürükleyin veya tıklayın",
+    "selectFile": "Dosyaları sürükleyin veya seçin",
     "msgSettings": "Mesaj Ayarları",
     "editPrompt": "Prompt'u Düzenle",
     "maxLength": "Maksimum Uzunluk",
@@ -37,5 +37,7 @@
     "chooseContentRelevant": "Öğrenmek istediğiniz konuyla daha ilgili içerik seçin"
   },
   "newFeature": "Yeni Özellik",
-  "chatDocsTips": "ChatGPT, Bard, MS Copilot Desteği..."
+  "chatDocsTips": "ChatGPT, Bard, MS Copilot Desteği...",
+  "selected": "Seçildi",
+  "page": "Sayfa"
 }

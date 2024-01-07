@@ -5,7 +5,7 @@ const contentCss = "/assets/index.css"
 const manifest = {
   manifest_version: 3,
   // maximum of 45 characters
-  name: "AAA __MSG_name__",
+  name: "__MSG_name__",
   // edge 12 characters
   // short_name: "__MSG_short_name__",
   // no more than 132 characters

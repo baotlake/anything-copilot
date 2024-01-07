@@ -24,7 +24,7 @@
   "chatDocs": {
     "supportFormat": "Υποστήριξη PDF, DOCX",
     "files": "Αρχεία/Κείμενο",
-    "selectFile": "Σύρετε ή κάντε κλικ για να επιλέξετε ένα αρχείο",
+    "selectFile": "Σύρετε ή επιλέξτε αρχεία",
     "msgSettings": "Ρυθμίσεις μηνύματος",
     "editPrompt": "Επεξεργασία οδηγίας",
     "maxLength": "Μέγιστο μήκος",
@@ -37,5 +37,7 @@
     "chooseContentRelevant": "Επιλέξτε περιεχόμενο που σχετίζεται περισσότερο με το θέμα που θέλετε να μάθετε"
   },
   "newFeature": "Νέα δυνατότητα",
-  "chatDocsTips": "Υποστήριξη ChatGPT, Bard, MS Copilot..."
+  "chatDocsTips": "Υποστήριξη ChatGPT, Bard, MS Copilot...",
+  "selected": "Επιλεγμένο",
+  "page": "Σελίδα"
 }

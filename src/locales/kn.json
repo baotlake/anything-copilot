@@ -24,7 +24,7 @@
   "chatDocs": {
     "supportFormat": "PDF, DOCX ಬೆಂಬಲ",
     "files": "ಕಡತ/ಟೆಕ್ಸ್ಟ್",
-    "selectFile": "ಫೈಲ್ ಆಯ್ಕೆಮಾಡಲು ಎಳ್ಳಿಗೆ ಅಥವಾ ಕ್ಲಿಕ್ ಮಾಡಿ",
+    "selectFile": "ಫೈಲ್ಗಳನ್ನು ಎಳೆಯಿರಿ ಅಥವಾ ಆಯ್ಕೆಮಾಡಿ",
     "msgSettings": "ಸಂದೇಶ ಸೆಟ್ಟಿಂಗ್ಗಳು",
     "editPrompt": "ಸೂಚನೆ ಸಂಪಾದಿಸಿ",
     "maxLength": "ಗರಿಷ್ಠ ಉದ್ದ",
@@ -37,5 +37,7 @@
     "chooseContentRelevant": "ನೀವು ಕಲಿಯಬಯಸುವ ವಿಷಯಕ್ಕೆ ಹೆಚ್ಚಿನ ಸಂಬಂಧಪಟ್ಟ ವಿಷಯಗಳನ್ನು ಆರಿಸಿ"
   },
   "newFeature": "ಹೊಸ ವಿಶೇಷವನ್ನು",
-  "chatDocsTips": "ChatGPT, Bard, MS Copilot ಅನ್ನು ಬೆಂಬಲಿಸುತ್ತದೆ..."
+  "chatDocsTips": "ChatGPT, Bard, MS Copilot ಅನ್ನು ಬೆಂಬಲಿಸುತ್ತದೆ...",
+  "selected": "ಆಯ್ಕೆಯಾಗಿದೆ",
+  "page": "ಪುಟ"
 }

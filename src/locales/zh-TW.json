@@ -24,7 +24,7 @@
   "chatDocs": {
     "supportFormat": "支持 PDF、DOCX",
     "files": "文件/文本",
-    "selectFile": "拖拉或點擊以選擇文件",
+    "selectFile": "拖曳或選擇檔案",
     "msgSettings": "消息設置",
     "editPrompt": "編輯提示",
     "maxLength": "最大長度",
@@ -37,5 +37,7 @@
     "chooseContentRelevant": "選擇與你想了解的主題更相關的內容"
   },
   "newFeature": "新功能",
-  "chatDocsTips": "支援 ChatGPT, Bard, MS Copilot..."
+  "chatDocsTips": "支援 ChatGPT, Bard, MS Copilot...",
+  "selected": "已選擇",
+  "page": "頁"
 }

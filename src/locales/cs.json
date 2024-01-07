@@ -24,7 +24,7 @@
   "chatDocs": {
     "supportFormat": "Podpora formátů PDF, DOCX",
     "files": "Soubory/Text",
-    "selectFile": "Přetáhněte nebo klepněte pro výběr souboru",
+    "selectFile": "Přetáhněte nebo vyberte soubory",
     "msgSettings": "Nastavení zprávy",
     "editPrompt": "Upravit upozornění",
     "maxLength": "Maximální délka",
@@ -37,5 +37,7 @@
     "chooseContentRelevant": "Vyberte obsah více relevantní k tématu, které chcete studovat"
   },
   "newFeature": "Nová funkce",
-  "chatDocsTips": "Podpora ChatGPT, Bard, MS Copilot..."
+  "chatDocsTips": "Podpora ChatGPT, Bard, MS Copilot...",
+  "selected": "Vybráno",
+  "page": "Stránka"
 }

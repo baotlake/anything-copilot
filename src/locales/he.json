@@ -24,7 +24,7 @@
   "chatDocs": {
     "supportFormat": "תמיכה ב־PDF, DOCX",
     "files": "קבצים/טקסט",
-    "selectFile": "גרור או לחץ לבחירת קובץ",
+    "selectFile": "גררו או בחרו קבצים",
     "msgSettings": "הגדרות הודעה",
     "editPrompt": "ערוך הסבר",
     "maxLength": "אורך מרבי",
@@ -37,5 +37,7 @@
     "chooseContentRelevant": "בחר תוכן הקשור יותר לנושא שברצונך ללמוד עליו"
   },
   "newFeature": "תכונה חדשה",
-  "chatDocsTips": "תמיכה ב-ChatGPT, Bard, MS Copilot..."
+  "chatDocsTips": "תמיכה ב-ChatGPT, Bard, MS Copilot...",
+  "selected": "נבחר",
+  "page": "עמוד"
 }

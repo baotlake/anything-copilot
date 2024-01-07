@@ -24,7 +24,7 @@
   "chatDocs": {
     "supportFormat": "Stöd för PDF, DOCX",
     "files": "Filer/Text",
-    "selectFile": "Dra eller klicka för att välja en fil",
+    "selectFile": "Dra eller välj filer",
     "msgSettings": "Meddelandeinställningar",
     "editPrompt": "Redigera Prompt",
     "maxLength": "Max längd",
@@ -37,5 +37,7 @@
     "chooseContentRelevant": "Välj innehåll som är mer relevant för det ämne du vill lära dig om"
   },
   "newFeature": "Ny funktion",
-  "chatDocsTips": "Stöd för ChatGPT, Bard, MS Copilot..."
+  "chatDocsTips": "Stöd för ChatGPT, Bard, MS Copilot...",
+  "selected": "Vald",
+  "page": "Sida"
 }

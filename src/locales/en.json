@@ -37,5 +37,7 @@
     "startChatting": "You can start chatting now!",
     "autoSending": "Auto Sending",
     "chooseContentRelevant": "Choose content more relevant to the topic you want to learn about"
-  }
+  },
+  "selected": "Selected",
+  "page": "Page"
 }

@@ -22,16 +22,16 @@ def cli(ctx, d: str, filename: str):
     ctx.obj['locales_dir'] = locales_dir
     ctx.obj['items'] = items
 
-# extract the locale
+# extract updated i18n items
 
 @cli.command()
-@click.option('-k','--keep', default=['en', 'zh-CN'], multiple=True, help="keep language")
+@click.option('-u','--updated', default=['en', 'zh-CN'], multiple=True, help="updated i18n items")
 @click.option('-r', '--ref', default='ja', help="diff reference language")
 @click.option('-e','--empty', default=True, help="output empty language")
 @click.option('-o', default='-', help="output")
 @click.option('-l', default=9999, type=int, help="keys limit")
 @click.pass_context
-def extract(ctx, keep, ref, empty=True, o='-', l=9999):
+def extract(ctx, updated, ref, empty=True, o='-', l=9999):
     items = ctx.obj['items']
 
     msgs = {
@@ -43,9 +43,13 @@ def extract(ctx, keep, ref, empty=True, o='-', l=9999):
         code: [key for key in msgs[code].keys() if key not in ref_msg.keys()]
         for code in items.keys()
     }
+
+    def get_diff(d, r):
+        return { k: d for k in d.keys() if k not in r.keys() }
+
     new_data = {
         code: {key: msgs[code][key] for key in new_keys[code][0:l]}
-        for code in items.keys() if code in keep or (empty and len(new_keys[code]) == 0)
+        for code in items.keys() if code in updated or (empty and len(new_keys[code]) == 0)
     }
 
     print(json.dumps(new_data, ensure_ascii=False, indent=4))
@@ -58,6 +62,14 @@ def update(ctx, t):
     locales_dir = ctx.obj['locales_dir']
     translated_path = path.realpath(t)
 
+
+    def merge(d, d2):
+        n = {**d}
+        for k, v in d2.items():
+            n[k] = v if type(v) == str else merge(n[k], v)
+        return n
+        
+
     def update_msg(code, content):
         filename = code.replace('_', '-')
         msg_path = path.join(locales_dir, f'{filename}.json')
@@ -66,10 +78,7 @@ def update(ctx, t):
             msg = json.load(open(msg_path, 'r', encoding='utf8'))
 
             json.dump(
-                {
-                    **msg,
-                    **content,
-                },
+                merge(msg, content),
                 open(msg_path, 'w+', encoding='utf8'),
                 ensure_ascii=False,
                 indent=2

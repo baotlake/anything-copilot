@@ -24,7 +24,7 @@
   "chatDocs": {
     "supportFormat": "PDF, DOCX का समर्थन करें",
     "files": "फ़ाइलें/टेक्स्ट",
-    "selectFile": "फ़ाइल का चयन करने के लिए खींचें या क्लिक करें",
+    "selectFile": "फ़ाइलें खींचें या चयन करें",
     "msgSettings": "संदेश सेटिंग्स",
     "editPrompt": "प्रम्पट संपादित करें",
     "maxLength": "अधिकतम लंबाई",
@@ -37,5 +37,7 @@
     "chooseContentRelevant": "उस विषय के बारे में सीखना जिस पर आप चर्चा करना चाहते हैं, उससे संबंधित सामग्री चुनें"
   },
   "newFeature": "नई सुविधा",
-  "chatDocsTips": "समर्थन ChatGPT, Bard, MS Copilot..."
+  "chatDocsTips": "समर्थन ChatGPT, Bard, MS Copilot...",
+  "selected": "चयनित",
+  "page": "पृष्ठ"
 }

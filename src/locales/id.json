@@ -24,7 +24,7 @@
   "chatDocs": {
     "supportFormat": "Dukungan PDF, DOCX",
     "files": "File/Teks",
-    "selectFile": "Seret atau klik untuk memilih file",
+    "selectFile": "Seret atau pilih file",
     "msgSettings": "Pengaturan Pesan",
     "editPrompt": "Edit Prompt",
     "maxLength": "Panjang Maksimal",
@@ -37,5 +37,7 @@
     "chooseContentRelevant": "Pilih konten yang lebih relevan dengan topik yang ingin Anda pelajari"
   },
   "newFeature": "Fitur Baru",
-  "chatDocsTips": "Dukungan ChatGPT, Bard, MS Copilot..."
+  "chatDocsTips": "Dukungan ChatGPT, Bard, MS Copilot...",
+  "selected": "Dipilih",
+  "page": "Halaman"
 }

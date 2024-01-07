@@ -24,7 +24,7 @@
   "chatDocs": {
     "supportFormat": "Підтримка PDF, DOCX",
     "files": "Файли/Текст",
-    "selectFile": "Перетягніть або клацніть, щоб вибрати файл",
+    "selectFile": "Перетягніть або виберіть файли",
     "msgSettings": "Налаштування повідомлення",
     "editPrompt": "Редагувати Prompt",
     "maxLength": "Максимальна довжина",
@@ -37,5 +37,7 @@
     "chooseContentRelevant": "Виберіть вміст, який більше відповідає темі, яку ви хочете вивчити"
   },
   "newFeature": "Нова функція",
-  "chatDocsTips": "Підтримка ChatGPT, Bard, MS Copilot..."
+  "chatDocsTips": "Підтримка ChatGPT, Bard, MS Copilot...",
+  "selected": "Вибрано",
+  "page": "Сторінка"
 }

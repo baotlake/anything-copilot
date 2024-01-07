@@ -24,7 +24,7 @@
   "chatDocs": {
     "supportFormat": "Ondersteunt PDF, DOCX",
     "files": "Bestanden/Tekst",
-    "selectFile": "Sleep of klik om een bestand te kiezen",
+    "selectFile": "Sleep of selecteer bestanden",
     "msgSettings": "Berichtinstellingen",
     "editPrompt": "Prompt bewerken",
     "maxLength": "Maximale lengte",
@@ -37,5 +37,7 @@
     "chooseContentRelevant": "Kies inhoud die relevanter is voor het onderwerp dat je wilt leren"
   },
   "newFeature": "Nieuwe functie",
-  "chatDocsTips": "Ondersteuning voor ChatGPT, Bard, MS Copilot..."
+  "chatDocsTips": "Ondersteuning voor ChatGPT, Bard, MS Copilot...",
+  "selected": "Geselecteerd",
+  "page": "Pagina"
 }

@@ -24,7 +24,7 @@
   "chatDocs": {
     "supportFormat": "Suport PDF, DOCX",
     "files": "Fișiere/Text",
-    "selectFile": "Trage sau dă clic pentru a alege un fișier",
+    "selectFile": "Trageți sau selectați fișierele",
     "msgSettings": "Setări Mesaj",
     "editPrompt": "Editează Sfat",
     "maxLength": "Lungime Maximă",
@@ -37,5 +37,7 @@
     "chooseContentRelevant": "Alegeți conținut mai relevant pentru subiectul pe care doriți să îl învățați"
   },
   "newFeature": "Caracteristică nouă",
-  "chatDocsTips": "Suport pentru ChatGPT, Bard, MS Copilot..."
+  "chatDocsTips": "Suport pentru ChatGPT, Bard, MS Copilot...",
+  "selected": "Selectat",
+  "page": "Pagina"
 }

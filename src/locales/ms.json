@@ -24,7 +24,7 @@
   "chatDocs": {
     "supportFormat": "Sokongan PDF, DOCX",
     "files": "Fail/Teks",
-    "selectFile": "Seret atau klik untuk memilih fail",
+    "selectFile": "Seret atau pilih fail",
     "msgSettings": "Tetapan Mesej",
     "editPrompt": "Edit Prompt",
     "maxLength": "Panjang Maksimum",
@@ -37,5 +37,7 @@
     "chooseContentRelevant": "Pilih kandungan yang lebih berkaitan dengan topik yang anda ingin ketahui"
   },
   "newFeature": "Ciri Baru",
-  "chatDocsTips": "Sokongan ChatGPT, Bard, MS Copilot..."
+  "chatDocsTips": "Sokongan ChatGPT, Bard, MS Copilot...",
+  "selected": "Dipilih",
+  "page": "Halaman"
 }

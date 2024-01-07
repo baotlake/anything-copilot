@@ -24,7 +24,7 @@
   "chatDocs": {
     "supportFormat": "பிடிஎஃப், டாக்ஸ் ஆதரித்துள்ளது",
     "files": "கோப்புகள்/உரை",
-    "selectFile": "கோப்பை தந்து அல்லது கிளிக் செய்வதற்கு எழுதி",
+    "selectFile": "கோப்புகளை இழுத்து அல்லது தேர்ந்தெடுக்கவும்",
     "msgSettings": "செய்தி அமைப்புகள்",
     "editPrompt": "எடிட் ப்ராம்ப்ட்",
     "maxLength": "அதிக நீளம்",
@@ -37,5 +37,7 @@
     "chooseContentRelevant": "நீங்கள் அறிந்திருக்க விரும்பும் பகுதிக்கு உரையாடல் தேர்ந்தெடுக்கவும்"
   },
   "newFeature": "புதிய அம்சம்",
-  "chatDocsTips": "ChatGPT, Bard, MS Copilot க்கு ஆதரவு..."
+  "chatDocsTips": "ChatGPT, Bard, MS Copilot க்கு ஆதரவு...",
+  "selected": "தேர்ந்தெடுக்கப்பட்டது",
+  "page": "பக்கம்"
 }

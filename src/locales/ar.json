@@ -24,7 +24,7 @@
   "chatDocs": {
     "supportFormat": "دعم PDF، DOCX",
     "files": "ملفات/نص",
-    "selectFile": "اسحب أو انقر لاختيار ملف",
+    "selectFile": "اسحب أو اختر الملفات",
     "msgSettings": "إعدادات الرسالة",
     "editPrompt": "تحرير التلميح",
     "maxLength": "الحد الأقصى للطول",
@@ -37,5 +37,7 @@
     "chooseContentRelevant": "اختر محتوى أكثر صلة بالموضوع الذي ترغب في التعلم عنه"
   },
   "newFeature": "ميزة جديدة",
-  "chatDocsTips": "دعم ChatGPT، Bard، MS Copilot..."
+  "chatDocsTips": "دعم ChatGPT، Bard، MS Copilot...",
+  "selected": "تم الاختيار",
+  "page": "الصفحة"
 }

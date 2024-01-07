@@ -6,46 +6,6 @@ import IconArrowCircleRight from "@/components/icons/IconArrowCircleRight.vue"
 import IconClose from "@/components/icons/IconClose.vue"
 import { MessageType } from "@/types"
 
-const handleLocalChange = (changes: {
-  [key: string]: chrome.storage.StorageChange
-}) => {
-  if (changes.pipWindowId) {
-    pipWindow.id = changes.pipWindowId.newValue
-  }
-}
-
-watch(
-  () => pipWindow.id,
-  async (id) => {
-    if (id) {
-      const tabs = await chrome.tabs.query({ windowId: id })
-      console.log("pip window tabs: ", tabs, id)
-      if (tabs && tabs.length == 1) {
-        pipWindow.tab = tabs[0]
-      }
-
-      return
-    }
-    pipWindow.tab = null
-  }
-)
-
-onMounted(() => {
-  chrome.storage.local
-    .get({ pipWindowId: null })
-    .then(({ pipWindowId: id }) => {
-      if (id) {
-        pipWindow.id = id
-      }
-    })
-
-  chrome.storage.local.onChanged.addListener(handleLocalChange)
-})
-
-onUnmounted(() => {
-  chrome.storage.local.onChanged.removeListener(handleLocalChange)
-})
-
 async function handleUpdatePip(state: "normal" | "minimized") {
   await chrome.runtime.sendMessage({
     type: MessageType.updateWindow,

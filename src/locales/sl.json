@@ -24,7 +24,7 @@
   "chatDocs": {
     "supportFormat": "Podpora za PDF, DOCX",
     "files": "Datoteke/Besedilo",
-    "selectFile": "Povleci ali klikni za izbiro datoteke",
+    "selectFile": "Povleci ali izberi datoteke",
     "msgSettings": "Nastavitve Sporočila",
     "editPrompt": "Uredi Vprašanje",
     "maxLength": "Največja Dolžina",
@@ -37,5 +37,7 @@
     "chooseContentRelevant": "Izberite vsebino, ki je bolj relevantna za temo, ki se je želite naučiti"
   },
   "newFeature": "Nova funkcionalnost",
-  "chatDocsTips": "Podpora za ChatGPT, Bard, MS Copilot..."
+  "chatDocsTips": "Podpora za ChatGPT, Bard, MS Copilot...",
+  "selected": "Izbrano",
+  "page": "Stran"
 }

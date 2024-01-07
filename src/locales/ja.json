@@ -24,7 +24,7 @@
   "chatDocs": {
     "supportFormat": "PDF、DOCX 対応",
     "files": "ファイル/テキスト",
-    "selectFile": "ファイルを選択するにはドラッグまたはクリック",
+    "selectFile": "ファイルをドラッグまたは選択してください",
     "msgSettings": "メッセージ設定",
     "editPrompt": "プロンプトの編集",
     "maxLength": "最大長",
@@ -37,5 +37,7 @@
     "chooseContentRelevant": "学びたいトピックに関連するコンテンツを選択してください"
   },
   "newFeature": "新機能",
-  "chatDocsTips": "ChatGPT、Bard、MS Copilot のサポート..."
+  "chatDocsTips": "ChatGPT、Bard、MS Copilot のサポート...",
+  "selected": "選択済み",
+  "page": "ページ"
 }

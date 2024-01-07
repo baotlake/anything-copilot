@@ -24,7 +24,7 @@
   "chatDocs": {
     "supportFormat": "Hỗ trợ PDF, DOCX",
     "files": "Tệp/Chữ",
-    "selectFile": "Kéo hoặc nhấp để chọn tệp",
+    "selectFile": "Kéo hoặc chọn tệp",
     "msgSettings": "Cài đặt Tin nhắn",
     "editPrompt": "Chỉnh sửa Prompt",
     "maxLength": "Độ dài tối đa",
@@ -37,5 +37,7 @@
     "chooseContentRelevant": "Chọn nội dung liên quan hơn đến chủ đề bạn muốn tìm hiểu"
   },
   "newFeature": "Tính năng Mới",
-  "chatDocsTips": "Hỗ trợ ChatGPT, Bard, MS Copilot..."
+  "chatDocsTips": "Hỗ trợ ChatGPT, Bard, MS Copilot...",
+  "selected": "Đã chọn",
+  "page": "Trang"
 }

@@ -24,7 +24,7 @@
   "chatDocs": {
     "supportFormat": "Understøtter PDF, DOCX",
     "files": "Filer/Text",
-    "selectFile": "Træk eller klik for at vælge en fil",
+    "selectFile": "Træk eller vælg filer",
     "msgSettings": "Beskedindstillinger",
     "editPrompt": "Rediger prompt",
     "maxLength": "Maksimal længde",
@@ -37,5 +37,7 @@
     "chooseContentRelevant": "Vælg indhold mere relevant for det emne, du ønsker at lære om"
   },
   "newFeature": "Ny funktion",
-  "chatDocsTips": "Understøtter ChatGPT, Bard, MS Copilot..."
+  "chatDocsTips": "Understøtter ChatGPT, Bard, MS Copilot...",
+  "selected": "Valgt",
+  "page": "Side"
 }

@@ -24,7 +24,7 @@
   "chatDocs": {
     "supportFormat": "সাপোর্ট করে PDF, DOCX",
     "files": "ফাইল/টেক্সট",
-    "selectFile": "ফাইল নির্বাচন করতে ড্র্যাগ করুন বা ক্লিক করুন",
+    "selectFile": "ফাইল টা টেনে অথবা নির্বাচন করুন",
     "msgSettings": "মেসেজ সেটিংস",
     "editPrompt": "প্রম্পট সম্পাদনা",
     "maxLength": "সর্বাধিক দৈর্ঘ্য",
@@ -37,5 +37,7 @@
     "chooseContentRelevant": "আপনি যে বিষয়ে আরও জানতে চান তা সম্পর্কিত কনটেন্ট চয়ন করুন"
   },
   "newFeature": "নতুন বৈশিষ্ট্য",
-  "chatDocsTips": "সাপোর্ট ChatGPT, Bard, MS Copilot..."
+  "chatDocsTips": "সাপোর্ট ChatGPT, Bard, MS Copilot...",
+  "selected": "নির্বাচিত",
+  "page": "পৃষ্ঠা"
 }

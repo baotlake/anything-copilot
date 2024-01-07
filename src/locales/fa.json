@@ -24,7 +24,7 @@
   "chatDocs": {
     "supportFormat": "پشتیبانی از PDF، DOCX",
     "files": "فایل‌ها/متن",
-    "selectFile": "فایل را بکشید یا برای انتخاب کلیک کنید",
+    "selectFile": "پرونده‌ها را بکشید یا انتخاب کنید",
     "msgSettings": "تنظیمات پیام",
     "editPrompt": "ویرایش هدایت",
     "maxLength": "حداکثر طول",
@@ -37,5 +37,7 @@
     "chooseContentRelevant": "محتوای مرتبط با موضوعی که می‌خواهید درباره آن یاد بگیرید را انتخاب کنید"
   },
   "newFeature": "ویژگی جدید",
-  "chatDocsTips": "پشتیبانی از ChatGPT، Bard، MS Copilot..."
+  "chatDocsTips": "پشتیبانی از ChatGPT، Bard، MS Copilot...",
+  "selected": "انتخاب شده",
+  "page": "صفحه"
 }

@@ -24,7 +24,7 @@
   "chatDocs": {
     "supportFormat": "પીડીએફ, ડોક્સ આધાર પર સપોર્ટ",
     "files": "ફાઇલો/ટેક્સટ",
-    "selectFile": "ફાઇલ પસાર તથા પસંદ કરવાનું માટે ક્લિક કરો",
+    "selectFile": "ફાઇલો ખેંચો અથવા પસંદ કરો",
     "msgSettings": "સંદેશ સેટિંગ્સ",
     "editPrompt": "સૂચના સંપાદિત કરો",
     "maxLength": "મહત્તમ લંબાઇ",
@@ -37,5 +37,7 @@
     "chooseContentRelevant": "તમારા શીખવાના વિષય સાથે સંબંધિત કન્ટેન્ટ પસંદ કરો"
   },
   "newFeature": "નવું લક્ષણ",
-  "chatDocsTips": "સપોર્ટ ChatGPT, Bard, MS Copilot..."
+  "chatDocsTips": "સપોર્ટ ChatGPT, Bard, MS Copilot...",
+  "selected": "પસંદ કર્યું",
+  "page": "પૃષ્ઠ"
 }

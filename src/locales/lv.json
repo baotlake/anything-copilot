@@ -24,7 +24,7 @@
   "chatDocs": {
     "supportFormat": "Atbalsta PDF, DOCX",
     "files": "Faili/Teksts",
-    "selectFile": "Velciet vai noklikšķiniet, lai izvēlētos failu",
+    "selectFile": "Velciet vai atlasiet failus",
     "msgSettings": "Ziņojuma iestatījumi",
     "editPrompt": "Rediģēt Uzvedības norādi",
     "maxLength": "Maksimālais garums",
@@ -37,5 +37,7 @@
     "chooseContentRelevant": "Izvēlieties saturu, kas ir saistīts ar tēmu, par kuru vēlaties uzzināt"
   },
   "newFeature": "Jauna funkcija",
-  "chatDocsTips": "Atbalsta ChatGPT, Bard, MS Copilot..."
+  "chatDocsTips": "Atbalsta ChatGPT, Bard, MS Copilot...",
+  "selected": "Atlasīts",
+  "page": "Lapa"
 }

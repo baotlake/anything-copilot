@@ -24,7 +24,7 @@
   "chatDocs": {
     "supportFormat": "Tuki PDF, DOCX",
     "files": "Tiedostot/Teksti",
-    "selectFile": "Raahaa tai klikkaa valitaksesi tiedosto",
+    "selectFile": "Raahaa tai valitse tiedostot",
     "msgSettings": "Viestiasetukset",
     "editPrompt": "Muokkaa Vihjetekstiä",
     "maxLength": "Maksimipituus",
@@ -37,5 +37,7 @@
     "chooseContentRelevant": "Valitse aiheeseesi liittyvämpi sisältö"
   },
   "newFeature": "Uusi ominaisuus",
-  "chatDocsTips": "Tuki ChatGPT, Bard, MS Copilot..."
+  "chatDocsTips": "Tuki ChatGPT, Bard, MS Copilot...",
+  "selected": "Valittu",
+  "page": "Sivu"
 }

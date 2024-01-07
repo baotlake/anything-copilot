@@ -24,7 +24,7 @@
   "chatDocs": {
     "supportFormat": "Support PDF, DOCX",
     "files": "Files/Text",
-    "selectFile": "Drag au bonyeza kuchagua faili",
+    "selectFile": "Buruta au chagua faili",
     "msgSettings": "Mipangilio ya Ujumbe",
     "editPrompt": "Hariri Prompt",
     "maxLength": "Urefu Maksimumu",
@@ -37,5 +37,7 @@
     "chooseContentRelevant": "Chagua yaliyomo inayohusiana zaidi na mada unayotaka kujifunza kuhusu"
   },
   "newFeature": "Kipengele Kipya",
-  "chatDocsTips": "Msaada wa ChatGPT, Bard, MS Copilot..."
+  "chatDocsTips": "Msaada wa ChatGPT, Bard, MS Copilot...",
+  "selected": "Imechaguliwa",
+  "page": "Ukurasa"
 }
