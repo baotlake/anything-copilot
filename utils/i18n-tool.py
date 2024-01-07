@@ -1,45 +1,58 @@
 import click
-from os import path
+from os import path, listdir
 import json
 
 
-@click.group()
-@click.option('--d', default='src/locales', help="locales directory")
-@click.pass_context
-def cli(ctx, d):
-    locales_dir = path.realpath(path.join(d))
-    ctx.obj['locales_dir'] = locales_dir
 
+@click.group()
+@click.option('-d', default='src/locales', help="locales directory path")
+@click.option('--filename', default='messages.json', help="locale message filename")
+@click.pass_context
+def cli(ctx, d: str, filename: str):
+    locales_dir = path.realpath(path.join(d))
+
+    dir_items = listdir(locales_dir)
+    
+    def get_path(p: str):
+        msg_path = path.join(locales_dir,p)
+        return path.join(msg_path, filename) if path.isdir(msg_path) else msg_path
+
+    items = { path.splitext(i)[0]:get_path(i) for i in dir_items}
+    
+    ctx.obj['locales_dir'] = locales_dir
+    ctx.obj['items'] = items
+
+# extract the locale
 
 @cli.command()
-@click.option('--new', default=['en', 'zh-CN'], multiple=True, help="new language")
-@click.option('--old', default='zh-TW', help="old language")
-@click.option('--o', default='-', help="output")
+@click.option('-k','--keep', default=['en', 'zh-CN'], multiple=True, help="keep language")
+@click.option('-r', '--ref', default='ja', help="diff reference language")
+@click.option('-e','--empty', default=True, help="output empty language")
+@click.option('-o', default='-', help="output")
+@click.option('-l', default=9999, type=int, help="keys limit")
 @click.pass_context
-def extract(ctx, new, old, o=''):
-    locales_dir = ctx.obj['locales_dir']
-    new_msgs = {
-        code: json.load(
-            open(path.join(locales_dir, code + '.json'), 'r', encoding='utf8')
-        )
-        for code in new
+def extract(ctx, keep, ref, empty=True, o='-', l=9999):
+    items = ctx.obj['items']
+
+    msgs = {
+        code: json.load(open(items[code], 'r', encoding='utf8'))
+        for code in items.keys()
     }
-    old_msg = json.load(
-        open(path.join(locales_dir, old + '.json'), 'r', encoding='utf8')
-    )
+    ref_msg = json.load(open(items[ref], 'r', encoding='utf8'))
     new_keys = {
-        code: [key for key in new_msgs[code].keys() if key not in old_msg.keys()]
-        for code in new
+        code: [key for key in msgs[code].keys() if key not in ref_msg.keys()]
+        for code in items.keys()
     }
     new_data = {
-        code: {key: new_msgs[code][key] for key in new_keys[code]}
-        for code in new
+        code: {key: msgs[code][key] for key in new_keys[code][0:l]}
+        for code in items.keys() if code in keep or (empty and len(new_keys[code]) == 0)
     }
-    print(json.dumps(new_data, ensure_ascii=False))
+
+    print(json.dumps(new_data, ensure_ascii=False, indent=4))
 
 
 @cli.command()
-@click.option('--t', default='', help='')
+@click.option('-t', default='', help='')
 @click.pass_context
 def update(ctx, t):
     locales_dir = ctx.obj['locales_dir']
@@ -71,8 +84,7 @@ def update(ctx, t):
                 line_data = json.loads(line)
                 code = line_data['code']
                 content = line_data['content']
-                content = json.loads(content) if type(
-                    content) == str else content
+                content = json.loads(content) if type(content) == str else content
                 update_msg(code, content)
 
     if t.endswith('.json'):

@@ -1,10 +1,11 @@
 import * as pdfjs from "pdfjs-dist"
 import { parseContent } from "@/utils/pdf"
+import { MimeType } from "@/utils/file"
 import { convertToHtml, images } from "mammoth"
 import TurndownService from "turndown"
-import { MessageType, ServiceFunc } from "@/types"
-// import { fileTypeFromBlob } from "file-type"
-import type { ParseDocOptions } from "@/types"
+import { MessageType, ServiceFunc, type ParseDocOptions } from "@/types"
+import { Tiktoken } from "tiktoken/lite"
+import cl100k_base from "tiktoken/encoders/cl100k_base.json"
 
 pdfjs.GlobalWorkerOptions.workerSrc = "/js/pdf.worker.js"
 
@@ -41,6 +42,16 @@ async function parseDocx(file: File) {
   return [markdown]
 }
 
+async function parseText(file: File) {
+  const reader = new FileReader()
+  reader.readAsText(file)
+  return new Promise<string>((resolve) => {
+    reader.onload = () => {
+      resolve(reader.result as string)
+    }
+  })
+}
+
 async function parseDoc({ type, size, url, filename }: ParseDocOptions) {
   const res = await fetch(url)
   const blob = await res.blob()
@@ -48,19 +59,42 @@ async function parseDoc({ type, size, url, filename }: ParseDocOptions) {
   const file = new File([blob], filename, { type })
   let contents: string[] = []
 
-  switch (type) {
-    case "application/pdf":
-      contents = await parsePdf(file)
-      break
-    case "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
-      contents = await parseDocx(file)
-      break
-    case "application/msword":
-      break
-    
+  if (type === MimeType.pdf) {
+    contents = await parsePdf(file)
+  } else if (type == MimeType.docx) {
+    contents = await parseDocx(file)
+  } else if (type === MimeType.doc) {
+    // not supported
+  } else if (/^text\//.test(type)) {
+    const text = await parseText(file)
+    contents = [text]
   }
 
   return contents
+}
+
+async function calcTokens(text: string) {
+  const encoding = new Tiktoken(
+    cl100k_base.bpe_ranks,
+    cl100k_base.special_tokens,
+    cl100k_base.pat_str
+  )
+  const tokens = encoding.encode(text)
+  const length = tokens.length
+  encoding.free()
+  return length
+}
+
+async function tokenSlice(text: string, length: number) {
+  const encoding = new Tiktoken(
+    cl100k_base.bpe_ranks,
+    cl100k_base.special_tokens,
+    cl100k_base.pat_str
+  )
+  const tokens = encoding.encode(text).slice(0, length)
+  const value = new TextDecoder().decode(encoding.decode(tokens))
+  encoding.free()
+  return value
 }
 
 async function handleMessage(
@@ -69,11 +103,17 @@ async function handleMessage(
 ) {
   if (message?.type === MessageType.toOffscreen) {
     console.log("offscreen message: ", message, sender)
-
+    const { func, args } = message
     let taskPromise: Promise<any> | null = null
-    switch (message?.task) {
+    switch (func) {
       case ServiceFunc.parseDoc:
-        taskPromise = parseDoc(message.payload)
+        taskPromise = parseDoc(...(args as [any]))
+        break
+      case ServiceFunc.calcTokens:
+        taskPromise = calcTokens(...(args as [any]))
+        break
+      case ServiceFunc.tokenSlice:
+        taskPromise = tokenSlice(...(args as [any, any]))
         break
     }
 

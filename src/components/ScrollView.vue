@@ -9,12 +9,12 @@ const props = defineProps<{
   <div :class="['scrollbar relative overflow-auto', props.class]">
     <div
       v-if="fade == true"
-      class="fade sticky top-0 left-0 w-full h-4 z-50"
+      class="sticky top-0 left-0 w-full h-4 z-50 bg-gradient-to-b from-background to-transparent"
     ></div>
     <slot></slot>
     <div
       v-if="fade == true"
-      class="fade sticky bottom-0 left-0 w-full h-4 z-50"
+      class="sticky bottom-0 left-0 w-full h-4 z-50 bg-gradient-to-t from-background to-transparent"
     ></div>
   </div>
 </template>
@@ -30,17 +30,7 @@ const props = defineProps<{
 }
 .scrollbar:hover::-webkit-scrollbar-thumb {
   border: 4px solid transparent;
-  background: rgba(var(--fg-rgb), 0.1);
   background-clip: content-box;
-}
-
-.fade {
-  --fade-bg-color: var(--color-background);
-}
-.fade.top-0 {
-  background: linear-gradient(to bottom, var(--fade-bg-color), transparent);
-}
-.fade.bottom-0 {
-  background: linear-gradient(to bottom, transparent, var(--fade-bg-color));
+  @apply bg-foreground/10;
 }
 </style>

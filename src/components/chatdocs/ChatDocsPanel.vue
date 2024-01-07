@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { watch, computed, reactive, ref, onMounted } from "vue"
+import { watch, computed, reactive, ref, onMounted, watchEffect } from "vue"
 import { chatDocsPanel } from "@/store"
-import IconClose from "@/components/icons/IconClose.vue"
 import { contentService } from "@/utils/service"
 import { convertBlobToBase64, semanticClip } from "@/utils/utils"
 import ScrollView from "@/components/ScrollView.vue"
@@ -14,6 +13,8 @@ import IconPause from "../icons/IconPause.vue"
 import IconProgressActivity from "../icons/IconProgressActivity.vue"
 import { sitesConfig } from "./chat"
 import { query, dispatchInput, click, waitFor } from "@/utils/dom"
+import { chatDocPrompt } from "@/utils/prompt"
+import { useI18n } from "@/utils/i18n"
 
 type Sheet = "" | "docSelect" | "promptTemplate"
 
@@ -23,6 +24,7 @@ type SnippetItem = {
   start: number
   end: number
   snippet: string
+  length: number
 }
 
 type Selector = {
@@ -33,6 +35,7 @@ type Selector = {
 
 defineEmits(["close"])
 
+const { t } = useI18n()
 const logoUrl = chrome.runtime.getURL("/logo.svg")
 const div = ref<HTMLDivElement>()
 const sheet = ref<Sheet>("")
@@ -43,10 +46,15 @@ const sendTask = reactive({
 })
 
 const config = reactive({
-  prompt: `Here is some relevant reference information. Please refrain from summarizing or responding to specific content until I pose targeted questions. If you comprehend this instruction, kindly reply with "Okay, please continue."`,
-  maxInputLength: 3000,
+  prompt: chatDocPrompt,
+  maxInput: 3000,
+  maxInputType: "token" as "char" | "token",
   maxRuns: 10,
   selector: null as Selector | null,
+})
+
+const lenRate = reactive({
+  tokenRate: 4,
 })
 
 const docs = computed(() => {
@@ -57,9 +65,11 @@ const docs = computed(() => {
 })
 
 const currentMessage = computed(() => {
-  const { prompt, maxInputLength, maxRuns } = config
-
+  const { prompt, maxInput, maxInputType } = config
   const snippets: SnippetItem[] = []
+
+  const rate = maxInputType == "token" ? lenRate.tokenRate : 1
+  const maxInputLength = maxInput * rate - prompt.length
 
   for (let doc of docs.value) {
     for (let i = 0; i < doc.contents.length; i++) {
@@ -82,8 +92,7 @@ const currentMessage = computed(() => {
       }
       const meta = metaList.join("")
 
-      const maxDataLength =
-        maxInputLength - prompt.length - snippetsLength - meta.length - 100
+      const maxDataLength = maxInputLength - snippetsLength - meta.length - 100
 
       let data = content.data.slice(content.sentLength)
       data = semanticClip(data, maxDataLength)
@@ -96,6 +105,7 @@ const currentMessage = computed(() => {
         start: content.sentLength,
         end: content.sentLength + data.length,
         snippet: snippet,
+        length: snippet.length,
       })
     }
   }
@@ -110,6 +120,34 @@ const currentMessage = computed(() => {
     snippets,
   }
 })
+
+watch(
+  [config, () => currentMessage.value],
+  async ([config, currentMessage]) => {
+    const { message } = currentMessage
+    const { maxInput, maxInputType } = config
+    console.log("token limit watch started", maxInputType, message.slice(0, 10))
+
+    if (maxInputType !== "token") return
+    if (!message) return
+    const tokenLength = await contentService.calcTokens(message)
+    const rate = (message.length / tokenLength) * 0.95
+    const exceedMaxInput = tokenLength > maxInput
+    if (exceedMaxInput) {
+      if (lenRate.tokenRate > rate) {
+        lenRate.tokenRate = rate
+      } else {
+        lenRate.tokenRate *= 0.95
+      }
+    } else if (lenRate.tokenRate / rate < 0.6) {
+      lenRate.tokenRate = rate
+    }
+
+    console.log("token limit watch: ", maxInput, tokenLength, lenRate.tokenRate)
+  }
+)
+
+const copied = ref(0)
 
 watch(
   () => chatDocsPanel.inputs,
@@ -206,7 +244,8 @@ onMounted(() => {
   )
 
   if (matchConfig) {
-    config.maxInputLength = matchConfig.inputLength
+    config.maxInput = matchConfig.maxInputToken || matchConfig.maxInputLength
+    config.maxInputType = matchConfig.maxInputToken ? "token" : "char"
     config.selector = matchConfig.selector
   }
 
@@ -227,17 +266,86 @@ const removeItem = (key: string) => {
 }
 
 const handleCopyMessage = () => {
+  clearTimeout(copied.value)
+  copied.value = window.setTimeout(() => (copied.value = 0), 2000)
   const message = currentMessage.value.message
   navigator.clipboard.writeText(message)
 }
 
-const nextMessage = () => {
+const len = async (text: string, type: "char" | "token") => {
+  if (type == "token") {
+    return contentService.calcTokens(text)
+  }
+  return text.length
+}
+
+// const setCurrent = async () => {
+//   const { prompt, maxInput, maxInputType, maxRuns } = config
+//   const snippets: SnippetItem[] = []
+//   const promptLength = await len(prompt, maxInputType)
+//   const maxInputLength = maxInput - promptLength
+
+//   for (let doc of docs.value) {
+//     for (let i = 0; i < doc.contents.length; i++) {
+//       const content = doc.contents[i]
+//       if (!content.selected || content.sentLength == content.data.length) {
+//         continue
+//       }
+//       const snippetsLength = snippets.reduce((a, c) => a + c.length, 0)
+//       if (snippets.length >= 1 && maxInputLength - snippetsLength < 600) {
+//         break
+//       }
+
+//       const metaList: string[] = []
+//       if (doc.kind == "file") {
+//         metaList.push(`file: ${doc.name}\n`)
+//       }
+//       if (doc.contents.length > 3) {
+//         metaList.push(`page: ${i + 1}\n`)
+//       }
+//       const meta = metaList.join("")
+
+//       const metaLength = await len(meta, maxInputType)
+//       const maxDataLength =
+//         maxInputLength - prompt.length - snippetsLength - metaLength - 100
+
+//       let data = content.data.slice(content.sentLength)
+//       data = await contentService.tokenSlice(content.data, maxDataLength)
+
+//       console.log('current data: ', data)
+//       data = semanticClip(data, data.length)
+//       const snippet = `\`\`\`\`md\n${meta}\n${data}\n\`\`\`\``
+//       const snippetLength = await len(snippet, maxInputType)
+
+//       snippets.push({
+//         key: doc.key,
+//         index: i,
+//         start: content.sentLength,
+//         end: content.sentLength + data.length,
+//         snippet: snippet,
+//         length: snippetLength,
+//       })
+//     }
+//   }
+
+//   const text = snippets.map((p) => p.snippet).join("\n\n")
+//   const message = text ? `${prompt}\n\n${text}` : ""
+//   const done = docs.value.length > 0 && snippets.length == 0
+
+//   currentMessage.value.done = done
+//   currentMessage.value.message = message
+//   currentMessage.value.snippets = snippets
+// }
+
+const nextMessage = async () => {
   for (let item of currentMessage.value.snippets) {
     const content = chatDocsPanel.docMap[item.key]?.contents[item.index]
     if (content.sentLength < item.end) {
       content.sentLength = item.end
     }
   }
+
+  // await setCurrent()
 }
 
 const autoSend = async () => {
@@ -273,7 +381,7 @@ const autoSend = async () => {
     await new Promise((r) => setTimeout(r, 600))
     await waitFor(config.selector.wait, 1000 * 30)
     await new Promise((r) => setTimeout(r, 200))
-    nextMessage()
+    await nextMessage()
 
     if (currentMessage.value.done) {
       sendTask.status = "done"
@@ -295,25 +403,15 @@ const resetSent = () => {
 </script>
 
 <template>
-  <div ref="div" class="docs-panel">
-    <!-- Brand Header -->
-    <div class="flex items-center">
-      <img :src="logoUrl" class="w-6 h-6" />
-      <span class="mx-2 text-xl font-bold">PDF & Doc</span>
-      <button
-        aria-label="close"
-        class="ml-auto p-1 top-0 right-0 rounded-full hover:bg-rose-400/10"
-        @click="$emit('close')"
-      >
-        <IconClose class="w-5 h-5" />
-      </button>
-    </div>
+  <div ref="div" class="pb-3">
     <div class="relative">
       <!-- primary panel -->
-      <ScrollView fade class="max-h-[560px]">
+      <ScrollView fade class="max-h-[560px] px-4">
         <div class="">
           <div class="mb-4">
-            <div class="mb-2 text-base font-bold">Files</div>
+            <div class="mb-2 text-base font-bold">
+              {{ t("chatDocs.files") }}
+            </div>
             <div class="flex flex-col gap-2">
               <template v-for="(item, key) in chatDocsPanel.docMap">
                 <DocItem
@@ -332,25 +430,31 @@ const resetSent = () => {
           </div>
 
           <div class="mb-4">
-            <div class="text-base font-bold">注入设置</div>
+            <div class="text-base font-bold">
+              {{ t("chatDocs.msgSettings") }}
+            </div>
             <div
               class="text-sm my-2 px-3 py-1 rounded-lg bg-[var(--color-background-soft)]"
             >
               <div class="flex items-center justify-between my-1">
-                <span>Prompt</span>
+                <span>{{ t("prompt") }}</span>
                 <button
                   class="py-1 flex items-center"
                   @click="sheet = 'promptTemplate'"
                 >
-                  <span class="px-2">编辑 Prompt</span>
+                  <span class="px-2">{{ t("chatDocs.editPrompt") }}</span>
                   <IconArrowRight />
                 </button>
               </div>
 
               <div class="flex items-center justify-between my-1">
-                <span>单次最大注入字符</span>
+                <span
+                  >{{ t("chatDocs.maxLength") }} ({{
+                    config.maxInputType == "token" ? "token" : "char"
+                  }})</span
+                >
                 <input
-                  v-model="config.maxInputLength"
+                  v-model="config.maxInput"
                   class="border rounded px-2 py-1 w-20"
                   type="number"
                   min="1000"
@@ -358,7 +462,7 @@ const resetSent = () => {
                 />
               </div>
               <div class="flex items-center justify-between my-1">
-                <span>最大注入次数</span>
+                <span>{{ t("chatDocs.maxSendings") }}</span>
                 <input
                   v-model="config.maxRuns"
                   class="border rounded px-2 py-1 w-20"
@@ -371,12 +475,17 @@ const resetSent = () => {
           </div>
 
           <div class="mb-4">
-            <div class="text-base font-bold">发送进度</div>
+            <div class="text-base font-bold">
+              {{ t("chatDocs.sendProgress") }}
+            </div>
 
             <div
               class="text-sm px-3 my-2 py-1 rounded-lg bg-[var(--color-background-soft)]"
             >
-              <div class="progress relative w-full h-2 my-2 rounded-full">
+              <div
+                aria-label="progress"
+                class="relative w-full h-2 my-2 rounded-full bg-foreground/10"
+              >
                 <div
                   class="absolute h-full rounded-full transition-all bg-primary/30"
                   :style="{
@@ -384,7 +493,12 @@ const resetSent = () => {
                   }"
                 ></div>
                 <div
-                  class="absolute h-full rounded-full transition-all bg-primary"
+                  :class="[
+                    'absolute h-full rounded-full transition-all bg-primary overflow-hidden',
+                    {
+                      running: sendTask.status == 'running',
+                    },
+                  ]"
                   :style="{
                     width: `${progress.sentPrecent}%`,
                   }"
@@ -393,9 +507,10 @@ const resetSent = () => {
               <div class="my-2">
                 <div class="flex items-center">
                   <div v-if="!currentMessage.done">
-                    发送消息 {{ currentMessage.message.length }} 字符
+                    {{ t("message") }} {{ currentMessage.message.length }}
+                    {{ t("char") }}
                   </div>
-                  <div v-else>发送完成</div>
+                  <div v-else>{{ t("chatDocs.sendCompleted") }}</div>
                   <span class="mx-auto"></span>
                   <div v-if="!currentMessage.done">
                     {{ progress.sent }} / {{ progress.total }}
@@ -405,29 +520,28 @@ const resetSent = () => {
                     class="py-1 px-2 border rounded"
                     @click="resetSent"
                   >
-                    重置
+                    {{ t("reset") }}
                   </button>
                 </div>
               </div>
               <div v-if="!currentMessage.done" class="my-2 flex items-center">
-                <div class="mr-auto">消息内容</div>
+                <div class="mr-auto">{{ t("chatDocs.msgContent") }}</div>
 
                 <button
                   class="py-1 px-2 border ml-2 rounded"
                   @click="handleCopyMessage"
                 >
-                  复制
+                  {{ copied ? t("copied") : t("copy") }}
                 </button>
                 <button
                   class="py-1 px-2 border ml-2 rounded"
                   @click="nextMessage"
                 >
-                  下一个
+                  {{ t("next") }}
                 </button>
               </div>
               <div v-else class="my-2 flex items-center justify-between">
-                <div>你可以开始聊天了！</div>
-                <!-- <button>重置</button> -->
+                <div>{{ t("chatDocs.startChatting") }}</div>
               </div>
             </div>
           </div>
@@ -440,14 +554,13 @@ const resetSent = () => {
                 @click="togglePause"
               >
                 <IconPause class="w-5 h-5" />
-                <span>暂停</span>
+                <span>{{ t("pause") }}</span>
               </button>
               <button
                 :disabled="sendTask.status !== '' || docs.length == 0"
                 :class="[
-                  'font-bold flex items-center gap-1 px-3 py-1 bg-primary-300 ',
-                  'hover:bg-primary-400 dark:bg-primary-800 dark:hover:bg-primary-700',
-                  'disabled:hover:bg-primary-300 disabled:dark:hover:bg-primary-800',
+                  'font-bold flex items-center gap-1 px-3 py-1 bg-primary-300 dark:bg-primary-800',
+                  'enabled:hover:bg-primary-400 enabled:dark:hover:bg-primary-700',
                 ]"
                 @click="autoSend"
               >
@@ -456,7 +569,7 @@ const resetSent = () => {
                   class="w-5 h-5 animate-spin"
                 />
                 <IconPlayCircle v-else class="w-5 h-5" />
-                自动发送
+                {{ t("chatDocs.autoSending") }}
               </button>
             </div>
           </div>
@@ -468,31 +581,31 @@ const resetSent = () => {
         v-if="sheet != ''"
         class="absolute w-full h-full top-0 left-0 flex flex-col bg-background"
       >
-        <div class="flex items-center pt-3">
+        <div class="flex items-center pt-3 px-4">
           <button
             @click="sheet = ''"
-            class="flex items-center"
-            aria-label="返回"
+            class="flex items-center max-w-full"
+            :aria-label="t('back')"
           >
-            <IconArrowBack />
+            <IconArrowBack class="shrink-0" />
             <span
               v-if="sheet === 'docSelect'"
-              class="mx-2 text-base font-bold"
+              class="mx-2 text-base font-bold truncate min-w-0"
               >{{ chatDocsPanel.docMap[currentDoc]?.name }}</span
             >
             <span
               v-else-if="sheet === 'promptTemplate'"
               class="mx-2 text-base font-bold"
             >
-              Prompt模板
+              {{ t("promptTemplate") }}
             </span>
           </button>
         </div>
-        <ScrollView fade v-if="sheet == 'docSelect'">
-          <p class="text-sm pb-2">选择与你想了解的主题更相关的内容</p>
+        <ScrollView fade v-if="sheet == 'docSelect'" class="px-4">
+          <p class="text-sm pb-2">{{ t("chatDocs.chooseContentRelevant") }}</p>
           <input
             class="w-full px-2 py-1 border"
-            placeholder="搜索"
+            :placeholder="t('search')"
             type="text"
           />
           <div class="grid grid-cols-3 gap-3 py-3">
@@ -502,7 +615,8 @@ const resetSent = () => {
               <div
                 :title="content.data"
                 :class="[
-                  'w-full h-0 pb-[130%] border-2 cursor-pointer bg-background-soft',
+                  'w-full h-0 pb-[130%] border-2 cursor-pointer',
+                  'bg-background-soft hover:border-primary/50',
                   {
                     'border-primary': content.selected,
                   },
@@ -513,7 +627,7 @@ const resetSent = () => {
             </div>
           </div>
         </ScrollView>
-        <ScrollView fade v-else-if="sheet == 'promptTemplate'">
+        <ScrollView fade v-else-if="sheet == 'promptTemplate'" class="px-4">
           <textarea
             :class="[
               'scrollbar border border-foreground/20 w-full h-36 p-2 bg-background-soft',
@@ -522,8 +636,8 @@ const resetSent = () => {
             v-model="config.prompt"
           ></textarea>
           <div class="flex gap-2 justify-end my-2">
-            <button class="px-2">取消</button>
-            <button class="px-2">保存</button>
+            <button class="px-2">{{ t("cancel") }}</button>
+            <button class="px-2">{{ t("save") }}</button>
           </div>
         </ScrollView>
       </div>
@@ -539,14 +653,19 @@ const resetSent = () => {
 *:hover {
   @apply border-foreground/30;
 }
-.sheet {
-  background-color: var(--color-background);
+
+.running::before {
+  content: "";
+  @apply h-full w-full absolute bg-gradient-to-r from-transparent via-white/30 to-transparent to-25%;
+  animation: running 1s ease-in-out 0.2s infinite;
 }
-.progress {
-  background-color: rgba(var(--fg-rgb), 0.1);
-}
-.progress .sent {
-}
-.progress .pending {
+
+@keyframes running {
+  from {
+    transform: translate(-24px, 0);
+  }
+  to {
+    transform: translate(100%, 0);
+  }
 }
 </style>

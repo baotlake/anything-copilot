@@ -1,9 +1,4 @@
-import {
-  MessageType,
-  type InvokeRequest,
-  type ParseDocOptions,
-  ServiceFunc,
-} from "@/types"
+import { MessageType, ServiceFunc, type ParseDocOptions } from "@/types"
 import Invoke from "./Invoke"
 
 class Service extends Invoke {
@@ -25,14 +20,24 @@ class Service extends Invoke {
     }
   }
 
-  public async invoke(req: InvokeRequest): Promise<any> {
-    return super.invoke(req)
-  }
-
   public parseDoc(options: ParseDocOptions): Promise<string[]> {
     return this.invoke({
       func: ServiceFunc.parseDoc,
       args: [options],
+    })
+  }
+
+  public calcTokens(text: string): Promise<number> {
+    return this.invoke({
+      func: ServiceFunc.calcTokens,
+      args: [text],
+    })
+  }
+
+  public tokenSlice(text: string, length: number): Promise<string> {
+    return this.invoke({
+      func: ServiceFunc.tokenSlice,
+      args: [text, length],
     })
   }
 }

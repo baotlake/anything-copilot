@@ -2,7 +2,7 @@ export const sitesConfig = [
   {
     host: "huggingface.co",
     path: /^\/chat/,
-    inputLength: 8000, // 2048 token
+    maxInputLength: 8000, // 2048 token
     selector: {
       input: "form[tabindex] textarea",
       send: 'form[tabindex] button[type="submit"]',
@@ -12,7 +12,8 @@ export const sitesConfig = [
   {
     host: "chat.openai.com",
     path: /^\//,
-    inputLength: 18000,
+    maxInputLength: 18000,
+    maxInputToken: 4096,
     selector: {
       input: "form textarea#prompt-textarea",
       send: "form textarea ~ button",
@@ -22,7 +23,7 @@ export const sitesConfig = [
   {
     host: "bard.google.com",
     path: /^\/chat/,
-    inputLength: 4096,
+    maxInputLength: 4096,
     selector: {
       input: "input-area rich-textarea p",
       send: "input-area div[class*=send] button[class*=send]",
@@ -32,7 +33,7 @@ export const sitesConfig = [
   {
     host: "copilot.microsoft.com",
     path: /^\//,
-    inputLength: 2048,
+    maxInputLength: 2048,
     selector: {
       input:
         "cib-serp /deep/ cib-action-bar /deep/ cib-text-input /deep/ textarea",
@@ -43,7 +44,7 @@ export const sitesConfig = [
   {
     host: "yiyan.baidu.com",
     path: /^\//,
-    inputLength: 2000,
+    maxInputLength: 2000,
     selector: {
       input: "textarea:not(h1 ~ textarea)",
       send: 'div > span:has(svg[width="240"])',

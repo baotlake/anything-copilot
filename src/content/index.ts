@@ -1,5 +1,11 @@
 import { mount, waitMountApp } from "./ui"
-import { contentCss, pipLauncher, pipLoading, pipWindow } from "@/store"
+import {
+  chatDocsPanel,
+  contentCss,
+  pipLauncher,
+  pipLoading,
+  pipWindow,
+} from "@/store"
 import { MessageType } from "@/types"
 import Copilot from "./Copilot.vue"
 import { waitMessage } from "@/utils/ext"
@@ -16,7 +22,7 @@ function handleMessage(
   sender: chrome.runtime.MessageSender,
   sendResponse: (res: any) => void
 ) {
-  console.log(message, sender)
+  console.log("[Content]", message.type, message, sender)
   switch (message?.type) {
     case MessageType.pip:
       dispatchContentEvent({
@@ -44,6 +50,9 @@ function handleMessage(
       break
     case MessageType.invokeResponse:
       contentService.handleMessage(message)
+      break
+    case MessageType.showChatDocs:
+      chatDocsPanel.visible = true
       break
   }
 }

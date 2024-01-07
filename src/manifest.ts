@@ -5,12 +5,12 @@ const contentCss = "/assets/index.css"
 const manifest = {
   manifest_version: 3,
   // maximum of 45 characters
-  name: "__MSG_name__",
+  name: "AAA __MSG_name__",
   // edge 12 characters
   // short_name: "__MSG_short_name__",
   // no more than 132 characters
   description: "__MSG_description__",
-  version: "1.1.2",
+  version: "1.2.0",
   action: {
     default_icon: {
       16: "logo.png",
@@ -64,11 +64,11 @@ const manifest = {
       matches: ["<all_urls>"],
     },
   ],
-  content_security_policy: __DEV__
-    ? {
-        extension_pages: `script-src 'self' http://localhost:3000;`,
-      }
-    : undefined,
+  content_security_policy: {
+    extension_pages: __DEV__
+      ? `script-src 'self' http://localhost:3000 'wasm-unsafe-eval';`
+      : `script-src 'self' 'wasm-unsafe-eval'`,
+  },
 }
 
 export default manifest

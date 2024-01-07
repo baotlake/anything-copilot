@@ -5,9 +5,10 @@ import { defineConfig } from "vite"
 import vue from "@vitejs/plugin-vue"
 import vueJsx from "@vitejs/plugin-vue-jsx"
 import vueI18n from "@intlify/unplugin-vue-i18n/vite"
+import wasm from "vite-plugin-wasm"
+import topLevelAwait from "vite-plugin-top-level-await"
 import manifest from "./src/manifest"
 import makeManifest from "./utils/manifest-plugin"
-
 
 /// <reference types="vitest" />
 
@@ -30,6 +31,8 @@ export default defineConfig({
       ),
     }),
     makeManifest(manifest, { isDev: false }),
+    wasm(),
+    topLevelAwait(),
   ],
   resolve: {
     alias: {

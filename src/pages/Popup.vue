@@ -2,12 +2,17 @@
 import { ref, onMounted, onUnmounted, computed, reactive, watch } from "vue"
 import { emptyTab, checkContent, getStoreUrl } from "@/utils/ext"
 import { items, pipWindow } from "@/store"
+import { MessageType } from "@/types"
+// import { sitesConfig as chatDocsSites } from "@/components/chatdocs/chat"
 import PipWindowActions from "@/components/popup/PipWindowActions.vue"
 import IconThumbUp from "@/components/icons/IconThumbUp.vue"
 import IconThumbDown from "@/components/icons/IconThumbDown.vue"
 import IconGithub from "@/components/icons/IconGithub.vue"
 import IconDiscord from "@/components/icons/IconDiscord.vue"
 import IconXLogo from "@/components/icons/IconXLogo.vue"
+import IconNoteStack from "@/components/icons/IconNoteStack.vue"
+import IconHelp from "@/components/icons/IconHelp.vue"
+
 import { useI18n } from "@/utils/i18n"
 
 const { t } = useI18n()
@@ -16,13 +21,25 @@ const activeTab = ref<chrome.tabs.Tab>(emptyTab)
 const manifest = reactive(chrome.runtime.getManifest())
 const avaiable = ref(false)
 
-const handleLocalChange = (changes: {
-  [key: string]: chrome.storage.StorageChange
-}) => {
-  if (changes.pipWindowId) {
-    pipWindow.id = changes.pipWindowId.newValue
-  }
-}
+const host = computed({
+  get: () => {
+    if (!activeTab.value.url) return ""
+    const u = new URL(activeTab.value.url)
+    return u.host
+  },
+  set: () => {},
+})
+
+// const chatDocs = computed(() => {
+//   const url = activeTab.value.url
+//   if (url) {
+//     const u = new URL(url)
+//     return chatDocsSites.some(
+//       (site) => site.host == u.host && site.path.test(u.pathname)
+//     )
+//   }
+//   return false
+// })
 
 onMounted(() => {
   chrome.tabs.query({ active: true, currentWindow: true }).then((tabs) => {
@@ -49,14 +66,13 @@ onUnmounted(() => {
   chrome.storage.local.onChanged.removeListener(handleLocalChange)
 })
 
-const host = computed({
-  get: () => {
-    if (!activeTab.value.url) return ""
-    const u = new URL(activeTab.value.url)
-    return u.host
-  },
-  set: () => {},
-})
+const handleLocalChange = (changes: {
+  [key: string]: chrome.storage.StorageChange
+}) => {
+  if (changes.pipWindowId) {
+    pipWindow.id = changes.pipWindowId.newValue
+  }
+}
 
 async function handleWriteHtml() {
   const tabs = await chrome.tabs.query({ active: true, currentWindow: true })
@@ -93,10 +109,19 @@ function fivestar() {
   ),
     "_blank"
 }
+
+function showChatDocs() {
+  const tabId = activeTab.value.id
+  if (tabId) {
+    chrome.tabs.sendMessage(tabId, {
+      type: MessageType.showChatDocs,
+    })
+  }
+}
 </script>
 
 <template>
-  <main class="w-[300px] p-4 mx-auto">
+  <main class="w-[300px] p-4 mx-auto bg-background">
     <div class="flex">
       <div class="mr-auto">
         <span class="font-bold opacity-50">Anything Copilot</span>
@@ -146,6 +171,20 @@ function fivestar() {
 
     <div v-if="!avaiable" class="text-sm leading-4 text-rose-800">
       {{ t("protectedTabTips") }}
+    </div>
+
+    <div class="mt-6">
+      <div class="my-3 flex items-center">
+        <span class="mr-1">{{ t("newFeature") }}🎉</span>
+      </div>
+
+      <button class="flex items-center" @click="showChatDocs">
+        <IconNoteStack class="size-9" />
+        <div class="mx-2 text-left">
+          <div class="text-sm">{{ t("chatDocsAddon") }}</div>
+          <div class="text-xs">{{ t("chatDocsTips") }}</div>
+        </div>
+      </button>
     </div>
 
     <div class="text-sm mt-6">{{ t("other") }}</div>

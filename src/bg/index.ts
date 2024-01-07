@@ -1,9 +1,4 @@
-import {
-  MessageType,
-  ServiceFunc,
-  type ParseDocOptions,
-  type InvokeMessage,
-} from "@/types"
+import { MessageType, ServiceFunc, type ParseDocOptions } from "@/types"
 import { waitMessage, tabUpdated } from "@/utils/ext"
 import { offscreen } from "./offscreen"
 
@@ -92,32 +87,33 @@ async function updateWindow({ windowId, windowInfo }: UpdatePipWinOption) {
   await chrome.windows.update(windowId, windowInfo)
 }
 
-async function parseDoc(
-  options: ParseDocOptions,
-  sender: chrome.runtime.MessageSender
-) {
-  const result = await offscreen.parseDoc(options)
-  chrome.tabs.sendMessage(sender.tab?.id!, {
-    // type: MessageType.parseDoc
-  })
-}
-
 async function handleInvokeRequest(
   message: any,
   sender: chrome.runtime.MessageSender
 ) {
-  const { key, func, args } = message as InvokeMessage
+  const { key, func, args } = message
 
   let result = null
   let error = null
   try {
     switch (func) {
       case ServiceFunc.parseDoc:
-        result = await offscreen.parseDoc(args[0])
+      case ServiceFunc.calcTokens:
+      case ServiceFunc.tokenSlice:
+        result = await offscreen.invoke({
+          func,
+          args,
+        })
         break
     }
   } catch (err) {
     error = err
+  }
+
+  console.log("invoke response: ", result, error)
+
+  if (!sender.tab?.id) {
+    console.error("sender tab id is undefined", sender)
   }
 
   chrome.tabs.sendMessage(sender.tab?.id!, {
@@ -129,7 +125,7 @@ async function handleInvokeRequest(
 }
 
 function handleMessage(message: any, sender: chrome.runtime.MessageSender) {
-  console.log("bg message: ", message, sender, Date.now())
+  console.log("[bg]: ", message.type, message, sender, Date.now())
   switch (message?.type) {
     case MessageType.bgOpenPip:
       openPipBackground(message.url)
@@ -152,7 +148,7 @@ function handleMessage(message: any, sender: chrome.runtime.MessageSender) {
     case MessageType.setupOffscreenDocument:
       return offscreen.setup()
     case MessageType.fromOffscreen:
-      return offscreen.handleOffscreenMessage(message)
+      return offscreen.handleMessage(message)
     case MessageType.invokeRequest:
       handleInvokeRequest(message, sender)
       break

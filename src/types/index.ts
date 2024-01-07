@@ -15,20 +15,13 @@ export enum MessageType {
   fromOffscreen = "from-offscreen",
   invokeRequest = "invoke-request",
   invokeResponse = "invoke-Response",
+  showChatDocs = "show-chat-docs",
 }
 
 export enum ServiceFunc {
   parseDoc = "parse-doc",
-}
-
-export interface InvokeRequest {
-  func: string
-  args: any[]
-}
-
-export interface InvokeMessage extends InvokeRequest {
-  type: MessageType
-  key: string
+  calcTokens = "calc-tokens",
+  tokenSlice = "token-slice",
 }
 
 export type ParseDocOptions = {
