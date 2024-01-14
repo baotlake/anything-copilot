@@ -21,6 +21,10 @@
   "save": "Lagre",
   "next": "Neste",
   "chatDocsAddon": "Chat med Dokumenter",
+  "newFeature": "Ny funksjon",
+  "chatDocsTips": "Støtte for ChatGPT, Bard, MS Copilot...",
+  "selected": "Valgt",
+  "page": "Side",
   "chatDocs": {
     "supportFormat": "Støtter PDF, DOCX",
     "files": "Filer/Tekst",
@@ -34,10 +38,7 @@
     "msgContent": "Meldingsinnhold",
     "startChatting": "Du kan begynne å chatte nå!",
     "autoSending": "Auto Sending",
-    "chooseContentRelevant": "Velg innhold som er mer relevant for emnet du vil lære om"
-  },
-  "newFeature": "Ny funksjon",
-  "chatDocsTips": "Støtte for ChatGPT, Bard, MS Copilot...",
-  "selected": "Valgt",
-  "page": "Side"
+    "chooseContentRelevant": "Velg innhold som er mer relevant for emnet du vil lære om",
+    "notSupported": "Denne siden støtter ikke automatisk sending. Kopier meldingen og send den manuelt."
+  }
 }

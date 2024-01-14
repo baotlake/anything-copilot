@@ -21,6 +21,10 @@
   "save": "Tallenna",
   "next": "Seuraava",
   "chatDocsAddon": "Keskustele asiakirjojen kanssa",
+  "newFeature": "Uusi ominaisuus",
+  "chatDocsTips": "Tuki ChatGPT, Bard, MS Copilot...",
+  "selected": "Valittu",
+  "page": "Sivu",
   "chatDocs": {
     "supportFormat": "Tuki PDF, DOCX",
     "files": "Tiedostot/Teksti",
@@ -34,10 +38,7 @@
     "msgContent": "Viestin Sisältö",
     "startChatting": "Voit aloittaa keskustelun nyt!",
     "autoSending": "Automaattilähetys",
-    "chooseContentRelevant": "Valitse aiheeseesi liittyvämpi sisältö"
-  },
-  "newFeature": "Uusi ominaisuus",
-  "chatDocsTips": "Tuki ChatGPT, Bard, MS Copilot...",
-  "selected": "Valittu",
-  "page": "Sivu"
+    "chooseContentRelevant": "Valitse aiheeseesi liittyvämpi sisältö",
+    "notSupported": "Tämä sivu ei tue automaattista lähettämistä. Kopioi viesti ja lähetä se manuaalisesti."
+  }
 }

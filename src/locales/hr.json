@@ -21,6 +21,10 @@
   "save": "Spremi",
   "next": "Sljedeće",
   "chatDocsAddon": "Čavrljanje s dokumentima",
+  "newFeature": "Nova značajka",
+  "chatDocsTips": "Podrška za ChatGPT, Bard, MS Copilot...",
+  "selected": "Odabrano",
+  "page": "Stranica",
   "chatDocs": {
     "supportFormat": "Podržava PDF, DOCX",
     "files": "Datoteke/Tekst",
@@ -34,10 +38,7 @@
     "msgContent": "Sadržaj poruke",
     "startChatting": "Možete početi razgovarati sada!",
     "autoSending": "Automatsko slanje",
-    "chooseContentRelevant": "Odaberite sadržaj koji je relevantan za temu koju želite naučiti"
-  },
-  "newFeature": "Nova značajka",
-  "chatDocsTips": "Podrška za ChatGPT, Bard, MS Copilot...",
-  "selected": "Odabrano",
-  "page": "Stranica"
+    "chooseContentRelevant": "Odaberite sadržaj koji je relevantan za temu koju želite naučiti",
+    "notSupported": "Ova stranica ne podržava automatsko slanje. Kopirajte poruku i pošaljite je ručno."
+  }
 }

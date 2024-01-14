@@ -21,6 +21,10 @@
   "save": "সংরক্ষণ",
   "next": "পরবর্তী",
   "chatDocsAddon": "ডকুমেন্ট সহ চ্যাট",
+  "newFeature": "নতুন বৈশিষ্ট্য",
+  "chatDocsTips": "সাপোর্ট ChatGPT, Bard, MS Copilot...",
+  "selected": "নির্বাচিত",
+  "page": "পৃষ্ঠা",
   "chatDocs": {
     "supportFormat": "সাপোর্ট করে PDF, DOCX",
     "files": "ফাইল/টেক্সট",
@@ -34,10 +38,7 @@
     "msgContent": "মেসেজের কনটেন্ট",
     "startChatting": "আপনি এখন চ্যাট শুরু করতে পারেন!",
     "autoSending": "অটো প্রেরণ",
-    "chooseContentRelevant": "আপনি যে বিষয়ে আরও জানতে চান তা সম্পর্কিত কনটেন্ট চয়ন করুন"
-  },
-  "newFeature": "নতুন বৈশিষ্ট্য",
-  "chatDocsTips": "সাপোর্ট ChatGPT, Bard, MS Copilot...",
-  "selected": "নির্বাচিত",
-  "page": "পৃষ্ঠা"
+    "chooseContentRelevant": "আপনি যে বিষয়ে আরও জানতে চান তা সম্পর্কিত কনটেন্ট চয়ন করুন",
+    "notSupported": "এই পৃষ্ঠাটি স্বয়ংক্রিয় প্রেরণকে সমর্থন করে না। দয়া করে বার্তাটি অনুলিপি করুন এবং এটি ম্যানুয়ালি প্রেরণ করুন।"
+  }
 }

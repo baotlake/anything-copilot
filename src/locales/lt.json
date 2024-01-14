@@ -21,6 +21,10 @@
   "save": "Išsaugoti",
   "next": "Kitas",
   "chatDocsAddon": "Pokalbis su Dokumentais",
+  "newFeature": "Nauja funkcija",
+  "chatDocsTips": "Palaiko ChatGPT, Bard, MS Copilot...",
+  "selected": "Pasirinkta",
+  "page": "Puslapis",
   "chatDocs": {
     "supportFormat": "Palaikomi PDF, DOCX",
     "files": "Failai/Tekstas",
@@ -34,10 +38,7 @@
     "msgContent": "Žinutės turinys",
     "startChatting": "Dabar galite pradėti pokalbį!",
     "autoSending": "Automatinis siuntimas",
-    "chooseContentRelevant": "Pasirinkite turinį, kuris yra labiau susijęs su jumis dominančia tema"
-  },
-  "newFeature": "Nauja funkcija",
-  "chatDocsTips": "Palaiko ChatGPT, Bard, MS Copilot...",
-  "selected": "Pasirinkta",
-  "page": "Puslapis"
+    "chooseContentRelevant": "Pasirinkite turinį, kuris yra labiau susijęs su jumis dominančia tema",
+    "notSupported": "Šis puslapis nepalaiko automatinio siuntimo. Nukopijuokite pranešimą ir atsiųskite jį rankiniu būdu."
+  }
 }

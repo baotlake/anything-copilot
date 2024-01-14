@@ -3,6 +3,7 @@ import IconNoteStackAdd from "@/components/icons/IconNoteStackAdd.vue"
 import type { chatDocsPanel } from "@/store"
 import { ref } from "vue"
 import { useI18n } from "@/utils/i18n"
+import { getDocItem } from "./helper"
 
 const { t } = useI18n()
 const dragEnter = ref(false)
@@ -24,6 +25,34 @@ const handleFileInput = (e: Event) => {
     emit("input", inputs)
   }
 }
+
+const onDrop = async (e: DragEvent) => {
+  e.preventDefault()
+  if (e.dataTransfer) {
+    console.log("item: ", Array.from(e.dataTransfer.items))
+    const items = await getDocItem(e.dataTransfer.items)
+    emit("input", items)
+  }
+}
+
+const onClick = async () => {
+  const fileInput = document.createElement("input")
+  fileInput.type = "file"
+  fileInput.multiple = true
+
+  const itmes = await new Promise<typeof chatDocsPanel.inputs>((resolve) => {
+    fileInput.oninput = async (e) => {
+      if (fileInput.files) {
+        const items = await getDocItem(fileInput.files)
+        resolve(items)
+      }
+      resolve([])
+    }
+    fileInput.click()
+  })
+
+  emit("input", itmes)
+}
 </script>
 
 <template>
@@ -31,25 +60,20 @@ const handleFileInput = (e: Event) => {
     for="anything-copilot-doc-input"
     :class="[
       'relative flex items-center justify-center gap-2 w-full h-14 ',
-      'px-4 rounded-lg border-2 bg-background-soft transition-all',
+      'px-4 rounded-lg border-2 bg-background-soft transition-all *:pointer-events-none',
       {
         'border-primary scale-105': dragEnter,
         'border-background-soft': !dragEnter,
       },
     ]"
+    @dragenter="dragEnter = true"
+    @dragleave="dragEnter = false"
+    @click="onClick"
+    @dragover="(e) => e.preventDefault()"
+    @drop="onDrop"
   >
     <IconNoteStackAdd class="shrink-0" />
     <span>{{ t("chatDocs.selectFile") }}</span>
-    <input
-      multiple
-      type="file"
-      id="anything-copilot-doc-input"
-      class="opacity-0 w-full h-full absolute top-0 left-0 cursor-pointer"
-      @input="handleFileInput"
-      @dragenter="dragEnter = true"
-      @dragleave="dragEnter = false"
-      @dragover="(e) => e.preventDefault()"
-    />
   </label>
 </template>
 

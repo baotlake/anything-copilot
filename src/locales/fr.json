@@ -21,6 +21,10 @@
   "save": "Enregistrer",
   "next": "Suivant",
   "chatDocsAddon": "Discussion avec Docs",
+  "newFeature": "Nouvelle fonctionnalité",
+  "chatDocsTips": "Prise en charge de ChatGPT, Bard, MS Copilot...",
+  "selected": "Sélectionné",
+  "page": "Page",
   "chatDocs": {
     "supportFormat": "Prise en charge PDF, DOCX",
     "files": "Fichiers/Texte",
@@ -34,10 +38,7 @@
     "msgContent": "Contenu du message",
     "startChatting": "Vous pouvez commencer à discuter maintenant !",
     "autoSending": "Envoi automatique",
-    "chooseContentRelevant": "Choisissez un contenu plus pertinent pour le sujet que vous souhaitez apprendre"
-  },
-  "newFeature": "Nouvelle fonctionnalité",
-  "chatDocsTips": "Prise en charge de ChatGPT, Bard, MS Copilot...",
-  "selected": "Sélectionné",
-  "page": "Page"
+    "chooseContentRelevant": "Choisissez un contenu plus pertinent pour le sujet que vous souhaitez apprendre",
+    "notSupported": "Cette page ne prend pas en charge l'envoi automatique. Veuillez copier le message et l'envoyer manuellement."
+  }
 }

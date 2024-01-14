@@ -21,6 +21,10 @@
   "save": "I-save",
   "next": "Susunod",
   "chatDocsAddon": "Usapang may Docs",
+  "newFeature": "Bagong Tampok",
+  "chatDocsTips": "Suporta sa ChatGPT, Bard, MS Copilot...",
+  "selected": "Napili",
+  "page": "Pahina",
   "chatDocs": {
     "supportFormat": "Suporta sa PDF, DOCX",
     "files": "Mga File/Teksto",
@@ -34,10 +38,7 @@
     "msgContent": "Nilalaman ng Mensahe",
     "startChatting": "Maaari ka nang magsimula ng kausap!",
     "autoSending": "Auto Padala",
-    "chooseContentRelevant": "Pumili ng nilalaman na mas kaugnay sa paksa na nais mong malaman"
-  },
-  "newFeature": "Bagong Tampok",
-  "chatDocsTips": "Suporta sa ChatGPT, Bard, MS Copilot...",
-  "selected": "Napili",
-  "page": "Pahina"
+    "chooseContentRelevant": "Pumili ng nilalaman na mas kaugnay sa paksa na nais mong malaman",
+    "notSupported": "Ang pahinang ito ay hindi sumusuporta sa awtomatikong pagpapadala. Mangyaring kopyahin ang mensahe at manu -manong ipadala ito."
+  }
 }

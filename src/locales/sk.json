@@ -21,6 +21,10 @@
   "save": "Uložiť",
   "next": "Ďalej",
   "chatDocsAddon": "Chat s Dokumentmi",
+  "newFeature": "Nová funkcia",
+  "chatDocsTips": "Podpora ChatGPT, Bard, MS Copilot...",
+  "selected": "Vybrané",
+  "page": "Stránka",
   "chatDocs": {
     "supportFormat": "Podpora pre PDF, DOCX",
     "files": "Súbory/Text",
@@ -34,10 +38,7 @@
     "msgContent": "Obsah Správy",
     "startChatting": "Teraz môžete začať chýbať!",
     "autoSending": "Automatické Odosielanie",
-    "chooseContentRelevant": "Vyberte obsah, ktorý je viac relevantný pre tému, ktorú chcete študovať"
-  },
-  "newFeature": "Nová funkcia",
-  "chatDocsTips": "Podpora ChatGPT, Bard, MS Copilot...",
-  "selected": "Vybrané",
-  "page": "Stránka"
+    "chooseContentRelevant": "Vyberte obsah, ktorý je viac relevantný pre tému, ktorú chcete študovať",
+    "notSupported": "Táto stránka nepodporuje automatické odosielanie. Skopírujte správu a pošlite ju manuálne."
+  }
 }

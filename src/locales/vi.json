@@ -21,6 +21,10 @@
   "save": "Lưu",
   "next": "Tiếp theo",
   "chatDocsAddon": "Trò chuyện với Tài liệu",
+  "newFeature": "Tính năng Mới",
+  "chatDocsTips": "Hỗ trợ ChatGPT, Bard, MS Copilot...",
+  "selected": "Đã chọn",
+  "page": "Trang",
   "chatDocs": {
     "supportFormat": "Hỗ trợ PDF, DOCX",
     "files": "Tệp/Chữ",
@@ -34,10 +38,7 @@
     "msgContent": "Nội dung Tin nhắn",
     "startChatting": "Bạn có thể bắt đầu trò chuyện ngay bây giờ!",
     "autoSending": "Tự động Gửi",
-    "chooseContentRelevant": "Chọn nội dung liên quan hơn đến chủ đề bạn muốn tìm hiểu"
-  },
-  "newFeature": "Tính năng Mới",
-  "chatDocsTips": "Hỗ trợ ChatGPT, Bard, MS Copilot...",
-  "selected": "Đã chọn",
-  "page": "Trang"
+    "chooseContentRelevant": "Chọn nội dung liên quan hơn đến chủ đề bạn muốn tìm hiểu",
+    "notSupported": "Trang này không hỗ trợ gửi tự động. Vui lòng sao chép tin nhắn và gửi thủ công."
+  }
 }

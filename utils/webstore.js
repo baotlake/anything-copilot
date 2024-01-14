@@ -17,6 +17,8 @@ const edgeLanguages = {
 
 let codeList = Object.keys(languages)
 let exclude = ["en", "zh_CN"]
+exclude = []
+// codeList = codeList.slice(codeList.findIndex(c => c == 'en'))
 
 const isEdge = location.host == "partner.microsoft.com"
 
@@ -139,7 +141,7 @@ async function inputDesc(desc) {
     return
   }
 
-  const textarea = document.querySelector("article section label textarea")
+  const textarea = document.querySelectorAll("article section label textarea")[1]
   dispatchInput(textarea, desc)
 }
 

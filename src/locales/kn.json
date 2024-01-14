@@ -21,6 +21,10 @@
   "save": "ಉಳಿಸು",
   "next": "ಮುಂದುವರಿಸು",
   "chatDocsAddon": "ಡಾಕ್ಸ್ ಸಹ ಚಾಟ್",
+  "newFeature": "ಹೊಸ ವಿಶೇಷವನ್ನು",
+  "chatDocsTips": "ChatGPT, Bard, MS Copilot ಅನ್ನು ಬೆಂಬಲಿಸುತ್ತದೆ...",
+  "selected": "ಆಯ್ಕೆಯಾಗಿದೆ",
+  "page": "ಪುಟ",
   "chatDocs": {
     "supportFormat": "PDF, DOCX ಬೆಂಬಲ",
     "files": "ಕಡತ/ಟೆಕ್ಸ್ಟ್",
@@ -34,10 +38,7 @@
     "msgContent": "ಸಂದೇಶ ವಿಷಯಾಂತರ",
     "startChatting": "ನೀವು ಈಗ ಚಾಟಿಂಗ್ ಆರಂಭಿಸಬಹುದು!",
     "autoSending": "ಸ್ವಯಂ ಕಳುಹಿಸುತ್ತಿದೆ",
-    "chooseContentRelevant": "ನೀವು ಕಲಿಯಬಯಸುವ ವಿಷಯಕ್ಕೆ ಹೆಚ್ಚಿನ ಸಂಬಂಧಪಟ್ಟ ವಿಷಯಗಳನ್ನು ಆರಿಸಿ"
-  },
-  "newFeature": "ಹೊಸ ವಿಶೇಷವನ್ನು",
-  "chatDocsTips": "ChatGPT, Bard, MS Copilot ಅನ್ನು ಬೆಂಬಲಿಸುತ್ತದೆ...",
-  "selected": "ಆಯ್ಕೆಯಾಗಿದೆ",
-  "page": "ಪುಟ"
+    "chooseContentRelevant": "ನೀವು ಕಲಿಯಬಯಸುವ ವಿಷಯಕ್ಕೆ ಹೆಚ್ಚಿನ ಸಂಬಂಧಪಟ್ಟ ವಿಷಯಗಳನ್ನು ಆರಿಸಿ",
+    "notSupported": "ಈ ಪುಟವು ಸ್ವಯಂಚಾಲಿತ ಕಳುಹಿಸುವಿಕೆಯನ್ನು ಬೆಂಬಲಿಸುವುದಿಲ್ಲ. ದಯವಿಟ್ಟು ಸಂದೇಶವನ್ನು ನಕಲಿಸಿ ಮತ್ತು ಅದನ್ನು ಕೈಯಾರೆ ಕಳುಹಿಸಿ."
+  }
 }

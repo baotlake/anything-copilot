@@ -23,6 +23,8 @@
   "chatDocsAddon": "读取文档",
   "newFeature": "新功能",
   "chatDocsTips": "支持 ChatGPT, Bard, MS Copilot...",
+  "selected": "已选择",
+  "page": "页",
   "chatDocs": {
     "supportFormat": "支持PDF、DOCX",
     "files": "文件/文本",
@@ -36,8 +38,7 @@
     "msgContent": "消息内容",
     "startChatting": "你可以开始聊天了！",
     "autoSending": "自动发送",
-    "chooseContentRelevant": "选择与你想了解的主题更相关的内容"
-  },
-  "selected": "已选择",
-  "page": "页"
+    "chooseContentRelevant": "选择与你想了解的主题更相关的内容",
+    "notSupported": "此页面不支持自动发送，请复制消息发送"
+  }
 }

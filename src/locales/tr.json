@@ -21,6 +21,10 @@
   "save": "Kaydet",
   "next": "İleri",
   "chatDocsAddon": "Belgelerle Sohbet",
+  "newFeature": "Yeni Özellik",
+  "chatDocsTips": "ChatGPT, Bard, MS Copilot Desteği...",
+  "selected": "Seçildi",
+  "page": "Sayfa",
   "chatDocs": {
     "supportFormat": "PDF, DOCX Desteği",
     "files": "Dosyalar/Metin",
@@ -34,10 +38,7 @@
     "msgContent": "Mesaj İçeriği",
     "startChatting": "Şimdi sohbet etmeye başlayabilirsiniz!",
     "autoSending": "Otomatik Gönderim",
-    "chooseContentRelevant": "Öğrenmek istediğiniz konuyla daha ilgili içerik seçin"
-  },
-  "newFeature": "Yeni Özellik",
-  "chatDocsTips": "ChatGPT, Bard, MS Copilot Desteği...",
-  "selected": "Seçildi",
-  "page": "Sayfa"
+    "chooseContentRelevant": "Öğrenmek istediğiniz konuyla daha ilgili içerik seçin",
+    "notSupported": "Bu sayfa otomatik göndermeyi desteklemez. Lütfen mesajı kopyalayın ve manuel olarak gönderin."
+  }
 }

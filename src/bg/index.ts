@@ -18,20 +18,6 @@ async function openPipBackground(url: string) {
   })
 }
 
-/** @deprecated */
-async function getContentCss(id: number, url: string) {
-  const res = await fetch(url)
-  const text = await res.text()
-
-  chrome.tabs.sendMessage(id, {
-    type: "content-css",
-    payload: {
-      url: url,
-      value: text,
-    },
-  })
-}
-
 async function pipLaunch(url: string) {
   const tab = await chrome.tabs.create({ url })
   await waitMessage({
@@ -69,13 +55,6 @@ async function getPipWindow(
     window: win,
   })
   return win
-}
-
-type MinimizeOptions = {
-  windowId: number
-}
-async function minimizePip({ windowId }: MinimizeOptions) {
-  await chrome.windows.update(windowId, { state: "minimized" })
 }
 
 type UpdatePipWinOption = {
@@ -129,9 +108,6 @@ function handleMessage(message: any, sender: chrome.runtime.MessageSender) {
   switch (message?.type) {
     case MessageType.bgOpenPip:
       openPipBackground(message.url)
-      break
-    case "get-content-css":
-      getContentCss(sender.tab?.id || 0, message.url)
       break
     case MessageType.bgPipLaunch:
       pipLaunch(message.url)

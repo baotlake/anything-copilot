@@ -21,6 +21,10 @@
   "save": "Salva",
   "next": "Avanti",
   "chatDocsAddon": "Chat con Documenti",
+  "newFeature": "Nuova funzionalità",
+  "chatDocsTips": "Supporta ChatGPT, Bard, MS Copilot...",
+  "selected": "Selezionato",
+  "page": "Pagina",
   "chatDocs": {
     "supportFormat": "Supporto PDF, DOCX",
     "files": "File/Testo",
@@ -34,10 +38,7 @@
     "msgContent": "Contenuto messaggio",
     "startChatting": "Puoi iniziare a chattare adesso!",
     "autoSending": "Invio automatico",
-    "chooseContentRelevant": "Scegli contenuti più pertinenti all'argomento che vuoi apprendere"
-  },
-  "newFeature": "Nuova funzionalità",
-  "chatDocsTips": "Supporta ChatGPT, Bard, MS Copilot...",
-  "selected": "Selezionato",
-  "page": "Pagina"
+    "chooseContentRelevant": "Scegli contenuti più pertinenti all'argomento che vuoi apprendere",
+    "notSupported": "Questa pagina non supporta l'invio automatico. Si prega di copiare il messaggio e inviarlo manualmente."
+  }
 }

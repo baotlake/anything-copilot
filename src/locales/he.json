@@ -21,6 +21,10 @@
   "save": "שמירה",
   "next": "הבא",
   "chatDocsAddon": "צ'אט עם מסמכים",
+  "newFeature": "תכונה חדשה",
+  "chatDocsTips": "תמיכה ב-ChatGPT, Bard, MS Copilot...",
+  "selected": "נבחר",
+  "page": "עמוד",
   "chatDocs": {
     "supportFormat": "תמיכה ב־PDF, DOCX",
     "files": "קבצים/טקסט",
@@ -34,10 +38,7 @@
     "msgContent": "תוכן ההודעה",
     "startChatting": "אתה יכול להתחיל לשוחח כעת!",
     "autoSending": "שליחה אוטומטית",
-    "chooseContentRelevant": "בחר תוכן הקשור יותר לנושא שברצונך ללמוד עליו"
-  },
-  "newFeature": "תכונה חדשה",
-  "chatDocsTips": "תמיכה ב-ChatGPT, Bard, MS Copilot...",
-  "selected": "נבחר",
-  "page": "עמוד"
+    "chooseContentRelevant": "בחר תוכן הקשור יותר לנושא שברצונך ללמוד עליו",
+    "notSupported": "דף זה אינו תומך בשליחה אוטומטית. אנא העתק את ההודעה ושלח אותה ידנית."
+  }
 }

@@ -1,7 +1,7 @@
 import click
 from os import path, listdir
 import json
-
+import pandas as pd
 
 
 @click.group()
@@ -22,46 +22,39 @@ def cli(ctx, d: str, filename: str):
     ctx.obj['locales_dir'] = locales_dir
     ctx.obj['items'] = items
 
-# extract updated i18n items
+# extract i18n to csv
 
 @cli.command()
-@click.option('-u','--updated', default=['en', 'zh-CN'], multiple=True, help="updated i18n items")
-@click.option('-r', '--ref', default='ja', help="diff reference language")
-@click.option('-e','--empty', default=True, help="output empty language")
-@click.option('-o', default='-', help="output")
-@click.option('-l', default=9999, type=int, help="keys limit")
+@click.option('-p','--preference', default=['en', 'zh-CN'], multiple=True, help="preference languages")
+@click.option('-o', '--output', default='-', help="output")
 @click.pass_context
-def extract(ctx, updated, ref, empty=True, o='-', l=9999):
+def extract(ctx, preference:list, output:str):
     items = ctx.obj['items']
-
     msgs = {
         code: json.load(open(items[code], 'r', encoding='utf8'))
         for code in items.keys()
     }
-    ref_msg = json.load(open(items[ref], 'r', encoding='utf8'))
-    new_keys = {
-        code: [key for key in msgs[code].keys() if key not in ref_msg.keys()]
-        for code in items.keys()
-    }
+    series_list =[
+        pd.json_normalize(v).rename({ 0: k }).transpose()[k]
+        for k, v in msgs.items()
+    ]
+    df = pd.DataFrame(series_list).transpose()
+    code_list = [*preference, *[code for code in msgs.keys() if code not in preference]]
+    df = df[code_list]
 
-    def get_diff(d, r):
-        return { k: d for k in d.keys() if k not in r.keys() }
-
-    new_data = {
-        code: {key: msgs[code][key] for key in new_keys[code][0:l]}
-        for code in items.keys() if code in updated or (empty and len(new_keys[code]) == 0)
-    }
-
-    print(json.dumps(new_data, ensure_ascii=False, indent=4))
+    if output == '-':
+        print(df.to_csv())
+    else:
+        df.to_csv(output)
 
 
 @cli.command()
 @click.option('-t', default='', help='')
+@click.option('-i', '--increment', default=True, help='Incremental update')
 @click.pass_context
-def update(ctx, t):
+def update(ctx, t: str, increment: bool):
     locales_dir = ctx.obj['locales_dir']
     translated_path = path.realpath(t)
-
 
     def merge(d, d2):
         n = {**d}
@@ -69,16 +62,15 @@ def update(ctx, t):
             n[k] = v if type(v) == str else merge(n[k], v)
         return n
         
-
     def update_msg(code, content):
         filename = code.replace('_', '-')
         msg_path = path.join(locales_dir, f'{filename}.json')
 
         try:
             msg = json.load(open(msg_path, 'r', encoding='utf8'))
-
+            data = merge(msg, content) if increment else content
             json.dump(
-                merge(msg, content),
+                data,
                 open(msg_path, 'w+', encoding='utf8'),
                 ensure_ascii=False,
                 indent=2
@@ -97,7 +89,27 @@ def update(ctx, t):
                 update_msg(code, content)
 
     if t.endswith('.json'):
-        data = json.load(open(translated_path, 'r', encoding='utf8'))
+        df_dict = json.load(open(translated_path, 'r', encoding='utf8'))
+        for code in df_dict:
+            update_msg(code, df_dict[code])
+    
+    if t.endswith('.csv'):
+        df = pd.read_csv(translated_path, index_col=0)
+        df_dict = df.to_dict(orient='dict')
+        data = {}
+        for code, d in df_dict.items():
+            data[code] = {}
+            for k,v in d.items():
+                keys = k.split('.')
+                current = data[code]
+                for i,key in enumerate(keys):
+                    if i == len(keys) - 1:
+                        current[key] = v
+                        pass
+                    else:
+                        current[key] = current[key] if key in current else {}
+                        current = current[key]
+
         for code in data:
             update_msg(code, data[code])
 

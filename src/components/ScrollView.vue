@@ -9,12 +9,12 @@ const props = defineProps<{
   <div :class="['scrollbar relative overflow-auto', props.class]">
     <div
       v-if="fade == true"
-      class="sticky top-0 left-0 w-full h-4 z-50 bg-gradient-to-b from-background to-transparent"
+      class="sticky top-0 left-0 w-full h-4 z-10 bg-gradient-to-b from-background to-transparent"
     ></div>
     <slot></slot>
     <div
       v-if="fade == true"
-      class="sticky bottom-0 left-0 w-full h-4 z-50 bg-gradient-to-t from-background to-transparent"
+      class="sticky bottom-0 left-0 w-full h-4 z-10 bg-gradient-to-t from-background to-transparent"
     ></div>
   </div>
 </template>

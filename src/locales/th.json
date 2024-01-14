@@ -21,6 +21,10 @@
   "save": "บันทึก",
   "next": "ถัดไป",
   "chatDocsAddon": "พูดคุยกับเอกสาร",
+  "newFeature": "คุณลักษณะใหม่",
+  "chatDocsTips": "สนับสนุน ChatGPT, Bard, MS Copilot...",
+  "selected": "เลือก",
+  "page": "หน้า",
   "chatDocs": {
     "supportFormat": "รองรับ PDF, DOCX",
     "files": "ไฟล์/ข้อความ",
@@ -34,10 +38,7 @@
     "msgContent": "เนื้อหาข้อความ",
     "startChatting": "คุณสามารถเริ่มสนทนาได้แล้ว!",
     "autoSending": "การส่งอัตโนมัติ",
-    "chooseContentRelevant": "เลือกเนื้อหาที่เกี่ยวข้องมากขึ้นกับหัวข้อที่คุณต้องการเรียนรู้"
-  },
-  "newFeature": "คุณลักษณะใหม่",
-  "chatDocsTips": "สนับสนุน ChatGPT, Bard, MS Copilot...",
-  "selected": "เลือก",
-  "page": "หน้า"
+    "chooseContentRelevant": "เลือกเนื้อหาที่เกี่ยวข้องมากขึ้นกับหัวข้อที่คุณต้องการเรียนรู้",
+    "notSupported": "หน้านี้ไม่รองรับการส่งอัตโนมัติ กรุณาคัดลอกข้อความและส่งด้วยตนเอง"
+  }
 }

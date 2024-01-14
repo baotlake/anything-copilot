@@ -21,6 +21,10 @@
   "save": "Hifadhi",
   "next": "Ifuatayo",
   "chatDocsAddon": "Ongea na Nyaraka",
+  "newFeature": "Kipengele Kipya",
+  "chatDocsTips": "Msaada wa ChatGPT, Bard, MS Copilot...",
+  "selected": "Imechaguliwa",
+  "page": "Ukurasa",
   "chatDocs": {
     "supportFormat": "Support PDF, DOCX",
     "files": "Files/Text",
@@ -34,10 +38,7 @@
     "msgContent": "Yaliyomo ya Ujumbe",
     "startChatting": "Unaweza kuanza kuchat sasa!",
     "autoSending": "Kutuma Kiotomatiki",
-    "chooseContentRelevant": "Chagua yaliyomo inayohusiana zaidi na mada unayotaka kujifunza kuhusu"
-  },
-  "newFeature": "Kipengele Kipya",
-  "chatDocsTips": "Msaada wa ChatGPT, Bard, MS Copilot...",
-  "selected": "Imechaguliwa",
-  "page": "Ukurasa"
+    "chooseContentRelevant": "Chagua yaliyomo inayohusiana zaidi na mada unayotaka kujifunza kuhusu",
+    "notSupported": "Ukurasa huu hauungi mkono kutuma moja kwa moja. Tafadhali nakili ujumbe na utumie kwa mikono."
+  }
 }

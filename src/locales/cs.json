@@ -21,6 +21,10 @@
   "save": "Uložit",
   "next": "Další",
   "chatDocsAddon": "Chat s dokumenty",
+  "newFeature": "Nová funkce",
+  "chatDocsTips": "Podpora ChatGPT, Bard, MS Copilot...",
+  "selected": "Vybráno",
+  "page": "Stránka",
   "chatDocs": {
     "supportFormat": "Podpora formátů PDF, DOCX",
     "files": "Soubory/Text",
@@ -34,10 +38,7 @@
     "msgContent": "Obsah zprávy",
     "startChatting": "Můžete začít chatovat nyní!",
     "autoSending": "Automatické odesílání",
-    "chooseContentRelevant": "Vyberte obsah více relevantní k tématu, které chcete studovat"
-  },
-  "newFeature": "Nová funkce",
-  "chatDocsTips": "Podpora ChatGPT, Bard, MS Copilot...",
-  "selected": "Vybráno",
-  "page": "Stránka"
+    "chooseContentRelevant": "Vyberte obsah více relevantní k tématu, které chcete studovat",
+    "notSupported": "Tato stránka nepodporuje automatické odesílání. Zkopírujte zprávu a odešlete ji ručně."
+  }
 }

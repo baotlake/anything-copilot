@@ -11,7 +11,7 @@ import DocInput from "./DocInput.vue"
 import IconPlayCircle from "../icons/IconPlayCircle.vue"
 import IconPause from "../icons/IconPause.vue"
 import IconProgressActivity from "../icons/IconProgressActivity.vue"
-import { sitesConfig } from "./chat"
+import { sitesConfig } from "./helper"
 import { query, dispatchInput, click, waitFor } from "@/utils/dom"
 import { chatDocPrompt } from "@/utils/prompt"
 import { useI18n } from "@/utils/i18n"
@@ -43,6 +43,7 @@ const currentDoc = ref("")
 const sendTask = reactive({
   key: "",
   status: "" as "" | "running" | "done",
+  error: "",
 })
 
 const config = reactive({
@@ -272,71 +273,6 @@ const handleCopyMessage = () => {
   navigator.clipboard.writeText(message)
 }
 
-const len = async (text: string, type: "char" | "token") => {
-  if (type == "token") {
-    return contentService.calcTokens(text)
-  }
-  return text.length
-}
-
-// const setCurrent = async () => {
-//   const { prompt, maxInput, maxInputType, maxRuns } = config
-//   const snippets: SnippetItem[] = []
-//   const promptLength = await len(prompt, maxInputType)
-//   const maxInputLength = maxInput - promptLength
-
-//   for (let doc of docs.value) {
-//     for (let i = 0; i < doc.contents.length; i++) {
-//       const content = doc.contents[i]
-//       if (!content.selected || content.sentLength == content.data.length) {
-//         continue
-//       }
-//       const snippetsLength = snippets.reduce((a, c) => a + c.length, 0)
-//       if (snippets.length >= 1 && maxInputLength - snippetsLength < 600) {
-//         break
-//       }
-
-//       const metaList: string[] = []
-//       if (doc.kind == "file") {
-//         metaList.push(`file: ${doc.name}\n`)
-//       }
-//       if (doc.contents.length > 3) {
-//         metaList.push(`page: ${i + 1}\n`)
-//       }
-//       const meta = metaList.join("")
-
-//       const metaLength = await len(meta, maxInputType)
-//       const maxDataLength =
-//         maxInputLength - prompt.length - snippetsLength - metaLength - 100
-
-//       let data = content.data.slice(content.sentLength)
-//       data = await contentService.tokenSlice(content.data, maxDataLength)
-
-//       console.log('current data: ', data)
-//       data = semanticClip(data, data.length)
-//       const snippet = `\`\`\`\`md\n${meta}\n${data}\n\`\`\`\``
-//       const snippetLength = await len(snippet, maxInputType)
-
-//       snippets.push({
-//         key: doc.key,
-//         index: i,
-//         start: content.sentLength,
-//         end: content.sentLength + data.length,
-//         snippet: snippet,
-//         length: snippetLength,
-//       })
-//     }
-//   }
-
-//   const text = snippets.map((p) => p.snippet).join("\n\n")
-//   const message = text ? `${prompt}\n\n${text}` : ""
-//   const done = docs.value.length > 0 && snippets.length == 0
-
-//   currentMessage.value.done = done
-//   currentMessage.value.message = message
-//   currentMessage.value.snippets = snippets
-// }
-
 const nextMessage = async () => {
   for (let item of currentMessage.value.snippets) {
     const content = chatDocsPanel.docMap[item.key]?.contents[item.index]
@@ -344,8 +280,6 @@ const nextMessage = async () => {
       content.sentLength = item.end
     }
   }
-
-  // await setCurrent()
 }
 
 const autoSend = async () => {
@@ -366,26 +300,32 @@ const autoSend = async () => {
     sendTask.status == "running" &&
     sendTask.key == key
 
-  while (isWorking()) {
-    const message = currentMessage.value.message
-    console.log(">>", message)
-    await new Promise((r) => setTimeout(r, 100))
+  try {
+    while (isWorking()) {
+      const message = currentMessage.value.message
+      console.log(">>", message)
+      await new Promise((r) => setTimeout(r, 100))
 
-    const input = query(config.selector.input) as HTMLInputElement
-    if (!input) {
-      throw Error("couldn't find input element for " + config.selector.input)
-    }
-    await dispatchInput(input, message)
-    await new Promise((r) => setTimeout(r, 200))
-    await click(config.selector.send)
-    await new Promise((r) => setTimeout(r, 600))
-    await waitFor(config.selector.wait, 1000 * 30)
-    await new Promise((r) => setTimeout(r, 200))
-    await nextMessage()
+      const input = query(config.selector.input) as HTMLInputElement
+      if (!input) {
+        throw Error("couldn't find input element for " + config.selector.input)
+      }
+      await dispatchInput(input, message)
+      await new Promise((r) => setTimeout(r, 200))
+      await click(config.selector.send)
+      await new Promise((r) => setTimeout(r, 600))
+      await waitFor(config.selector.wait, 1000 * 30)
+      await new Promise((r) => setTimeout(r, 200))
+      await nextMessage()
 
-    if (currentMessage.value.done) {
-      sendTask.status = "done"
+      if (currentMessage.value.done) {
+        sendTask.status = "done"
+      }
     }
+  } catch (err) {
+    console.error(err)
+    sendTask.status = ""
+    sendTask.error = String(err)
   }
 }
 
@@ -403,10 +343,10 @@ const resetSent = () => {
 </script>
 
 <template>
-  <div ref="div" class="pb-3">
-    <div class="relative">
+  <div ref="div" class="pb-3 h-0 flex-1">
+    <div class="relative h-full">
       <!-- primary panel -->
-      <ScrollView fade class="max-h-[560px] px-4">
+      <ScrollView fade class="h-full px-4">
         <div class="">
           <div class="mb-4">
             <div class="mb-2 text-base font-bold">
@@ -434,7 +374,7 @@ const resetSent = () => {
               {{ t("chatDocs.msgSettings") }}
             </div>
             <div
-              class="text-sm my-2 px-3 py-1 rounded-lg bg-[var(--color-background-soft)]"
+              class="text-sm my-2 px-3 py-1 rounded bg-[var(--color-background-soft)]"
             >
               <div class="flex items-center justify-between my-1">
                 <span>{{ t("prompt") }}</span>
@@ -480,14 +420,14 @@ const resetSent = () => {
             </div>
 
             <div
-              class="text-sm px-3 my-2 py-1 rounded-lg bg-[var(--color-background-soft)]"
+              class="text-sm px-3 my-2 py-1 rounded bg-[var(--color-background-soft)]"
             >
               <div
                 aria-label="progress"
-                class="relative w-full h-2 my-2 rounded-full bg-foreground/10"
+                class="relative w-full h-2 my-2 rounded-full bg-foreground/5"
               >
                 <div
-                  class="absolute h-full rounded-full transition-all bg-primary/30"
+                  class="absolute h-full rounded-full transition-all bg-primary/10"
                   :style="{
                     width: `${progress.pendingPrecent}%`,
                   }"
@@ -547,6 +487,21 @@ const resetSent = () => {
           </div>
 
           <div class="mb-0">
+            <p
+              v-if="sendTask.error"
+              :class="[
+                'text-rose-600 bg-rose-200/10 border border-rose-600 px-3',
+                'mb-4 rounded py-1',
+              ]"
+            >
+              {{ sendTask.error }}
+            </p>
+            <p
+              v-if="!config.selector"
+              class="px-3 py-1 border rounded border-amber-400/60 mb-4"
+            >
+              {{ t("chatDocs.notSupported") }}
+            </p>
             <div class="flex gap-2 justify-end">
               <button
                 v-if="sendTask.status == 'running'"
@@ -561,6 +516,7 @@ const resetSent = () => {
                 :class="[
                   'font-bold flex items-center gap-1 px-3 py-1 bg-primary-300 dark:bg-primary-800',
                   'enabled:hover:bg-primary-400 enabled:dark:hover:bg-primary-700',
+                  'disabled:bg-foreground/10 disabled:cursor-not-allowed',
                 ]"
                 @click="autoSend"
               >
@@ -579,7 +535,7 @@ const resetSent = () => {
       <!-- Sheet UI -->
       <div
         v-if="sheet != ''"
-        class="absolute w-full h-full top-0 left-0 flex flex-col bg-background"
+        class="absolute w-full h-full top-0 left-0 flex flex-col bg-background z-10"
       >
         <div class="flex items-center pt-3 px-4">
           <button
@@ -604,7 +560,7 @@ const resetSent = () => {
         <ScrollView fade v-if="sheet == 'docSelect'" class="px-4">
           <p class="text-sm pb-2">{{ t("chatDocs.chooseContentRelevant") }}</p>
           <input
-            class="w-full px-2 py-1 border"
+            class="w-full px-2 py-1 border hidden"
             :placeholder="t('search')"
             type="text"
           />
@@ -631,13 +587,17 @@ const resetSent = () => {
           <textarea
             :class="[
               'scrollbar border border-foreground/20 w-full h-36 p-2 bg-background-soft',
-              'outline-none',
+              'outline-none rounded',
             ]"
             v-model="config.prompt"
           ></textarea>
           <div class="flex gap-2 justify-end my-2">
-            <button class="px-2">{{ t("cancel") }}</button>
-            <button class="px-2">{{ t("save") }}</button>
+            <button class="px-2 py-1 bg-foreground/10" @click="sheet = ''">
+              {{ t("cancel") }}
+            </button>
+            <button class="px-2 py-1 bg-foreground/10 hidden">
+              {{ t("save") }}
+            </button>
           </div>
         </ScrollView>
       </div>
@@ -650,7 +610,9 @@ const resetSent = () => {
   /* border-color: var(--color-border); */
   @apply border-foreground/20;
 }
-*:hover {
+
+button:hover,
+input:hover {
   @apply border-foreground/30;
 }
 

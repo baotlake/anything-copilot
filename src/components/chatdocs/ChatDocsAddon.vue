@@ -6,7 +6,7 @@ import { chatDocsPanel, docsAddon } from "@/store"
 import ChatDocsPanel from "@/components/chatdocs/ChatDocsPanel.vue"
 import { watchEffect } from "vue"
 import { useI18n } from "@/utils/i18n"
-import { sitesConfig } from "./chat"
+import { getDocItem, sitesConfig } from "./helper"
 
 const { t } = useI18n()
 const logoUrl = chrome.runtime.getURL("/logo.svg")
@@ -50,36 +50,7 @@ async function onDrop(e: DragEvent) {
   docsAddon.visible = false
 
   if (e.dataTransfer) {
-    const items: typeof chatDocsPanel.inputs = []
-
-    for (let i = 0; i < e.dataTransfer.items.length; i++) {
-      const item = e.dataTransfer.items[i]
-
-      if (item.kind == "file") {
-        const file = item.getAsFile()
-        if (file) {
-          items.push({
-            key: crypto.randomUUID(),
-            kind: item.kind,
-            type: item.type,
-            data: file,
-          })
-        }
-      }
-
-      if (item.kind == "string") {
-        const { kind, type } = item
-        const data = await new Promise<string>((r) => item.getAsString(r))
-        items.push({
-          key: crypto.randomUUID(),
-          kind,
-          type,
-          data,
-        })
-      }
-    }
-
-    // dropZone.items = items
+    const items = await getDocItem(e.dataTransfer.items)
 
     chatDocsPanel.visible = true
     chatDocsPanel.inputs = items
@@ -183,8 +154,8 @@ onUnmounted(() => {
     v-if="chatDocsPanel.visible"
     ref="chatDocsDiv"
     :class="[
-      'fixed w-96 max-w-full h-fit border rounded-lg z-[9999]',
-      'border-foreground/10 bg-background shadow-lg dark:border-2',
+      'fixed flex flex-col w-96 max-w-full h-[600px] max-h-full border rounded-lg',
+      'z-[9999] border-foreground/10 bg-background shadow-lg dark:border-2',
       {
         'left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2': !position.valid,
       },

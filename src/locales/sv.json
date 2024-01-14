@@ -21,6 +21,10 @@
   "save": "Spara",
   "next": "Nästa",
   "chatDocsAddon": "Chatta med Dokument",
+  "newFeature": "Ny funktion",
+  "chatDocsTips": "Stöd för ChatGPT, Bard, MS Copilot...",
+  "selected": "Vald",
+  "page": "Sida",
   "chatDocs": {
     "supportFormat": "Stöd för PDF, DOCX",
     "files": "Filer/Text",
@@ -34,10 +38,7 @@
     "msgContent": "Meddelandeinnehåll",
     "startChatting": "Du kan börja chatta nu!",
     "autoSending": "Automatisk sändning",
-    "chooseContentRelevant": "Välj innehåll som är mer relevant för det ämne du vill lära dig om"
-  },
-  "newFeature": "Ny funktion",
-  "chatDocsTips": "Stöd för ChatGPT, Bard, MS Copilot...",
-  "selected": "Vald",
-  "page": "Sida"
+    "chooseContentRelevant": "Välj innehåll som är mer relevant för det ämne du vill lära dig om",
+    "notSupported": "Denna sida stöder inte automatisk sändning. Kopiera meddelandet och skicka det manuellt."
+  }
 }

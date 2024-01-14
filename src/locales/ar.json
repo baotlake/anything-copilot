@@ -21,6 +21,10 @@
   "save": "حفظ",
   "next": "التالي",
   "chatDocsAddon": "الدردشة مع المستندات",
+  "newFeature": "ميزة جديدة",
+  "chatDocsTips": "دعم ChatGPT، Bard، MS Copilot...",
+  "selected": "تم الاختيار",
+  "page": "الصفحة",
   "chatDocs": {
     "supportFormat": "دعم PDF، DOCX",
     "files": "ملفات/نص",
@@ -34,10 +38,7 @@
     "msgContent": "محتوى الرسالة",
     "startChatting": "يمكنك بدء الدردشة الآن!",
     "autoSending": "الإرسال التلقائي",
-    "chooseContentRelevant": "اختر محتوى أكثر صلة بالموضوع الذي ترغب في التعلم عنه"
-  },
-  "newFeature": "ميزة جديدة",
-  "chatDocsTips": "دعم ChatGPT، Bard، MS Copilot...",
-  "selected": "تم الاختيار",
-  "page": "الصفحة"
+    "chooseContentRelevant": "اختر محتوى أكثر صلة بالموضوع الذي ترغب في التعلم عنه",
+    "notSupported": "هذه الصفحة لا تدعم الإرسال التلقائي. يرجى نسخ الرسالة وإرسالها يدويًا."
+  }
 }

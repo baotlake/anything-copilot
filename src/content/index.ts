@@ -1,7 +1,6 @@
 import { mount, waitMountApp } from "./ui"
 import {
   chatDocsPanel,
-  contentCss,
   pipLauncher,
   pipLoading,
   pipWindow,
@@ -29,9 +28,6 @@ function handleMessage(
         type: "pip",
         detail: message.options,
       })
-      break
-    case "content-css":
-      contentCss.value = message.payload?.value || ""
       break
     case MessageType.pipLaunch:
       pipLauncher.visible = true

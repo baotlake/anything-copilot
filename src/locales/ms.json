@@ -21,6 +21,10 @@
   "save": "Simpan",
   "next": "Seterusnya",
   "chatDocsAddon": "Berbual dengan Dokumen",
+  "newFeature": "Ciri Baru",
+  "chatDocsTips": "Sokongan ChatGPT, Bard, MS Copilot...",
+  "selected": "Dipilih",
+  "page": "Halaman",
   "chatDocs": {
     "supportFormat": "Sokongan PDF, DOCX",
     "files": "Fail/Teks",
@@ -34,10 +38,7 @@
     "msgContent": "Kandungan Mesej",
     "startChatting": "Anda boleh mula berbual sekarang!",
     "autoSending": "Penghantaran Automatik",
-    "chooseContentRelevant": "Pilih kandungan yang lebih berkaitan dengan topik yang anda ingin ketahui"
-  },
-  "newFeature": "Ciri Baru",
-  "chatDocsTips": "Sokongan ChatGPT, Bard, MS Copilot...",
-  "selected": "Dipilih",
-  "page": "Halaman"
+    "chooseContentRelevant": "Pilih kandungan yang lebih berkaitan dengan topik yang anda ingin ketahui",
+    "notSupported": "Halaman ini tidak menyokong penghantaran automatik. Sila salin mesej dan hantarkan secara manual."
+  }
 }

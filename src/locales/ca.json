@@ -21,6 +21,10 @@
   "save": "Desa",
   "next": "Següent",
   "chatDocsAddon": "Xateja amb Documents",
+  "newFeature": "Nova característica",
+  "chatDocsTips": "Suporta ChatGPT, Bard, MS Copilot...",
+  "selected": "Seleccionat",
+  "page": "Pàgina",
   "chatDocs": {
     "supportFormat": "Suporta PDF, DOCX",
     "files": "Fitxers/Text",
@@ -34,10 +38,7 @@
     "msgContent": "Contingut del missatge",
     "startChatting": "Pots començar a xatejar ara!",
     "autoSending": "Enviament automàtic",
-    "chooseContentRelevant": "Trieu contingut més rellevant pel tema que voleu aprendre"
-  },
-  "newFeature": "Nova característica",
-  "chatDocsTips": "Suporta ChatGPT, Bard, MS Copilot...",
-  "selected": "Seleccionat",
-  "page": "Pàgina"
+    "chooseContentRelevant": "Trieu contingut més rellevant pel tema que voleu aprendre",
+    "notSupported": "Aquesta pàgina no admet l'enviament automàtic. Copieu el missatge i envieu -lo manualment."
+  }
 }

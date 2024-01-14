@@ -23,6 +23,8 @@
   "chatDocsAddon": "Chat with Docs",
   "newFeature": "New Feature",
   "chatDocsTips": "Support ChatGPT, Bard, MS Copilot...",
+  "selected": "Selected",
+  "page": "Page",
   "chatDocs": {
     "supportFormat": "Support PDF, DOCX",
     "files": "Files/Text",
@@ -36,8 +38,7 @@
     "msgContent": "Message Content",
     "startChatting": "You can start chatting now!",
     "autoSending": "Auto Sending",
-    "chooseContentRelevant": "Choose content more relevant to the topic you want to learn about"
-  },
-  "selected": "Selected",
-  "page": "Page"
+    "chooseContentRelevant": "Choose content more relevant to the topic you want to learn about",
+    "notSupported": "This page does not support automatic sending. Please copy the message and send it manually."
+  }
 }

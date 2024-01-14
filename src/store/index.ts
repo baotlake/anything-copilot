@@ -24,8 +24,6 @@ export const items = reactive([
   },
 ])
 
-export const contentCss = ref("")
-
 export const pipLauncher = reactive({
   visible: false,
 })

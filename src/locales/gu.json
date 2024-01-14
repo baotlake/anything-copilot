@@ -21,6 +21,10 @@
   "save": "સાચવો",
   "next": "આગામી",
   "chatDocsAddon": "ડોક્યુમેન્ટ્સ સાથે ચેટ",
+  "newFeature": "નવું લક્ષણ",
+  "chatDocsTips": "સપોર્ટ ChatGPT, Bard, MS Copilot...",
+  "selected": "પસંદ કર્યું",
+  "page": "પૃષ્ઠ",
   "chatDocs": {
     "supportFormat": "પીડીએફ, ડોક્સ આધાર પર સપોર્ટ",
     "files": "ફાઇલો/ટેક્સટ",
@@ -34,10 +38,7 @@
     "msgContent": "સંદેશ સારાંશ",
     "startChatting": "તમે હવે ચેટિંગ શરૂ કરી શકો છો!",
     "autoSending": "આપતી મોકલવું",
-    "chooseContentRelevant": "તમારા શીખવાના વિષય સાથે સંબંધિત કન્ટેન્ટ પસંદ કરો"
-  },
-  "newFeature": "નવું લક્ષણ",
-  "chatDocsTips": "સપોર્ટ ChatGPT, Bard, MS Copilot...",
-  "selected": "પસંદ કર્યું",
-  "page": "પૃષ્ઠ"
+    "chooseContentRelevant": "તમારા શીખવાના વિષય સાથે સંબંધિત કન્ટેન્ટ પસંદ કરો",
+    "notSupported": "આ પૃષ્ઠ સ્વચાલિત મોકલવાનું સમર્થન કરતું નથી. કૃપા કરીને સંદેશની નકલ કરો અને તેને જાતે મોકલો."
+  }
 }

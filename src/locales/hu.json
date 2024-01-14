@@ -21,6 +21,10 @@
   "save": "Mentés",
   "next": "Következő",
   "chatDocsAddon": "Csevegés dokumentumokkal",
+  "newFeature": "Új funkció",
+  "chatDocsTips": "Támogatja a ChatGPT, Bard, MS Copilot...",
+  "selected": "Kiválasztva",
+  "page": "Oldal",
   "chatDocs": {
     "supportFormat": "PDF, DOCX támogatás",
     "files": "Fájlok/Szöveg",
@@ -34,10 +38,7 @@
     "msgContent": "Üzenet tartalom",
     "startChatting": "Most kezdheti a beszélgetést!",
     "autoSending": "Automatikus küldés",
-    "chooseContentRelevant": "Válassza ki a témához relevánsabb tartalmat, amiről szeretne tanulni"
-  },
-  "newFeature": "Új funkció",
-  "chatDocsTips": "Támogatja a ChatGPT, Bard, MS Copilot...",
-  "selected": "Kiválasztva",
-  "page": "Oldal"
+    "chooseContentRelevant": "Válassza ki a témához relevánsabb tartalmat, amiről szeretne tanulni",
+    "notSupported": "Ez az oldal nem támogatja az automatikus küldéseket. Kérjük, másolja az üzenetet, és küldje el manuálisan."
+  }
 }

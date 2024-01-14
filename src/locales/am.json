@@ -21,6 +21,10 @@
   "save": "አስቀምጥ",
   "next": "ቀጣይ",
   "chatDocsAddon": "ተንኮል ከ ተረጋጋይ ትምህር ጋር",
+  "newFeature": "አዲስ አማራ",
+  "chatDocsTips": "የ ChatGPT, Bard, MS Copilot ይጠቀሙ...",
+  "selected": "ተመን ቀይር ተመን ይምረጡ",
+  "page": "ገጾች",
   "chatDocs": {
     "supportFormat": "Support PDF, DOCX",
     "files": "Files/Text",
@@ -34,10 +38,7 @@
     "msgContent": "መልእክት ይከናወናል",
     "startChatting": "እንደሚሰማ መንገድ ተነስቶ ይጀምራል!",
     "autoSending": "እንደሚቆጠር መላክ",
-    "chooseContentRelevant": "ከመረጡ የሚያሳውቁ ተግባራዎችን ለመረጡ ይችላሉ"
-  },
-  "newFeature": "አዲስ አማራ",
-  "chatDocsTips": "የ ChatGPT, Bard, MS Copilot ይጠቀሙ...",
-  "selected": "ተመን ቀይር ተመን ይምረጡ",
-  "page": "ገጾች"
+    "chooseContentRelevant": "ከመረጡ የሚያሳውቁ ተግባራዎችን ለመረጡ ይችላሉ",
+    "notSupported": "ይህ ገጽ ራስ-ሰር መላክን አይደግፍም. እባክዎ መልዕክቱን ይቅዱ እና እራስዎ ይላኩ."
+  }
 }

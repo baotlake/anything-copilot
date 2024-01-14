@@ -21,6 +21,10 @@
   "save": "Salvar",
   "next": "Próximo",
   "chatDocsAddon": "Conversar com Documentos",
+  "newFeature": "Nova Funcionalidade",
+  "chatDocsTips": "Suporte para ChatGPT, Bard, MS Copilot...",
+  "selected": "Selecionado",
+  "page": "Página",
   "chatDocs": {
     "supportFormat": "Suporte para PDF, DOCX",
     "files": "Arquivos/Texto",
@@ -34,10 +38,7 @@
     "msgContent": "Conteúdo da Mensagem",
     "startChatting": "Você pode começar a conversar agora!",
     "autoSending": "Envio Automático",
-    "chooseContentRelevant": "Escolha conteúdo mais relevante para o tópico que você deseja aprender"
-  },
-  "newFeature": "Nova Funcionalidade",
-  "chatDocsTips": "Suporte para ChatGPT, Bard, MS Copilot...",
-  "selected": "Selecionado",
-  "page": "Página"
+    "chooseContentRelevant": "Escolha conteúdo mais relevante para o tópico que você deseja aprender",
+    "notSupported": "Esta página não suporta o envio automático. Copie a mensagem e envie -a manualmente."
+  }
 }

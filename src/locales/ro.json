@@ -21,6 +21,10 @@
   "save": "Salvare",
   "next": "Următorul",
   "chatDocsAddon": "Chat cu Documente",
+  "newFeature": "Caracteristică nouă",
+  "chatDocsTips": "Suport pentru ChatGPT, Bard, MS Copilot...",
+  "selected": "Selectat",
+  "page": "Pagina",
   "chatDocs": {
     "supportFormat": "Suport PDF, DOCX",
     "files": "Fișiere/Text",
@@ -34,10 +38,7 @@
     "msgContent": "Conținut Mesaj",
     "startChatting": "Puteți începe să discutați acum!",
     "autoSending": "Trimitere Automată",
-    "chooseContentRelevant": "Alegeți conținut mai relevant pentru subiectul pe care doriți să îl învățați"
-  },
-  "newFeature": "Caracteristică nouă",
-  "chatDocsTips": "Suport pentru ChatGPT, Bard, MS Copilot...",
-  "selected": "Selectat",
-  "page": "Pagina"
+    "chooseContentRelevant": "Alegeți conținut mai relevant pentru subiectul pe care doriți să îl învățați",
+    "notSupported": "Această pagină nu acceptă trimiterea automată. Vă rugăm să copiați mesajul și să -l trimiteți manual."
+  }
 }

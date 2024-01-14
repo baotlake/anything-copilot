@@ -21,6 +21,10 @@
   "save": "భద్రపరచు",
   "next": "తరువాత",
   "chatDocsAddon": "డాక్యుమెంట్స్తో చాట్",
+  "newFeature": "కొత్త లక్షణం",
+  "chatDocsTips": "మద్దతు ChatGPT, Bard, MS Copilot...",
+  "selected": "ఎంచుకోబడింది",
+  "page": "పేజీ",
   "chatDocs": {
     "supportFormat": "యొక్క మద్దతు PDF, DOCX",
     "files": "ఫైళ్ళు/వచనం",
@@ -34,10 +38,7 @@
     "msgContent": "సందేశ కంటెంట్",
     "startChatting": "మీరు ఇప్పటికే చాటింగ్ ప్రారంభించవచ్చు!",
     "autoSending": "స్వీయం పంపిణీ",
-    "chooseContentRelevant": "మీరు కలిగిన విషయానికి అనుసంధానం కలిగిన కంటెంట్ ఎంచుకోండి"
-  },
-  "newFeature": "కొత్త లక్షణం",
-  "chatDocsTips": "మద్దతు ChatGPT, Bard, MS Copilot...",
-  "selected": "ఎంచుకోబడింది",
-  "page": "పేజీ"
+    "chooseContentRelevant": "మీరు కలిగిన విషయానికి అనుసంధానం కలిగిన కంటెంట్ ఎంచుకోండి",
+    "notSupported": "ఈ పేజీ ఆటోమేటిక్ పంపడానికి మద్దతు ఇవ్వదు. దయచేసి సందేశాన్ని కాపీ చేసి మానవీయంగా పంపండి."
+  }
 }

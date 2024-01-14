@@ -21,6 +21,10 @@
   "save": "Сохранить",
   "next": "Далее",
   "chatDocsAddon": "Чат с документами",
+  "newFeature": "Новая функция",
+  "chatDocsTips": "Поддержка ChatGPT, Bard, MS Copilot...",
+  "selected": "Выбрано",
+  "page": "Страница",
   "chatDocs": {
     "supportFormat": "Поддержка PDF, DOCX",
     "files": "Файлы/Текст",
@@ -34,10 +38,7 @@
     "msgContent": "Содержание Сообщения",
     "startChatting": "Теперь вы можете начать чат!",
     "autoSending": "Автоматическая Отправка",
-    "chooseContentRelevant": "Выберите более релевантный контент по теме, которую вы хотите изучить"
-  },
-  "newFeature": "Новая функция",
-  "chatDocsTips": "Поддержка ChatGPT, Bard, MS Copilot...",
-  "selected": "Выбрано",
-  "page": "Страница"
+    "chooseContentRelevant": "Выберите более релевантный контент по теме, которую вы хотите изучить",
+    "notSupported": "Эта страница не поддерживает автоматическую отправку. Пожалуйста, скопируйте сообщение и отправьте его вручную."
+  }
 }

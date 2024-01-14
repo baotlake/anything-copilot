@@ -21,6 +21,10 @@
   "save": "सहेजें",
   "next": "अगला",
   "chatDocsAddon": "डॉक्यूमेंट्स के साथ चैट",
+  "newFeature": "नई सुविधा",
+  "chatDocsTips": "समर्थन ChatGPT, Bard, MS Copilot...",
+  "selected": "चयनित",
+  "page": "पृष्ठ",
   "chatDocs": {
     "supportFormat": "PDF, DOCX का समर्थन करें",
     "files": "फ़ाइलें/टेक्स्ट",
@@ -34,10 +38,7 @@
     "msgContent": "संदेश सामग्री",
     "startChatting": "आप अब चैटिंग शुरू कर सकते हैं!",
     "autoSending": "आत्म-भेजन",
-    "chooseContentRelevant": "उस विषय के बारे में सीखना जिस पर आप चर्चा करना चाहते हैं, उससे संबंधित सामग्री चुनें"
-  },
-  "newFeature": "नई सुविधा",
-  "chatDocsTips": "समर्थन ChatGPT, Bard, MS Copilot...",
-  "selected": "चयनित",
-  "page": "पृष्ठ"
+    "chooseContentRelevant": "उस विषय के बारे में सीखना जिस पर आप चर्चा करना चाहते हैं, उससे संबंधित सामग्री चुनें",
+    "notSupported": "यह पृष्ठ स्वचालित भेजने का समर्थन नहीं करता है। कृपया संदेश कॉपी करें और इसे मैन्युअल रूप से भेजें।"
+  }
 }

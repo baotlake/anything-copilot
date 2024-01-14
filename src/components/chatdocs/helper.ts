@@ -1,3 +1,5 @@
+import type { chatDocsPanel } from "@/store"
+
 export const sitesConfig = [
   {
     host: "huggingface.co",
@@ -11,8 +13,8 @@ export const sitesConfig = [
   },
   {
     host: "chat.openai.com",
-    path: /^\//,
-    maxInputLength: 18000,
+    path: /./,
+    maxInputLength: 8000,
     maxInputToken: 4096,
     selector: {
       input: "form textarea#prompt-textarea",
@@ -22,7 +24,7 @@ export const sitesConfig = [
   },
   {
     host: "bard.google.com",
-    path: /^\/chat/,
+    path: /chat/,
     maxInputLength: 4096,
     selector: {
       input: "input-area rich-textarea p",
@@ -32,7 +34,7 @@ export const sitesConfig = [
   },
   {
     host: "copilot.microsoft.com",
-    path: /^\//,
+    path: /./,
     maxInputLength: 2048,
     selector: {
       input:
@@ -43,7 +45,7 @@ export const sitesConfig = [
   },
   {
     host: "yiyan.baidu.com",
-    path: /^\//,
+    path: /./,
     maxInputLength: 2000,
     selector: {
       input: "textarea:not(h1 ~ textarea)",
@@ -51,5 +53,57 @@ export const sitesConfig = [
       wait: 'div > span:has(svg[width="240"]):not([style*="display: none"])',
     },
   },
+  {
+    host: chrome.runtime.id + '-',
+    path: /^\/dev.html/,
+    maxInputLength: 8000,
+    maxInputToken: 4096,
+    selector: {
+      input: "form textarea#prompt-textarea",
+      send: "form textarea ~ button",
+      wait: "form textarea ~ button",
+    },
+  },
 ]
 
+export async function getDocItem(itemList: DataTransferItemList | FileList) {
+  const items: typeof chatDocsPanel.inputs = []
+  for (let i = 0; i < itemList.length; i++) {
+    const item = itemList[i]
+
+    if ("name" in item) {
+      items.push({
+        key: crypto.randomUUID(),
+        kind: "file" as const,
+        type: item.type,
+        data: item,
+      })
+      continue
+    }
+
+    if (item.kind == "file") {
+      const file = item.getAsFile()
+      if (file) {
+        items.push({
+          key: crypto.randomUUID(),
+          kind: item.kind,
+          type: item.type,
+          data: file,
+        })
+      }
+    }
+
+    if (item.kind == "string") {
+      const { kind, type } = item
+      const data = await new Promise<string>((r) => item.getAsString(r))
+      items.push({
+        key: crypto.randomUUID(),
+        kind,
+        type,
+        data,
+      })
+    }
+  }
+
+  return items
+}

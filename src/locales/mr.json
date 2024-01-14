@@ -21,6 +21,10 @@
   "save": "सेव्ह करा",
   "next": "पुढे",
   "chatDocsAddon": "दस्तऐवजांसह चॅट",
+  "newFeature": "नवीन सुविधा",
+  "chatDocsTips": "समर्थन ChatGPT, Bard, MS Copilot...",
+  "selected": "निवडले",
+  "page": "पृष्ठ",
   "chatDocs": {
     "supportFormat": "पीडीएफ, डॉक्स समर्थन",
     "files": "फाइलें/टेक्स्ट",
@@ -34,10 +38,7 @@
     "msgContent": "संदेश सामग्री",
     "startChatting": "तुम्ही आता गप्पा सुरू करू शकता!",
     "autoSending": "स्वत: पाठवणे",
-    "chooseContentRelevant": "तुम्हाला ओळखायचं विषयसंबंधित आशय निवडा"
-  },
-  "newFeature": "नवीन सुविधा",
-  "chatDocsTips": "समर्थन ChatGPT, Bard, MS Copilot...",
-  "selected": "निवडले",
-  "page": "पृष्ठ"
+    "chooseContentRelevant": "तुम्हाला ओळखायचं विषयसंबंधित आशय निवडा",
+    "notSupported": "हे पृष्ठ स्वयंचलित पाठविण्यास समर्थन देत नाही. कृपया संदेश कॉपी करा आणि तो व्यक्तिचलितपणे पाठवा."
+  }
 }

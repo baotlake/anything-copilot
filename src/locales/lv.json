@@ -21,6 +21,10 @@
   "save": "Saglabāt",
   "next": "Nākamais",
   "chatDocsAddon": "Čats ar Dokumentiem",
+  "newFeature": "Jauna funkcija",
+  "chatDocsTips": "Atbalsta ChatGPT, Bard, MS Copilot...",
+  "selected": "Atlasīts",
+  "page": "Lapa",
   "chatDocs": {
     "supportFormat": "Atbalsta PDF, DOCX",
     "files": "Faili/Teksts",
@@ -34,10 +38,7 @@
     "msgContent": "Ziņojuma saturs",
     "startChatting": "Jūs varat sākt čatot tagad!",
     "autoSending": "Automātiska sūtīšana",
-    "chooseContentRelevant": "Izvēlieties saturu, kas ir saistīts ar tēmu, par kuru vēlaties uzzināt"
-  },
-  "newFeature": "Jauna funkcija",
-  "chatDocsTips": "Atbalsta ChatGPT, Bard, MS Copilot...",
-  "selected": "Atlasīts",
-  "page": "Lapa"
+    "chooseContentRelevant": "Izvēlieties saturu, kas ir saistīts ar tēmu, par kuru vēlaties uzzināt",
+    "notSupported": "Šī lapa neatbalsta automātisku sūtīšanu. Lūdzu, nokopējiet ziņojumu un nosūtiet to manuāli."
+  }
 }

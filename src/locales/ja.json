@@ -21,6 +21,10 @@
   "save": "保存",
   "next": "次へ",
   "chatDocsAddon": "ドキュメントとのチャット",
+  "newFeature": "新機能",
+  "chatDocsTips": "ChatGPT、Bard、MS Copilot のサポート...",
+  "selected": "選択済み",
+  "page": "ページ",
   "chatDocs": {
     "supportFormat": "PDF、DOCX 対応",
     "files": "ファイル/テキスト",
@@ -34,10 +38,7 @@
     "msgContent": "メッセージ内容",
     "startChatting": "今すぐチャットを始めることができます！",
     "autoSending": "自動送信",
-    "chooseContentRelevant": "学びたいトピックに関連するコンテンツを選択してください"
-  },
-  "newFeature": "新機能",
-  "chatDocsTips": "ChatGPT、Bard、MS Copilot のサポート...",
-  "selected": "選択済み",
-  "page": "ページ"
+    "chooseContentRelevant": "学びたいトピックに関連するコンテンツを選択してください",
+    "notSupported": "このページは、自動送信をサポートしていません。メッセージをコピーして手動で送信してください。"
+  }
 }
