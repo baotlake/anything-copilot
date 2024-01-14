@@ -3,6 +3,7 @@ import {
   querySome,
   copyStyleSheets,
   getDomNonce,
+  getTrustedHTML,
   replaceHtmlNonce,
   removePrerenderRules,
 } from "@/utils/dom"
@@ -117,13 +118,7 @@ export async function copilotReopen({ url, width, height }: ReopenOptions) {
 function writeHtml(pipWindow: Window, html: string) {
   const nonce = getDomNonce(document)
   let escaped = replaceHtmlNonce(html, nonce)
-
-  if (window.trustedTypes) {
-    const escapeHTMLPolicy = window.trustedTypes.createPolicy("escapePolicy", {
-      createHTML: (string: string) => string,
-    })
-    escaped = escapeHTMLPolicy.createHTML(escaped)
-  }
+  escaped = getTrustedHTML(escaped)
 
   pipWindow.document.open()
   pipWindow.document.write(escaped)

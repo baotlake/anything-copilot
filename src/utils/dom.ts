@@ -157,18 +157,36 @@ export function removePrerenderRules(doc: Document) {
   }
 }
 
-export async function dispatchInput(
-  input: HTMLInputElement | HTMLTextAreaElement,
-  value: string
-) {
+export function getTrustedHTML(html: string) {
+  if ("window" in globalThis) {
+    const policy = window.trustedTypes.createPolicy("trustedPolicy", {
+      createHTML: (str: string) => str,
+    })
+    return policy.createHTML(html)
+  }
+  return html
+}
+
+export async function dispatchInput(input: HTMLElement, value: string) {
   if (["INPUT", "TEXTAREA"].includes(input.nodeName)) {
-    input.value = value
+    ;(input as HTMLInputElement).value = value
   } else if (input.contentEditable) {
-    input.innerText = value
+    const html = value.replace(/\n/g, "<br />")
+    input.innerHTML = html
   }
 
   input.dispatchEvent(new Event("input", { bubbles: true }))
   input.dispatchEvent(new Event("change", { bubbles: true }))
+}
+
+export function getInputValue(input: HTMLElement) {
+  if (["INPUT", "TEXTAREA"].includes(input.nodeName)) {
+    return (input as HTMLInputElement).value
+  } else if (input.contentEditable) {
+    const value = input.innerText
+    return value
+  }
+  return ""
 }
 
 export async function click(target: string) {
@@ -176,19 +194,24 @@ export async function click(target: string) {
   el.click()
 }
 
-export async function waitFor(target: string, timeout?: number) {
+export async function waitFor(
+  test: (i: number) => PromiseLike<boolean> | boolean,
+  options: { timeout?: number; interval?: number }
+) {
   let success = false
   let count = 0
   const t0 = Date.now()
+  const timeout = options.timeout || 1000 * 30
+  const interval = options.interval || 600
 
   while (!success) {
-    const view = query(target)
-    success = !!view
+    const result = await test(count)
+    success = !!result
     count++
-    await new Promise((r) => setTimeout(r, 200))
+    await new Promise((r) => setTimeout(r, interval))
 
     if (timeout && Date.now() - t0 > timeout) {
-      throw Error(`click() timeout, target: ${target} wait: ${waitFor}`)
+      throw Error(`waitFor timeout, test: ${test}`)
     }
   }
 }

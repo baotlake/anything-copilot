@@ -12,7 +12,13 @@ import IconPlayCircle from "../icons/IconPlayCircle.vue"
 import IconPause from "../icons/IconPause.vue"
 import IconProgressActivity from "../icons/IconProgressActivity.vue"
 import { sitesConfig } from "./helper"
-import { query, dispatchInput, click, waitFor } from "@/utils/dom"
+import {
+  query,
+  dispatchInput,
+  click,
+  waitFor,
+  getInputValue,
+} from "@/utils/dom"
 import { chatDocPrompt } from "@/utils/prompt"
 import { useI18n } from "@/utils/i18n"
 
@@ -295,6 +301,8 @@ const autoSend = async () => {
   sendTask.key = key
   sendTask.status = "running"
 
+  const selector = config.selector
+
   const isWorking = () =>
     !currentMessage.value.done &&
     sendTask.status == "running" &&
@@ -306,15 +314,28 @@ const autoSend = async () => {
       console.log(">>", message)
       await new Promise((r) => setTimeout(r, 100))
 
-      const input = query(config.selector.input) as HTMLInputElement
+      const input = query(selector.input) as HTMLElement
       if (!input) {
-        throw Error("couldn't find input element for " + config.selector.input)
+        throw Error("couldn't find input element for " + selector.input)
       }
       await dispatchInput(input, message)
-      await new Promise((r) => setTimeout(r, 200))
-      await click(config.selector.send)
       await new Promise((r) => setTimeout(r, 600))
-      await waitFor(config.selector.wait, 1000 * 30)
+      await click(selector.send)
+      await waitFor(
+        async (i) => {
+          const input = query(selector.input) as HTMLElement
+          const value = input ? getInputValue(input) : ""
+          const sented = value.length < 100
+          if (!sented && i % 3 == 0) {
+            await click(selector.send)
+          }
+          return sented
+        },
+        { interval: 1000 * 2 }
+      )
+
+      await new Promise((r) => setTimeout(r, 200))
+      await waitFor(() => query(selector.wait) != null, {})
       await new Promise((r) => setTimeout(r, 200))
       await nextMessage()
 
@@ -491,7 +512,7 @@ const resetSent = () => {
               v-if="sendTask.error"
               :class="[
                 'text-rose-600 bg-rose-200/10 border border-rose-600 px-3',
-                'mb-4 rounded py-1',
+                'mb-4 rounded py-1 break-words',
               ]"
             >
               {{ sendTask.error }}

@@ -27,9 +27,9 @@ export const sitesConfig = [
     path: /chat/,
     maxInputLength: 4096,
     selector: {
-      input: "input-area rich-textarea p",
+      input: "input-area rich-textarea div",
       send: "input-area div[class*=send] button[class*=send]",
-      wait: "input-area div[class*=send] button[class*=send]:not([hidden])",
+      wait: "input-area div[class*=send] button[class*=send]",
     },
   },
   {
@@ -54,7 +54,7 @@ export const sitesConfig = [
     },
   },
   {
-    host: chrome.runtime.id + '-',
+    host: chrome.runtime.id + "-",
     path: /^\/dev.html/,
     maxInputLength: 8000,
     maxInputToken: 4096,
