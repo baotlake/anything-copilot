@@ -11,7 +11,8 @@ import DocInput from "./DocInput.vue"
 import IconPlayCircle from "../icons/IconPlayCircle.vue"
 import IconPause from "../icons/IconPause.vue"
 import IconProgressActivity from "../icons/IconProgressActivity.vue"
-import { sitesConfig } from "./helper"
+import { devConfig, type SiteConfig } from "./helper"
+import config from "@/assets/config.json"
 import {
   query,
   dispatchInput,
@@ -19,6 +20,7 @@ import {
   waitFor,
   getInputValue,
 } from "@/utils/dom"
+import { getLocal } from "@/utils/ext"
 import { chatDocPrompt } from "@/utils/prompt"
 import { useI18n } from "@/utils/i18n"
 
@@ -33,13 +35,8 @@ type SnippetItem = {
   length: number
 }
 
-type Selector = {
-  input: string
-  send: string
-  wait: string
-}
-
 defineEmits(["close"])
+const { siteConfig } = defineProps<{ siteConfig: SiteConfig }>()
 
 const { t } = useI18n()
 const logoUrl = chrome.runtime.getURL("/logo.svg")
@@ -50,14 +47,6 @@ const sendTask = reactive({
   key: "",
   status: "" as "" | "running" | "done",
   error: "",
-})
-
-const config = reactive({
-  prompt: chatDocPrompt,
-  maxInput: 3000,
-  maxInputType: "token" as "char" | "token",
-  maxRuns: 10,
-  selector: null as Selector | null,
 })
 
 const lenRate = reactive({
@@ -72,7 +61,7 @@ const docs = computed(() => {
 })
 
 const currentMessage = computed(() => {
-  const { prompt, maxInput, maxInputType } = config
+  const { prompt, maxInput, maxInputType } = siteConfig
   const snippets: SnippetItem[] = []
 
   const rate = maxInputType == "token" ? lenRate.tokenRate : 1
@@ -129,7 +118,7 @@ const currentMessage = computed(() => {
 })
 
 watch(
-  [config, () => currentMessage.value],
+  [siteConfig, () => currentMessage.value],
   async ([config, currentMessage]) => {
     const { message } = currentMessage
     const { maxInput, maxInputType } = config
@@ -243,22 +232,6 @@ const progress = computed(() => {
   }
 })
 
-onMounted(() => {
-  const doc = div.value?.ownerDocument || document
-  const { host, pathname } = doc.location
-  const matchConfig = sitesConfig.find(
-    (c) => c.host == host && c.path.test(pathname)
-  )
-
-  if (matchConfig) {
-    config.maxInput = matchConfig.maxInputToken || matchConfig.maxInputLength
-    config.maxInputType = matchConfig.maxInputToken ? "token" : "char"
-    config.selector = matchConfig.selector
-  }
-
-  console.log("site config: ", matchConfig)
-})
-
 const openDocSelect = (key: string) => {
   sheet.value = "docSelect"
   currentDoc.value = key
@@ -293,7 +266,7 @@ const autoSend = async () => {
     return
   }
 
-  if (!config.selector) {
+  if (!siteConfig.selector) {
     return
   }
 
@@ -301,7 +274,7 @@ const autoSend = async () => {
   sendTask.key = key
   sendTask.status = "running"
 
-  const selector = config.selector
+  const selector = siteConfig.selector
 
   const isWorking = () =>
     !currentMessage.value.done &&
@@ -331,11 +304,26 @@ const autoSend = async () => {
           }
           return sented
         },
-        { interval: 1000 * 2 }
+        { interval: 1000 * 1 }
       )
 
       await new Promise((r) => setTimeout(r, 200))
-      await waitFor(() => query(selector.wait) != null, {})
+
+      const waitList =
+        typeof selector.wait == "string"
+          ? [{ target: selector.wait, match: "*" }]
+          : selector.wait
+
+      for (let item of waitList) {
+        await waitFor(() => {
+          const t = query(item.target)
+          if (item.match == "") {
+            return t == null
+          }
+          return t != null && t.matches(item.match)
+        }, {})
+      }
+
       await new Promise((r) => setTimeout(r, 200))
       await nextMessage()
 
@@ -411,11 +399,11 @@ const resetSent = () => {
               <div class="flex items-center justify-between my-1">
                 <span
                   >{{ t("chatDocs.maxLength") }} ({{
-                    config.maxInputType == "token" ? "token" : "char"
+                    siteConfig.maxInputType == "token" ? "token" : "char"
                   }})</span
                 >
                 <input
-                  v-model="config.maxInput"
+                  v-model="siteConfig.maxInput"
                   class="border rounded px-2 py-1 w-20"
                   type="number"
                   min="1000"
@@ -425,7 +413,7 @@ const resetSent = () => {
               <div class="flex items-center justify-between my-1">
                 <span>{{ t("chatDocs.maxSendings") }}</span>
                 <input
-                  v-model="config.maxRuns"
+                  v-model="siteConfig.maxRuns"
                   class="border rounded px-2 py-1 w-20"
                   type="number"
                   min="1"
@@ -518,7 +506,7 @@ const resetSent = () => {
               {{ sendTask.error }}
             </p>
             <p
-              v-if="!config.selector"
+              v-if="!siteConfig.selector"
               class="px-3 py-1 border rounded border-amber-400/60 mb-4"
             >
               {{ t("chatDocs.notSupported") }}
@@ -610,7 +598,7 @@ const resetSent = () => {
               'scrollbar border border-foreground/20 w-full h-36 p-2 bg-background-soft',
               'outline-none rounded',
             ]"
-            v-model="config.prompt"
+            v-model="siteConfig.prompt"
           ></textarea>
           <div class="flex gap-2 justify-end my-2">
             <button class="px-2 py-1 bg-foreground/10" @click="sheet = ''">
@@ -647,6 +635,7 @@ input:hover {
   from {
     transform: translate(-24px, 0);
   }
+
   to {
     transform: translate(100%, 0);
   }

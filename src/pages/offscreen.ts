@@ -9,12 +9,12 @@ import cl100k_base from "tiktoken/encoders/cl100k_base.json"
 
 pdfjs.GlobalWorkerOptions.workerSrc = "/js/pdf.worker.js"
 
-const service = new TurndownService({ headingStyle: "atx" })
 
 async function parsePdf(file: File) {
   const buffer = await file.arrayBuffer()
   const task = pdfjs.getDocument(buffer)
   const pdf = await task.promise
+  const service = new TurndownService({ headingStyle: "atx" })
 
   const contents = []
 
@@ -38,6 +38,7 @@ async function parseDocx(file: File) {
   )
 
   console.log("result: ", result)
+  const service = new TurndownService({ headingStyle: "atx" })
   const markdown = service.turndown(result.value)
   return [markdown]
 }

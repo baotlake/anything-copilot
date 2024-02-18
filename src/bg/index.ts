@@ -1,6 +1,7 @@
 import { MessageType, ServiceFunc, type ParseDocOptions } from "@/types"
-import { waitMessage, tabUpdated } from "@/utils/ext"
+import { waitMessage, tabUpdated, getLocal } from "@/utils/ext"
 import { offscreen } from "./offscreen"
+import config from '@/assets/config.json'
 
 async function openPipBackground(url: string) {
   const tab = await chrome.tabs.create({
@@ -153,3 +154,40 @@ function handleCommand(command: string) {
 }
 
 chrome.commands.onCommand.addListener(handleCommand)
+
+
+async function updateConfig() {
+  const url = 'https://config.ziziyi.com/anything-copilot'
+  const now = Date.now()
+
+  let { timestamp, configVersion, chatDocSites } = await getLocal({
+    timestamp: {} as Record<string, number>,
+    configVersion: config.data.configVersion,
+    chatDocSites: config.data.chatDocSites,
+  })
+
+  if (timestamp.configUpdatedAt > 0 && now - timestamp.configUpdatedAt < 1000 * 60 * 60 * 24) {
+    return
+  }
+
+  const res = await fetch(url)
+  const data = await res.json()
+
+  if (data.configVersion < configVersion) {
+    return
+  }
+
+  if (Array.isArray(data.chatDocSites) && data.chatDocSites.every((i: any) => i.host && i.selector)) {
+    chatDocSites = data.chatDocSites
+  }
+
+  timestamp.configUpdatedAt = now
+  await chrome.storage.local.set({
+    chatDocSites,
+    timestamp,
+  })
+}
+
+chrome.runtime.onStartup.addListener(() => {
+  updateConfig()
+})

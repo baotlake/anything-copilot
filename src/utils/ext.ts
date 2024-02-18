@@ -98,7 +98,8 @@ export async function checkContent(tabId: number) {
       await resMsgPromise;
     }
   } catch (err) {
-    console.error(err);
+    console.warn(err);
+    console.log("content is not available")
   }
 
   console.log("checkContent alive: ", alive);
@@ -171,4 +172,12 @@ export function getStoreUrl(options: StoreUrlOptions) {
     ...options,
     id: "lbeehbkcmjaopnlccpjcdgamcabhnanl",
   })
+}
+
+export function getLocal<T extends Record<string, any>>(key: string | T,) {
+  return chrome.storage.local.get(key) as Promise<T>
+}
+
+export function getSession<T extends Record<string, any>>(key: string | T) {
+  return chrome.storage.session.get(key) as Promise<T>
 }

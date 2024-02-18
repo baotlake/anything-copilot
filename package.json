@@ -3,12 +3,12 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
+    "dev": "run-p dev:page dev:content dev:js",
     "dev:page": "cross-env NODE_ENV=development vite build --watch",
     "dev:content": "vite build --watch -c vite.content.config.ts",
     "dev:js": "node esbuild.mjs --watch",
-    "dev": "run-p dev:page dev:content dev:js",
+    "start": "vite -c vite.config.ts --port 3000",
     "build": "run-p type-check build:js build:content \"build-only {@}\" --",
-    "preview": "vite preview",
     "build-only": "vite build",
     "build:content": "vite build -c vite.content.config.ts",
     "build:js": "node esbuild.mjs",
@@ -18,6 +18,7 @@
     "test": "vitest"
   },
   "dependencies": {
+    "@firebase/remote-config": "^0.4.5",
     "@types/turndown": "^5.0.4",
     "@vueuse/core": "^10.7.1",
     "@vueuse/gesture": "^2.0.0-beta.1",
