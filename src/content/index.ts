@@ -1,11 +1,6 @@
 import { mount, waitMountApp } from "./ui"
-import {
-  chatDocsPanel,
-  pipLauncher,
-  pipLoading,
-  pipWindow,
-} from "@/store"
-import { MessageType } from "@/types"
+import { chatDocsPanel, pipLauncher, pipLoading, pipWindow } from "@/store"
+import { ContentEventType, FrameMessageType, MessageType } from "@/types"
 import Copilot from "./Copilot.vue"
 import { waitMessage } from "@/utils/ext"
 import {
@@ -14,6 +9,7 @@ import {
   removeContentEventListener,
 } from "@/content/event"
 import { contentService } from "@/utils/service"
+import { getPageIcon } from "@/utils/dom"
 // import { PipEventName } from "@/types/pip"
 
 function handleMessage(
@@ -25,7 +21,7 @@ function handleMessage(
   switch (message?.type) {
     case MessageType.pip:
       dispatchContentEvent({
-        type: "pip",
+        type: ContentEventType.pip,
         detail: message.options,
       })
       break
@@ -73,9 +69,9 @@ async function handlePipEvent(event: any) {
       const handlePipLoaded = (e: Event) => {
         console.log("load", e)
         r()
-        removeContentEventListener("loaded", handlePipLoaded)
+        removeContentEventListener(ContentEventType.pipLoaded, handlePipLoaded)
       }
-      addContentEventListener("loaded", handlePipLoaded)
+      addContentEventListener(ContentEventType.pipLoaded, handlePipLoaded)
     })
 
     // may be 0 if not wait document is loaded
@@ -109,11 +105,52 @@ async function handlePopLoadDocEvent(e: CustomEvent | Event) {
   pipLoading.isLoading = true
 }
 
-chrome.runtime?.onMessage.addListener(handleMessage)
-addContentEventListener("pip", handlePipEvent)
-addContentEventListener("loaded", handlePipLoadedEvent)
-addContentEventListener("load-doc", handlePopLoadDocEvent)
-waitMountApp()
+function run() {
+  chrome.runtime?.onMessage.addListener(handleMessage)
+  addContentEventListener(ContentEventType.pip, handlePipEvent)
+  addContentEventListener(ContentEventType.pipLoaded, handlePipLoadedEvent)
+  addContentEventListener(ContentEventType.pipLoad, handlePopLoadDocEvent)
+  waitMountApp()
+}
+
+async function postPageInfo() {
+  await new Promise((r) => setTimeout(r, 1000 * 3))
+  window.top?.postMessage(
+    {
+      type: FrameMessageType.pageInfo,
+      url: location.href,
+      title: document.title || location.host,
+      icon: getPageIcon(),
+    },
+    chrome.runtime.getURL("")
+  )
+}
+
+if (window.self == window.top) {
+  run()
+} else {
+  window.addEventListener("message", (e) => {
+    if (!e.data || typeof e.data !== "object") return
+    const type = e.data.type
+    switch (type) {
+      case FrameMessageType.contentRun:
+        run()
+        postPageInfo()
+        return
+      case FrameMessageType.escapeLoad:
+        return dispatchContentEvent({
+          type: ContentEventType.escapeLoad,
+          detail: { url: e.data.url },
+        })
+    }
+  })
+  window.top?.postMessage(
+    {
+      type: FrameMessageType.frameReady,
+    },
+    chrome.runtime.getURL("")
+  )
+}
 
 // dev
 if (location.host == chrome.runtime.id && location.hash == "#copilot") {

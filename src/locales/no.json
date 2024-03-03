@@ -1,6 +1,8 @@
 {
-  "openInPip": "Åpne i Copilot-vindu",
-  "other": "Annet",
+  "openInPip": "Åpent i popup",
+  "openInSidebar": "Åpent i sidefeltet",
+  "popular": "Populær",
+  "sidebar": "Sidefelt",
   "clickHere": "Klikk her",
   "minimize": "Minimer",
   "moveAside": "Flytt til side",

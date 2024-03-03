@@ -1,6 +1,8 @@
 {
-  "openInPip": "Avaa Copilot-ikkunassa",
-  "other": "Muu",
+  "openInPip": "Avoin ponnahdusikkuna",
+  "openInSidebar": "Avoinna sivupalkissa",
+  "popular": "Suosittu",
+  "sidebar": "Sivupalkki",
   "clickHere": "Klikkaa tästä",
   "minimize": "Pienennä",
   "moveAside": "Siirrä sivuun",

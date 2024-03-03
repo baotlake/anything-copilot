@@ -215,3 +215,21 @@ export async function waitFor(
     }
   }
 }
+
+export function getPageIcon() {
+  const icons = document.querySelectorAll<HTMLLinkElement>('link[rel="icon"]')
+  for (let item of icons) {
+    if (item.getAttribute("type") == "image/svg+xml") {
+      return item.href
+    }
+    if (parseInt(item.getAttribute("sizes") || "0") >= 90) {
+      return item.href
+    }
+  }
+
+  if (icons.length) {
+    return icons[0].href
+  }
+
+  return location.origin + "/favicon.ico"
+}

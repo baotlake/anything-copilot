@@ -1,6 +1,8 @@
 {
-  "openInPip": "Copilot 창에서 열기",
-  "other": "기타",
+  "openInPip": "팝업에서 열립니다",
+  "openInSidebar": "사이드 바에서 열립니다",
+  "popular": "인기 있는",
+  "sidebar": "사이드 바",
   "clickHere": "여기를 클릭하세요",
   "minimize": "최소화",
   "moveAside": "옆으로 이동",

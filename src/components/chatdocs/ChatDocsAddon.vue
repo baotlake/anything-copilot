@@ -98,14 +98,14 @@ function adjustPosition() {
       rect.left < 0
         ? -rect.left
         : rect.right > innerWidth
-          ? innerWidth - rect.right
-          : 0
+        ? innerWidth - rect.right
+        : 0
     const dy =
       rect.top < 0
         ? -rect.top
         : rect.bottom > innerHeight
-          ? innerHeight - rect.bottom
-          : 0
+        ? innerHeight - rect.bottom
+        : 0
     position.tx += dx
     position.ty += dy
     // div.style.transform = `translate(${position.tx}px, ${position.ty}px)`
@@ -125,10 +125,11 @@ onMounted(() => {
     const { host, pathname } = doc.location
 
     const matchConfig = chatDocSites.find(
-      (s) => s.host == host && (new RegExp(s.path)).test(pathname)
+      (s) => s.host == host && new RegExp(s.path).test(pathname)
     )
     if (matchConfig) {
-      siteConfig.maxInput = matchConfig.maxInputToken || matchConfig.maxInputLength
+      siteConfig.maxInput =
+        matchConfig.maxInputToken || matchConfig.maxInputLength
       siteConfig.maxInputType = matchConfig.maxInputToken ? "token" : "char"
       siteConfig.selector = matchConfig.selector
     }
@@ -147,15 +148,21 @@ onUnmounted(() => {
 
 <template>
   <div ref="div" class="hidden"></div>
-  <div v-if="docsAddon.visible" :class="[
-    'fixed mt-10 top-0 p-6 border-2 rounded-lg bg-background z-[9999999]',
-    'shadow-lg left-1/2 -translate-x-1/2 w-max transition-all',
-    {
-      'border-primary/50': !docsAddon.active && docsAddon.visible,
-      'border-primary scale-105': docsAddon.active,
-    },
-  ]" @dragenter="docsAddon.active = true" @dragleave="docsAddon.active = false" @dragover="(e) => e.preventDefault()"
-    @drop="onDrop">
+  <div
+    v-if="docsAddon.visible"
+    :class="[
+      'fixed mt-10 top-0 p-6 border-2 rounded-lg bg-background z-[9999999]',
+      'shadow-lg left-1/2 -translate-x-1/2 w-max transition-all',
+      {
+        'border-primary/50': !docsAddon.active && docsAddon.visible,
+        'border-primary scale-105': docsAddon.active,
+      },
+    ]"
+    @dragenter="docsAddon.active = true"
+    @dragleave="docsAddon.active = false"
+    @dragover="(e) => e.preventDefault()"
+    @drop="onDrop"
+  >
     <div class="pointer-events-none">
       <div class="flex items-center gap-2">
         <IconNoteStackAdd class="w-8 h-8" />
@@ -168,23 +175,39 @@ onUnmounted(() => {
     </div>
   </div>
 
-  <div v-if="chatDocsPanel.visible" ref="chatDocsDiv" :class="[
-    'fixed flex flex-col w-96 max-w-full h-[600px] max-h-full border rounded-lg',
-    'z-[9999] border-foreground/10 bg-background shadow-lg dark:border-2',
-    {
-      'left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2': !position.valid,
-    },
-  ]">
-    <div class="flex items-center px-4 pt-4 pb-1 select-none" @pointerdown="(e) => e.buttons == 1 && (e.target as Element)?.setPointerCapture(e.pointerId)
-      " @pointermove="handlePointerMove" @pointerup="adjustPosition" @pointercancel="adjustPosition">
+  <div
+    v-if="chatDocsPanel.visible"
+    ref="chatDocsDiv"
+    :class="[
+      'fixed flex flex-col w-96 max-w-full h-[600px] max-h-full border rounded-lg',
+      'z-[9999] border-foreground/10 bg-background shadow-lg dark:border-2',
+      {
+        'left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2': !position.valid,
+      },
+    ]"
+  >
+    <div
+      class="flex items-center px-4 pt-4 pb-1 select-none"
+      @pointerdown="(e) => e.buttons == 1 && (e.target as Element)?.setPointerCapture(e.pointerId)
+      "
+      @pointermove="handlePointerMove"
+      @pointerup="adjustPosition"
+      @pointercancel="adjustPosition"
+    >
       <img :src="logoUrl" class="w-6 h-6" />
       <span class="mx-2 text-xl font-bold">{{ t("chatDocsAddon") }}</span>
-      <button aria-label="close" class="ml-auto p-1 top-0 right-0 rounded-full hover:bg-rose-400/10"
-        @click="chatDocsPanel.visible = false">
+      <button
+        aria-label="close"
+        class="ml-auto p-1 top-0 right-0 rounded-full hover:bg-rose-400/10"
+        @click="chatDocsPanel.visible = false"
+      >
         <IconClose class="w-5 h-5" />
       </button>
     </div>
-    <ChatDocsPanel @close="chatDocsPanel.visible = false" :siteConfig="siteConfig" />
+    <ChatDocsPanel
+      @close="chatDocsPanel.visible = false"
+      :siteConfig="siteConfig"
+    />
   </div>
 </template>
 

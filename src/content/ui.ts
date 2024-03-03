@@ -2,7 +2,8 @@ import { createApp, type Component } from "vue"
 import App from "./App.vue"
 import { MessageType } from "@/types"
 import { i18n } from "@/utils/i18n"
-import "@/assets/main.css"
+// import "@/assets/main.css"
+import styles from "@/assets/main.css?inline"
 
 const isSelf = chrome.runtime?.id === location.host
 
@@ -11,11 +12,17 @@ export function mount(App: Component, doc = document) {
   const root = isSelf ? outter : outter.attachShadow({ mode: "open" })
   const appContainer = doc.createElement("div")
   appContainer.id = "app"
+  // appContainer.setAttribute("part", "app")
 
   const link = doc.createElement("link")
   link.rel = "stylesheet"
   link.href = chrome.runtime?.getURL("/assets/index.css")
+
+  const style = doc.createElement("style")
+  style.innerHTML = styles
+
   root.append(link)
+  root.append(style)
   root.append(appContainer)
   doc.documentElement.append(outter)
 
@@ -30,7 +37,7 @@ export function mountApp(doc = document) {
 }
 
 export function waitMountApp() {
-  if (document.readyState == "interactive") {
+  if (["interactive", "complete"].includes(document.readyState)) {
     mountApp()
   } else {
     const hanldeStateChange = () => {

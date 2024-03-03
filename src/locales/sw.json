@@ -1,6 +1,8 @@
 {
-  "openInPip": "Fungua kwenye dirisha la Copilot",
-  "other": "Nyingine",
+  "openInPip": "Fungua katika kidukizo",
+  "openInSidebar": "Fungua katika pembeni",
+  "popular": "Maarufu",
+  "sidebar": "Pembeni",
   "clickHere": "Bonyeza Hapa",
   "minimize": "Kupunguza",
   "moveAside": "Hama kando",

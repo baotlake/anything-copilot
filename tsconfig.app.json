@@ -7,7 +7,7 @@
     "src/**/*.json",
     "tests/**/*"
   ],
-  "exclude": ["src/**/__tests__/*", "src/manifest.ts"],
+  "exclude": ["src/**/__tests__/*"],
   "compilerOptions": {
     "composite": true,
     "baseUrl": ".",

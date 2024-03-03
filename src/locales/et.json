@@ -1,6 +1,8 @@
 {
-  "openInPip": "Avage Copiloti aken",
-  "other": "Muu",
+  "openInPip": "Avatud hüpikus",
+  "openInSidebar": "Avatud külgribal",
+  "popular": "Populaarne",
+  "sidebar": "Külgriba",
   "clickHere": "Klõpsake siin",
   "minimize": "Vähenda",
   "moveAside": "Liiguta kõrvale",

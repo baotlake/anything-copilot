@@ -1,29 +1,5 @@
 import { reactive, ref } from "vue"
 
-/** popup state */
-export const items = reactive([
-  {
-    url: "https://chat.openai.com/",
-    img: "/img/chatgpt.svg",
-    title: "ChatGPT - OpenAI",
-  },
-  {
-    url: "https://bard.google.com/",
-    img: "/img/bard.svg",
-    title: "Bard - Google AI",
-  },
-  {
-    url: "https://claude.ai/",
-    img: "/img/claude-ai.svg",
-    title: "Claude",
-  },
-  {
-    url: "https://tiktok.com/",
-    img: "/img/tiktok.svg",
-    title: "Tiktok",
-  },
-])
-
 export const pipLauncher = reactive({
   visible: false,
 })

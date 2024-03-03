@@ -1,6 +1,8 @@
 {
-  "openInPip": "コパイロットウィンドウで開く",
-  "other": "その他",
+  "openInPip": "ポップアップで開いています",
+  "openInSidebar": "サイドバーで開きます",
+  "popular": "人気のある",
+  "sidebar": "サイドバー",
   "clickHere": "ここをクリック",
   "minimize": "最小化",
   "moveAside": "一旦寄せる",

@@ -1,7 +1,27 @@
-import { MessageType, ServiceFunc, type ParseDocOptions } from "@/types"
+import {
+  MessageType,
+  ServiceFunc,
+  type ParseDocOptions,
+  ContentScriptId,
+} from "@/types"
 import { waitMessage, tabUpdated, getLocal } from "@/utils/ext"
 import { offscreen } from "./offscreen"
-import config from '@/assets/config.json'
+import config from "@/assets/config.json"
+import { allFrameScript, mainContentScript } from "@/manifest"
+
+type Config = typeof config
+
+const manifest = chrome.runtime.getManifest()
+const placeholder = manifest.content_scripts![0]
+
+const contentScript = {
+  id: ContentScriptId.content,
+  matches: ["<all_urls>"],
+  js: placeholder.js,
+  runAt: placeholder.run_at as "document_start",
+} satisfies chrome.scripting.RegisteredContentScript
+
+chrome.scripting.registerContentScripts([contentScript, mainContentScript])
 
 async function openPipBackground(url: string) {
   const tab = await chrome.tabs.create({
@@ -87,6 +107,7 @@ async function handleInvokeRequest(
         break
     }
   } catch (err) {
+    console.error("invoke error: ", err)
     error = err
   }
 
@@ -155,18 +176,30 @@ function handleCommand(command: string) {
 
 chrome.commands.onCommand.addListener(handleCommand)
 
-
 async function updateConfig() {
-  const url = 'https://config.ziziyi.com/anything-copilot'
+  const url = "https://config.ziziyi.com/anything-copilot"
   const now = Date.now()
 
-  let { timestamp, configVersion, chatDocSites } = await getLocal({
+  let {
+    timestamp,
+    configVersion,
+    chatDocSites,
+    webviewPatchs,
+    popularSites,
+    loadCandidates,
+  } = await getLocal({
     timestamp: {} as Record<string, number>,
     configVersion: config.data.configVersion,
     chatDocSites: config.data.chatDocSites,
+    webviewPatchs: config.data.webviewPatchs,
+    popularSites: config.data.popularSites,
+    loadCandidates: config.data.loadCandidates,
   })
 
-  if (timestamp.configUpdatedAt > 0 && now - timestamp.configUpdatedAt < 1000 * 60 * 60 * 24) {
+  if (
+    timestamp.configUpdatedAt > 0 &&
+    now - timestamp.configUpdatedAt < 1000 * 60 * 60 * 24
+  ) {
     return
   }
 
@@ -177,14 +210,29 @@ async function updateConfig() {
     return
   }
 
-  if (Array.isArray(data.chatDocSites) && data.chatDocSites.every((i: any) => i.host && i.selector)) {
+  if (
+    Array.isArray(data.chatDocSites) &&
+    data.chatDocSites.every((i: any) => i.host && i.selector)
+  ) {
     chatDocSites = data.chatDocSites
+  }
+  if (data.webviewPatchs && Array.isArray(data.webviewPatchs)) {
+    webviewPatchs = data.webviewPatchs
+  }
+  if (data.popularSites && Array.isArray(data.popularSites)) {
+    popularSites = data.popularSites
+  }
+  if (data.loadCandidates && Array.isArray(data.loadCandidates)) {
+    loadCandidates = data.loadCandidates
   }
 
   timestamp.configUpdatedAt = now
   await chrome.storage.local.set({
-    chatDocSites,
     timestamp,
+    chatDocSites,
+    webviewPatchs,
+    popularSites,
+    loadCandidates,
   })
 }
 

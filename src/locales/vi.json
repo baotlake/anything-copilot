@@ -1,6 +1,8 @@
 {
-  "openInPip": "Mở trong cửa sổ Copilot",
-  "other": "Khác",
+  "openInPip": "Mở cửa bật lên",
+  "openInSidebar": "Mở trong thanh bên",
+  "popular": "Phổ biến",
+  "sidebar": "Thanh bên",
   "clickHere": "Nhấp vào đây",
   "minimize": "Thu nhỏ",
   "moveAside": "Di chuyển sang một bên",

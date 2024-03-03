@@ -50,3 +50,39 @@ export const semanticClip = (text: string, maxLength: number) => {
 
   return text.slice(0, breakPoint)
 }
+
+export async function findFrameLoadUrl(urls: string[]) {
+  const abortController = new AbortController()
+
+  let resolve: null | ((url: string) => void) = null
+  const value = new Promise<string>((r) => {
+    resolve = r
+  })
+
+  function checkCSP(csp?: string | null) {
+    if (!csp) return true
+    return !csp.includes("frame-ancestors")
+  }
+
+  const promises = urls.map((url) =>
+    fetch(url, {
+      signal: abortController.signal,
+    })
+      .then((res) => {
+        const h = res.headers
+        const xFrameOptions = h.get("X-Frame-Options")
+        const csp = h.get("Content-Security-Policy")
+        if (!xFrameOptions && checkCSP(csp)) {
+          resolve && resolve(url)
+          abortController.abort()
+        }
+      })
+      .catch(() => {})
+  )
+
+  Promise.all(promises).then(() => {
+    resolve && resolve("")
+  })
+
+  return value
+}

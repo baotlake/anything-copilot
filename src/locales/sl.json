@@ -1,6 +1,8 @@
 {
-  "openInPip": "Odpri v oknu Copilot",
-  "other": "Drugo",
+  "openInPip": "Odprt v pojavnem oknu",
+  "openInSidebar": "Odprto v stranski vrstici",
+  "popular": "Priljubljen",
+  "sidebar": "Stranska vrstica",
   "clickHere": "Klikni tukaj",
   "minimize": "Minimaliziraj",
   "moveAside": "Premakni na stran",

@@ -3,6 +3,7 @@ import { dispatchContentEvent } from "@/content/event"
 import { reactive, ref } from "vue"
 import IconClose from "./icons/IconClose.vue"
 import { useI18n } from "@/utils/i18n"
+import { ContentEventType } from "@/types"
 
 const { t } = useI18n()
 
@@ -12,7 +13,7 @@ const host = ref(location.host)
 
 function handleClick() {
   dispatchContentEvent({
-    type: "pip",
+    type: ContentEventType.pip,
     detail: {
       url: location.href,
       mode: "write-html",

@@ -1,6 +1,8 @@
 {
-  "openInPip": "باز کردن در پنجره Copilot",
-  "other": "سایر",
+  "openInPip": "باز در پنجره",
+  "openInSidebar": "در نوار کناری باز می شود",
+  "popular": "محبوب",
+  "sidebar": "نوار کناری",
   "clickHere": "اینجا کلیک کنید",
   "minimize": "کمینه کردن",
   "moveAside": "جابجا شدن",

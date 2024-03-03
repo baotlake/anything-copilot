@@ -1,6 +1,8 @@
 {
-  "openInPip": "कोपाइलट विंडो में खोलें",
-  "other": "अन्य",
+  "openInPip": "पॉपअप में खुला",
+  "openInSidebar": "साइडबार में खुला",
+  "popular": "लोकप्रिय",
+  "sidebar": "साइड बार",
   "clickHere": "यहां क्लिक करें",
   "minimize": "कम करें",
   "moveAside": "दूर हटें",

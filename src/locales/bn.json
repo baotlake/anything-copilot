@@ -1,6 +1,8 @@
 {
-  "openInPip": "Copilot উইন্ডোতে খুলুন",
-  "other": "অন্যান্য",
+  "openInPip": "পপআপে খুলুন",
+  "openInSidebar": "সাইডবারে খোলা",
+  "popular": "জনপ্রিয়",
+  "sidebar": "সাইডবার",
   "clickHere": "এখানে ক্লিক করুন",
   "minimize": "সর্বনিম্ন",
   "moveAside": "পাশে সরান",

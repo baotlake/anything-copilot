@@ -1,6 +1,8 @@
 {
-  "openInPip": "Copilot penceresinde aç",
-  "other": "Diğer",
+  "openInPip": "Açılır pencerede açık",
+  "openInSidebar": "Kenar çubuğunda açık",
+  "popular": "Popüler",
+  "sidebar": "Kenar çubuğu",
   "clickHere": "Buraya tıklayın",
   "minimize": "Küçült",
   "moveAside": "Kenara Taşı",

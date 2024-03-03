@@ -3,7 +3,7 @@ import { ref, computed, watch, onMounted, onUnmounted } from "vue"
 import IconMinimize from "@/components/icons/IconMinimize.vue"
 import IconSplitRight from "@/components/icons/IconSplitscreenRight.vue"
 import IconClose from "@/components/icons/IconClose.vue"
-import { MessageType } from "@/types"
+import { ContentEventType, MessageType } from "@/types"
 import { pipWindow } from "@/store"
 import { throttle } from "lodash-es"
 import IconRefresh from "./icons/IconRefresh.vue"
@@ -140,7 +140,7 @@ const refresh = () => {
   const win = pipWindow.window
   if (win) {
     dispatchContentEvent({
-      type: "load-doc",
+      type: ContentEventType.pipLoad,
       detail: { url: win.location.href },
     })
   }

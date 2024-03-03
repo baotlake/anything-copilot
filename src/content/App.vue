@@ -16,5 +16,3 @@ const { t } = useI18n()
 
   <ChatDocsAddon />
 </template>
-
-<style scoped></style>

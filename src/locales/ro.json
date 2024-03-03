@@ -1,6 +1,8 @@
 {
-  "openInPip": "Deschide în fereastra Copilot",
-  "other": "Altele",
+  "openInPip": "Deschis în pop -up",
+  "openInSidebar": "Deschis în bara laterală",
+  "popular": "Popular",
+  "sidebar": "Bara laterală",
   "clickHere": "Click aici",
   "minimize": "Minimizează",
   "moveAside": "Mută în lateral",

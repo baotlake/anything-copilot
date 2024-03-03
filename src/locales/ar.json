@@ -1,6 +1,8 @@
 {
-  "openInPip": "افتح في نافذة كوبيلوت",
-  "other": "آخر",
+  "openInPip": "مفتوح في المنبثقة",
+  "openInSidebar": "مفتوح في الشريط الجانبي",
+  "popular": "شائع",
+  "sidebar": "الشريط الجانبي",
   "clickHere": "انقر هنا",
   "minimize": "تصغير",
   "moveAside": "تحريك جانباً",

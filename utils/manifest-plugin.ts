@@ -20,7 +20,7 @@ export default function makeManifest(
           if (chunk) {
             manifest[key] = chunk.fileName
           }
-        }
+        } 
       } 
 
       const content = JSON.stringify(manifest, null, 2)

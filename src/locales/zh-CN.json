@@ -1,6 +1,8 @@
 {
-  "openInPip": "在 Copilot 窗口中打开",
-  "other": "其他",
+  "openInPip": "在弹出窗口中打开",
+  "openInSidebar": "在侧边栏中打开",
+  "popular": "受欢迎的",
+  "sidebar": "侧边栏",
   "clickHere": "点击这里",
   "minimize": "最小化",
   "moveAside": "移到旁边",

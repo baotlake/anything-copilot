@@ -36,7 +36,7 @@ export async function setupOffscreenDocument(path: string) {
   }
 }
 
-export const offscreenHtmlPath = "/src/pages/offscreen.html"
+export const offscreenHtmlPath = "/offscreen.html"
 
 class Offscreen extends Invoke {
   public readonly path: string
@@ -49,7 +49,9 @@ class Offscreen extends Invoke {
   public async send(req: any): Promise<{ key: string; response: any }> {
     const key = this.key
     await this.setup()
-    
+
+    console.log("offscreen send: ", key, req)
+
     const response = await chrome.runtime.sendMessage({
       type: MessageType.toOffscreen,
       key,

@@ -8,8 +8,9 @@ import {
   removePrerenderRules,
 } from "@/utils/dom"
 import { dispatchContentEvent } from "./event"
+import { ContentEventType } from "@/types"
 
-function fetchDoc(input: URL | RequestInfo, init?: RequestInit) {
+export function fetchDoc(input: URL | RequestInfo, init?: RequestInit) {
   const headers = {
     Accept:
       "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
@@ -85,8 +86,8 @@ export async function copilotNavigateTo(url: string) {
   const res = await fetchDoc(url)
   const html = await res.text()
   // resetWindow(pipWindow);
-  writeHtml(pipWindow, html)
   pipWindow.history.replaceState(pipWindow.history.state, "", url)
+  writeHtml(pipWindow, html)
 }
 
 type ReopenOptions = {
@@ -115,7 +116,7 @@ export async function copilotReopen({ url, width, height }: ReopenOptions) {
   navGuard(pipWindow)
 }
 
-function writeHtml(pipWindow: Window, html: string) {
+export function writeHtml(pipWindow: Window, html: string) {
   const nonce = getDomNonce(document)
   let escaped = replaceHtmlNonce(html, nonce)
   escaped = getTrustedHTML(escaped)
@@ -123,7 +124,7 @@ function writeHtml(pipWindow: Window, html: string) {
   pipWindow.document.open()
   pipWindow.document.write(escaped)
   pipWindow.document.close()
-  dispatchContentEvent({ type: "loaded", detail: {} })
+  dispatchContentEvent({ type: ContentEventType.pipLoaded, detail: {} })
 
   const base = document.createElement("base")
   base.target = "_blank"

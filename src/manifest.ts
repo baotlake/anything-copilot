@@ -1,6 +1,25 @@
+import { ContentScriptId } from "./types"
+
 const __DEV__ = process.env.NODE_ENV == "development"
 
-const contentCss = "/assets/index.css"
+/** Manually register in the service worker */
+export const mainContentScript = {
+  id: ContentScriptId.main,
+  js: ["js/content-main.js"],
+  runAt: "document_start",
+  world: "MAIN",
+  matches: ["<all_urls>"],
+} satisfies chrome.scripting.RegisteredContentScript
+
+export const allFrameScript = {
+  id: ContentScriptId.frame,
+  js: ["js/content-frame.js"],
+  allFrames: true,
+  runAt: "document_start",
+  matches: ["<all_urls>"],
+} satisfies chrome.scripting.RegisteredContentScript
+
+export const defaultSidebarPath = "sidebar.html"
 
 const manifest = {
   manifest_version: 3,
@@ -10,7 +29,7 @@ const manifest = {
   // short_name: "__MSG_short_name__",
   // no more than 132 characters
   description: "__MSG_description__",
-  version: "1.2.1",
+  version: "1.2.3",
   action: {
     default_icon: {
       16: "logo.png",
@@ -18,7 +37,7 @@ const manifest = {
       32: "logo.png",
     },
     default_title: "__MSG_short_name__",
-    default_popup: "src/pages/popup.html",
+    default_popup: "popup.html",
   },
   default_locale: "en",
   icons: {
@@ -27,26 +46,40 @@ const manifest = {
     48: "logo.png",
     128: "logo.png",
   },
-  author: "support@ziziyi.com",
+  author: { email: "support@ziziyi.com" },
   background: {
-    service_worker: "bg.js",
-    type: "module",
+    service_worker: "./src/bg/index.ts",
+    type: "module" as const,
   },
   content_scripts: [
+    // {
+    //   matches: ["<all_urls>"],
+    //   js: ["src/content/main.ts"],
+    //   run_at: "document_start",
+    //   world: "MAIN",
+    // },
     {
-      matches: ["<all_urls>"],
-      js: ["/js/content-main.js"],
-      run_at: "document_start",
-      world: "MAIN",
-    },
-    {
-      matches: ["<all_urls>"],
-      js: ["/js/content.js"],
+      matches: ["http://placeholder.ziziyi.com/*"],
+      js: ["src/content/index.ts"],
       run_at: "document_start",
     },
   ],
-  options_page: __DEV__ ? "/src/pages/guide.html" : "",
-  permissions: ["tabs", "scripting", "activeTab", "storage", "offscreen"],
+  options_page: __DEV__ ? "sidebar.html" : undefined,
+  side_panel: {
+    default_path: defaultSidebarPath,
+  },
+  permissions: [
+    "tabs",
+    "scripting",
+    "activeTab",
+    "storage",
+    "offscreen",
+    "sidePanel",
+    "declarativeNetRequestWithHostAccess",
+    "declarativeNetRequestFeedback",
+    "webNavigation",
+  ],
+  optional_permissions: [],
   host_permissions: ["<all_urls>"],
   minimum_chrome_version: "111",
   commands: {
@@ -60,8 +93,13 @@ const manifest = {
   },
   web_accessible_resources: [
     {
-      resources: [contentCss, "logo.svg"],
+      resources: ["logo.svg"],
       matches: ["<all_urls>"],
+    },
+    {
+      resources: ["/js/*", "/assets/*"],
+      matches: ["<all_urls>"],
+      use_dynamic_url: true,
     },
   ],
   content_security_policy: {
@@ -69,6 +107,6 @@ const manifest = {
       ? `script-src 'self' http://localhost:3000 'wasm-unsafe-eval';`
       : `script-src 'self' 'wasm-unsafe-eval'`,
   },
-}
+} satisfies Manifest as chrome.runtime.Manifest
 
 export default manifest

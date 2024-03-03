@@ -1,35 +1,36 @@
-import { MessageType } from "@/types";
+import { mainContentScript } from "@/manifest"
+import { MessageType } from "@/types"
 
-type MessageSender = chrome.runtime.MessageSender;
+type MessageSender = chrome.runtime.MessageSender
 
 type UpdatedOption = {
-  tabId: number;
-  status: string;
-  timeout?: number;
-};
+  tabId: number
+  status: string
+  timeout?: number
+}
 
 export async function tabUpdated({ tabId, status, timeout }: UpdatedOption) {
   return new Promise<void>((r) => {
     const handleUpdate = (id: number, info: chrome.tabs.TabChangeInfo) => {
-      console.log(id, info);
+      console.log(id, info)
       if (id === tabId && info.status === status) {
-        chrome.tabs.onUpdated.removeListener(handleUpdate);
-        r();
+        chrome.tabs.onUpdated.removeListener(handleUpdate)
+        r()
       }
-    };
+    }
     setTimeout(() => {
-      chrome.tabs.onUpdated.removeListener(handleUpdate);
-      r();
-    }, timeout || 30 * 1000);
-    chrome.tabs.onUpdated.addListener(handleUpdate);
-  });
+      chrome.tabs.onUpdated.removeListener(handleUpdate)
+      r()
+    }, timeout || 30 * 1000)
+    chrome.tabs.onUpdated.addListener(handleUpdate)
+  })
 }
 
 type WaitMessageOption = {
-  type: string;
-  tabId?: number;
-  timeout?: number;
-};
+  type: string
+  tabId?: number
+  timeout?: number
+}
 
 export async function waitMessage<T = unknown>({
   type,
@@ -37,23 +38,23 @@ export async function waitMessage<T = unknown>({
   timeout,
 }: WaitMessageOption): Promise<T> {
   return new Promise<T>((r, reject) => {
-    let timer = 0;
+    let timer = 0
     const handleMessage = (message: any, sender: MessageSender) => {
-      const sameId = typeof tabId == "number" ? tabId == sender.tab?.id : true;
+      const sameId = typeof tabId == "number" ? tabId == sender.tab?.id : true
       if (sameId && message.type == type) {
-        chrome.runtime.onMessage.removeListener(handleMessage);
-        r(message);
-        clearTimeout(timer);
+        chrome.runtime.onMessage.removeListener(handleMessage)
+        r(message)
+        clearTimeout(timer)
       }
-    };
-    chrome.runtime.onMessage.addListener(handleMessage);
+    }
+    chrome.runtime.onMessage.addListener(handleMessage)
     if (timeout) {
       timer = window.setTimeout(() => {
-        chrome.runtime.onMessage.removeListener(handleMessage);
-        reject();
-      }, timeout);
+        chrome.runtime.onMessage.removeListener(handleMessage)
+        reject()
+      }, timeout)
     }
-  });
+  })
 }
 
 export const emptyTab: chrome.tabs.Tab = {
@@ -69,69 +70,70 @@ export const emptyTab: chrome.tabs.Tab = {
   index: 0,
   pinned: false,
   windowId: 0,
-};
+}
 
 export async function checkContent(tabId: number) {
-  let alive = false;
+  let alive = false
 
   try {
     const resMsgPromise = new Promise<void>((r) => {
       const handleMessage = (message: any, sender: MessageSender) => {
         if (sender.tab?.id == tabId) {
-          alive = true;
-          r();
-          chrome.runtime.onMessage.removeListener(handleMessage);
+          alive = true
+          r()
+          chrome.runtime.onMessage.removeListener(handleMessage)
         }
-      };
-      setTimeout(() => r(), 3000);
-      chrome.runtime.onMessage.addListener(handleMessage);
-    });
+      }
+      setTimeout(() => r(), 3000)
+      chrome.runtime.onMessage.addListener(handleMessage)
+    })
 
     const res = await chrome.tabs.sendMessage(tabId, {
       type: MessageType.hiContent,
-    });
-    alive = !!res;
+    })
+    alive = !!res
 
-    console.log("hi-content response: ", alive, res);
+    console.log("hi-content response: ", alive, res)
 
     if (!alive) {
-      await resMsgPromise;
+      await resMsgPromise
     }
   } catch (err) {
-    console.warn(err);
+    console.warn(err)
     console.log("content is not available")
   }
 
-  console.log("checkContent alive: ", alive);
+  console.log("checkContent alive: ", alive)
 
   if (alive) {
-    return true;
+    return true
   }
 
-  const manifest = chrome.runtime.getManifest();
+  const manifest = chrome.runtime.getManifest()
   if (!manifest.content_scripts) {
-    return false;
+    return false
   }
+
+  const contentScripts = [...manifest.content_scripts, mainContentScript]
 
   try {
-    for (let item of manifest.content_scripts) {
+    for (let item of contentScripts) {
       if (item.js) {
         const world =
-          "world" in item && item.world == "MAIN" ? "MAIN" : "ISOLATED";
+          "world" in item && item.world == "MAIN" ? "MAIN" : "ISOLATED"
 
         await chrome.scripting.executeScript({
           files: item.js,
           target: { tabId: tabId },
           world: world,
-        });
+        })
       }
     }
-    return true;
+    return true
   } catch (e) {
-    return false;
+    return false
   }
 }
-
 
 type StoreUrlOptions = {
   id: string
@@ -174,10 +176,64 @@ export function getStoreUrl(options: StoreUrlOptions) {
   })
 }
 
-export function getLocal<T extends Record<string, any>>(key: string | T,) {
+export function getLocal<T extends Record<string, any>>(key: string | T) {
   return chrome.storage.local.get(key) as Promise<T>
 }
 
 export function getSession<T extends Record<string, any>>(key: string | T) {
   return chrome.storage.session.get(key) as Promise<T>
+}
+
+type NetRulesOptions = {
+  ua?: string
+  tabIds?: number[]
+  initiatorDomains?: string[]
+}
+
+export async function updateFrameNetRules(
+  { ua, tabIds, initiatorDomains }: NetRulesOptions = {
+    tabIds: [-1],
+    initiatorDomains: [chrome.runtime.id],
+  }
+) {
+  ua = ua || navigator.userAgent
+  await chrome.declarativeNetRequest.updateSessionRules({
+    removeRuleIds: [1],
+    addRules: [
+      {
+        id: 1,
+        priority: 1,
+        action: {
+          type: chrome.declarativeNetRequest.RuleActionType.MODIFY_HEADERS,
+          responseHeaders: [
+            {
+              header: "X-Frame-Options",
+              operation: chrome.declarativeNetRequest.HeaderOperation.REMOVE,
+            },
+            {
+              header: "Content-Security-Policy",
+              operation: chrome.declarativeNetRequest.HeaderOperation.REMOVE,
+            },
+          ],
+          requestHeaders: [
+            {
+              header: "User-Agent",
+              value: ua,
+              operation: chrome.declarativeNetRequest.HeaderOperation.SET,
+            },
+            {
+              header: "Sec-Fetch-Dest",
+              value: "document",
+              operation: chrome.declarativeNetRequest.HeaderOperation.SET,
+            },
+          ],
+        },
+        condition: {
+          resourceTypes: [chrome.declarativeNetRequest.ResourceType.SUB_FRAME],
+          initiatorDomains,
+          tabIds,
+        },
+      },
+    ],
+  })
 }

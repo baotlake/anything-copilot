@@ -1,6 +1,8 @@
 {
-  "openInPip": "פתח בחלון Copilot",
-  "other": "אחר",
+  "openInPip": "פתוח בקופץ",
+  "openInSidebar": "פתוח בסרגל הצד",
+  "popular": "פופולרי",
+  "sidebar": "סרגל צד",
   "clickHere": "לחץ כאן",
   "minimize": "מזער",
   "moveAside": "הזז בצד",

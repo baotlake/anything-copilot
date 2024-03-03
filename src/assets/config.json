@@ -72,6 +72,36 @@
           "wait": "div > span:has(svg[width=\"240\"]):not([style*=\"display: none\"])"
         }
       }
+    ],
+    "webviewPatchs": [
+      {
+        "re": "www.google.com",
+        "l": "",
+        "ua": "Mozilla/5.0 (Linux; Android 10; Pixel 4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Mobile Safari/537.36"
+      }
+    ],
+    "loadCandidates": ["/robots.txt", "/sitemap.xml", "/logo.svg"],
+    "popularSites": [
+      {
+        "url": "https://chat.openai.com/",
+        "title": "ChatGPT",
+        "icon": "https://r2.ziziyi.com/copilot/chatgpt.svg"
+      },
+      {
+        "url": "https://copilot.microsoft.com/",
+        "title": "Microsoft Copilot",
+        "icon": "https://r2.ziziyi.com/copilot/ms-copilot.svg"
+      },
+      {
+        "url": "https://gemini.google.com/",
+        "title": "Gemini",
+        "icon": "https://r2.ziziyi.com/copilot/gemini.svg"
+      },
+      {
+        "url": "https://claude.ai/",
+        "title": "Claude",
+        "icon": "https://r2.ziziyi.com/copilot/claude-ai.svg"
+      }
     ]
   }
 }

@@ -1,6 +1,8 @@
 {
-  "openInPip": "Buka dalam jendela Copilot",
-  "other": "Lainnya",
+  "openInPip": "Buka di popup",
+  "openInSidebar": "Buka di bilah sisi",
+  "popular": "Populer",
+  "sidebar": "Bilah sisi",
   "clickHere": "Klik Disini",
   "minimize": "Miminimalkan",
   "moveAside": "Pindah ke samping",

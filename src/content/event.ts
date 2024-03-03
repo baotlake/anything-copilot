@@ -1,43 +1,45 @@
+import type { ContentEventType } from "@/types"
+
 type EventOptions =
   | {
-      type: "pip"
+      type: ContentEventType.pip
       detail: {
         url: string
         mode: string
       }
     }
   | {
-      type: "load-doc"
+      type: ContentEventType.pipLoad
       detail: {
         url: string
       }
     }
   | {
-      type: "loaded"
+      type: ContentEventType.pipLoaded
       detail: {}
     }
-
-type EventType = EventOptions["type"]
-
-function getRealType(type: string) {
-  return "anything-copilot_" + type
-}
+  | {
+      type: ContentEventType.escapeLoad
+      detail: {
+        url: string
+      }
+    }
 
 export function dispatchContentEvent({ type, detail }: EventOptions) {
-  const event = new CustomEvent(getRealType(type), { detail })
+  const event = new CustomEvent(type, { detail })
   document.dispatchEvent(event)
 }
 
 export function addContentEventListener(
-  type: EventType,
+  type: ContentEventType,
   handler: (e: Event) => void
 ) {
-  document.addEventListener(getRealType(type), handler)
+  document.addEventListener(type, handler)
 }
 
 export function removeContentEventListener(
-  type: EventType,
+  type: ContentEventType,
   handler: (e: Event) => void
 ) {
-  document.removeEventListener(getRealType(type), handler)
+  document.removeEventListener(type, handler)
 }

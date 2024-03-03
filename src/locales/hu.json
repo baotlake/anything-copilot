@@ -1,6 +1,8 @@
 {
-  "openInPip": "Megnyitás a Copilot ablakban",
-  "other": "Egyéb",
+  "openInPip": "Nyissa meg a felbukkanó felbukkanást",
+  "openInSidebar": "Nyitva az oldalsávban",
+  "popular": "Népszerű",
+  "sidebar": "Oldalsáv",
   "clickHere": "Kattintson ide",
   "minimize": "Kis méret",
   "moveAside": "Elmozdít",

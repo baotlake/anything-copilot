@@ -7,7 +7,7 @@ type MessageSchema = typeof EnMessage & typeof ZhMessage
 
 export function getLocale() {
   if (__DEV__) {
-    return "en"
+    return "zh-CN"
   }
 
   const language = chrome.i18n.getUILanguage()

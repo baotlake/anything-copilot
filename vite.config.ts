@@ -7,10 +7,14 @@ import vueJsx from "@vitejs/plugin-vue-jsx"
 import vueI18n from "@intlify/unplugin-vue-i18n/vite"
 import wasm from "vite-plugin-wasm"
 import topLevelAwait from "vite-plugin-top-level-await"
+import { crx } from "@crxjs/vite-plugin"
 import manifest from "./src/manifest"
-import makeManifest from "./utils/manifest-plugin"
+import copy from "rollup-plugin-copy"
+// import makeManifest from "./utils/manifest-plugin"
 
 /// <reference types="vitest" />
+
+const __DEV__ = process.env.NODE_ENV == "development"
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -21,7 +25,11 @@ export default defineConfig({
   },
 
   plugins: [
-    vue(),
+    copy({
+      hook: "buildEnd",
+      targets: __DEV__ ? [{ src: "public/*", dest: "dist" }] : [],
+    }),
+    vue({}),
     vueJsx(),
     vueI18n({
       runtimeOnly: true,
@@ -30,32 +38,32 @@ export default defineConfig({
         "./src/locales/**"
       ),
     }),
-    makeManifest(manifest, { isDev: false }),
+    crx({ manifest, contentScripts: { injectCss: false } }),
     wasm(),
     topLevelAwait(),
   ],
   resolve: {
     alias: {
       "@": fileURLToPath(new URL("./src", import.meta.url)),
-      "vue-i18n": "vue-i18n/dist/vue-i18n.runtime.esm-bundler.js",
+      "vue-i18n": resolve(
+        __dirname,
+        "node_modules",
+        "vue-i18n/dist/vue-i18n.runtime.esm-bundler.js"
+      ),
     },
   },
   build: {
     target: ["chrome111"],
-    emptyOutDir: false,
-    assetsDir: "assets",
+    emptyOutDir: true,
+    // cssCodeSplit: false,
     outDir: "dist",
     rollupOptions: {
       input: {
-        popup: "src/pages/popup.html",
-        guide: "src/pages/guide.html",
-        worker: "src/pages/offscreen.html",
-        // dev: "src/pages/dev.html",
+        offscreen: "offscreen.html",
       },
       output: {
-        assetFileNames: "assets/[name].[ext]",
-        chunkFileNames: "js/[name]-chunk.js",
-        entryFileNames: "js/[name].js",
+        chunkFileNames: "js/chunk-[hash].js",
+        assetFileNames: "assets/[name][extname]",
       },
     },
   },

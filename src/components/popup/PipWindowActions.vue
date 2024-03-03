@@ -39,45 +39,35 @@ async function closePip() {
 </script>
 
 <template>
-  <div v-if="pipWindow.tab && pipWindow.tab.id">
-    <div class="text-sm flex items-center truncate mt-6">
-      <span
-        class="w-4 h-4 inline-block mr-2 rounded"
-        :style="{
-          background:
-            '#8882 center / contain url(' + pipWindow.tab?.favIconUrl + ')',
-        }"
-      ></span>
-      <span>{{ pipWindow.tab?.title }}</span>
-    </div>
-    <div class="flex gap-2">
-      <button
-        class="primary-btn flex items-center mt-2 rounded-lg p-2 px-3"
-        @click="handleUpdatePip('minimized')"
-      >
-        <IconHide />
-      </button>
-      <button
-        class="primary-btn flex items-center mt-2 rounded-lg p-2 px-3"
-        @click="handleUpdatePip('normal')"
-      >
-        <IconArrowCircleRight />
-      </button>
-      <button
-        class="primary-btn flex items-center mt-2 rounded-lg p-2 px-3"
-        @click="closePip"
-      >
-        <IconClose />
-      </button>
-    </div>
+  <div class="justify-between border-2 border-solid border-background-mute">
+    <div
+      class="size-7 rounded mr-auto"
+      :style="{
+        background: `#8881 center / contain url('${pipWindow.tab?.favIconUrl}')`,
+      }"
+    ></div>
+
+    <button
+      v-if="pipWindow.windowsWindow?.state === 'normal'"
+      class="bg-background-soft hover:bg-background-mute rounded-full size-8 p-1 flex items-center justify-center"
+      @click="handleUpdatePip('minimized')"
+    >
+      <IconHide class="size-5" />
+    </button>
+    <button
+      v-if="pipWindow.windowsWindow?.state === 'minimized'"
+      class="bg-background-soft hover:bg-background-mute rounded-full size-8 p-1 flex items-center justify-center"
+      @click="handleUpdatePip('normal')"
+    >
+      <IconArrowCircleRight class="size-5" />
+    </button>
+    <button
+      class="bg-background-soft hover:bg-background-mute rounded-full size-8 p-1 flex items-center justify-center"
+      @click="closePip"
+    >
+      <IconClose class="size-5" />
+    </button>
   </div>
 </template>
 
-<style scoped>
-.primary-btn {
-  background: var(--color-background-soft);
-}
-.primary-btn:hover {
-  background: var(--color-background-mute);
-}
-</style>
+<style scoped></style>

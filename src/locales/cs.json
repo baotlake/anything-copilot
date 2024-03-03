@@ -1,6 +1,8 @@
 {
-  "openInPip": "Otevřít v okně Copilot",
-  "other": "Další",
+  "openInPip": "Otevřeno v vyskakovacím okně",
+  "openInSidebar": "Otevřeno v postranním panelu",
+  "popular": "Oblíbený",
+  "sidebar": "Postranní panel",
   "clickHere": "Klikněte zde",
   "minimize": "Minimalizovat",
   "moveAside": "Přesunout stranou",

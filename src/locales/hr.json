@@ -1,6 +1,8 @@
 {
-  "openInPip": "Otvori u CoPilot prozoru",
-  "other": "Ostalo",
+  "openInPip": "Otvoreno u skočnom prozoru",
+  "openInSidebar": "Otvoreno na bočnoj traci",
+  "popular": "Popularan",
+  "sidebar": "Bočna traka",
   "clickHere": "Kliknite ovdje",
   "minimize": "Smanji",
   "moveAside": "Pomakni na stranu",

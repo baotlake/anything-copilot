@@ -1,6 +1,8 @@
 {
-  "openInPip": "Abrir en ventana de Copilot",
-  "other": "Otro",
+  "openInPip": "Abrir en ventana emergente",
+  "openInSidebar": "Abrir en la barra lateral",
+  "popular": "Popular",
+  "sidebar": "Barra lateral",
   "clickHere": "Haz clic aquí",
   "minimize": "Minimizar",
   "moveAside": "Mover a un lado",

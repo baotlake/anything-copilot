@@ -1,6 +1,8 @@
 {
-  "openInPip": "Atvērt Copilot logā",
-  "other": "Cits",
+  "openInPip": "Atvērts uznirstošajā logā",
+  "openInSidebar": "Atveriet sānjoslā",
+  "popular": "Populārs",
+  "sidebar": "Sānjosla",
   "clickHere": "Noklikšķiniet šeit",
   "minimize": "Minimizēt",
   "moveAside": "Pagriezt malā",

@@ -1,6 +1,8 @@
 {
-  "openInPip": "Buksan sa bintana ng Copilot",
-  "other": "Iba pa",
+  "openInPip": "Buksan sa Popup",
+  "openInSidebar": "Buksan sa sidebar",
+  "popular": "Tanyag",
+  "sidebar": "Sidebar",
   "clickHere": "I-click Dito",
   "minimize": "Ibawas",
   "moveAside": "Ilipat sa tabi",

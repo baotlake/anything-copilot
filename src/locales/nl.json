@@ -1,6 +1,8 @@
 {
-  "openInPip": "Open in Copilot-venster",
-  "other": "Andere",
+  "openInPip": "Open in pop -up",
+  "openInSidebar": "Open in zijbalk",
+  "popular": "Populair",
+  "sidebar": "Zijbalk",
   "clickHere": "Klik hier",
   "minimize": "Minimaliseren",
   "moveAside": "Opzij zetten",

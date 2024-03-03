@@ -16,6 +16,7 @@ export enum MessageType {
   invokeRequest = "invoke-request",
   invokeResponse = "invoke-Response",
   showChatDocs = "show-chat-docs",
+  frameReady = "frame-ready",
 }
 
 export enum ServiceFunc {
@@ -30,4 +31,24 @@ export type ParseDocOptions = {
   type: string
   size: number
   url: string
+}
+
+export enum ContentScriptId {
+  content = "content",
+  main = "content-main",
+  frame = "frame",
+}
+
+export enum ContentEventType {
+  pip = "anything-copilot_pip",
+  pipLoad = "anything-copilot_pip-load",
+  pipLoaded = "anything-copilot_pip-loaded",
+  escapeLoad = "anything-copilot_escape-load",
+}
+
+export enum FrameMessageType {
+  frameReady = "anything-copilot_frame-ready",
+  contentRun = "anything-copilot_content-run",
+  escapeLoad = "anything-copilot_escape-load",
+  pageInfo = "anything-copilot_page-info",
 }
