@@ -5,7 +5,7 @@ export enum MessageType {
   bgOpenPip = "bg-open-pip",
   bgPipLaunch = "bg-pip-launch",
   pipLaunch = "pip-launch",
-  contentMount = "content-mount",
+  contentMounted = "content-mount",
   getPipWinInfo = "get-pip-win-info",
   pipWinInfo = "pip-win-info",
   updateWindow = "update-window",
@@ -16,7 +16,10 @@ export enum MessageType {
   invokeRequest = "invoke-request",
   invokeResponse = "invoke-Response",
   showChatDocs = "show-chat-docs",
-  frameReady = "frame-ready",
+  openInSidebar = "open-in-sidebar",
+  registerContentSidebar = "register-content-sidebar",
+  unregisterContentSidebar = "unregister-content-sidebar",
+  openContentSidebar = "open-content-sidebar",
 }
 
 export enum ServiceFunc {

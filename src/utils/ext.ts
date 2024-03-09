@@ -237,3 +237,28 @@ export async function updateFrameNetRules(
     ],
   })
 }
+
+export function isProtectedUrl(url: string) {
+  try {
+    const u = new URL(url)
+    if (!["http:", "https:"].includes(u.protocol)) {
+      return true
+    }
+
+    const isEdge = /Edg/.test(navigator.userAgent)
+
+    if (isEdge && u.hostname == "microsoftedge.microsoft.com") {
+      return true
+    }
+
+    if (u.hostname == "chrome.google.com") {
+      return true
+    }
+
+    return false
+  } catch (e) {
+    console.warn(e)
+  }
+
+  return true
+}

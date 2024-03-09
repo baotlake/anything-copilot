@@ -42,5 +42,6 @@
     "autoSending": "Penghantaran Automatik",
     "chooseContentRelevant": "Pilih kandungan yang lebih berkaitan dengan topik yang anda ingin ketahui",
     "notSupported": "Halaman ini tidak menyokong penghantaran automatik. Sila salin mesej dan hantarkan secara manual."
-  }
+  },
+  "openSidebar": "Buka bar sisi"
 }

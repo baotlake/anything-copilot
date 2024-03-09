@@ -42,5 +42,6 @@
     "autoSending": "Automatyczne Wysyłanie",
     "chooseContentRelevant": "Wybierz treść bardziej związana z tematem, który chcesz się dowiedzieć",
     "notSupported": "Ta strona nie obsługuje automatycznego wysyłania. Skopiuj wiadomość i wysyłaj ją ręcznie."
-  }
+  },
+  "openSidebar": "Otwórz pasek boczny"
 }

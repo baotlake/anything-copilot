@@ -77,7 +77,6 @@ const manifest = {
     "sidePanel",
     "declarativeNetRequestWithHostAccess",
     "declarativeNetRequestFeedback",
-    "webNavigation",
   ],
   optional_permissions: [],
   host_permissions: ["<all_urls>"],
@@ -93,11 +92,7 @@ const manifest = {
   },
   web_accessible_resources: [
     {
-      resources: ["logo.svg"],
-      matches: ["<all_urls>"],
-    },
-    {
-      resources: ["/js/*", "/assets/*"],
+      resources: ["/js/*", "/assets/*", "sidebar.html", "logo.svg"],
       matches: ["<all_urls>"],
       use_dynamic_url: true,
     },
@@ -107,6 +102,6 @@ const manifest = {
       ? `script-src 'self' http://localhost:3000 'wasm-unsafe-eval';`
       : `script-src 'self' 'wasm-unsafe-eval'`,
   },
-} satisfies Manifest as chrome.runtime.Manifest
+} satisfies Manifest as unknown as chrome.runtime.Manifest
 
 export default manifest

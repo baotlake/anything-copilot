@@ -1,36 +1,100 @@
 <script setup lang="ts">
-import { ref, onMounted, reactive, computed } from "vue"
-import { getLocal, updateFrameNetRules } from "@/utils/ext"
+import { ref, onMounted, reactive, computed, onUnmounted } from "vue"
+import {
+  emptyTab,
+  getLocal,
+  getSession,
+  isProtectedUrl,
+  updateFrameNetRules,
+} from "@/utils/ext"
 import config from "@/assets/config.json"
 import LoadingBar from "@/components/LoadingBar.vue"
 import Webview from "@/components/Webview.vue"
 import { useI18n } from "@/utils/i18n"
+import { MessageType } from "@/types"
+import SiteButton from "@/components/SiteButton.vue"
 
 const logoUrl = chrome.runtime.getURL("/logo.svg")
-
 const { t } = useI18n()
 
 const url = ref("")
+const mode = ref("")
 const popularItems = reactive(config.data.popularSites)
 const recentItems = reactive<{ url: string; title: string; icon: string }[]>([])
 
 const protectedUrl = computed(() => {
-  if (!url.value) {
-    return true
-  }
-
-  const u = new URL(url.value)
-  if (!["http:", "https:"].includes(u.protocol)) {
-    return true
-  }
-
-  return false
+  return isProtectedUrl(url.value)
 })
+
+const currentTab = reactive({
+  tabId: 0,
+})
+
+async function handleMessage(message: any) {
+  switch (message.type) {
+    case MessageType.openInSidebar:
+      if (!currentTab.tabId) {
+        const current = await chrome.tabs.getCurrent()
+        currentTab.tabId = current?.id || -1
+      }
+      if (message.tabId == currentTab.tabId) {
+        url.value = message.url
+      }
+      break
+  }
+}
+
+async function updateRecentItems(pageInfo: {
+  url: string
+  title: string
+  icon: string
+}) {
+  if (mode.value === "content") {
+    chrome.runtime.sendMessage({
+      type: MessageType.registerContentSidebar,
+      url: url.value,
+    })
+  }
+
+  const { sidebarRecentItems } = await getLocal({
+    sidebarRecentItems: [] as {
+      url: string
+      icon: string
+      title: string
+    }[],
+  })
+
+  const index = sidebarRecentItems.findIndex((i) => i.url === pageInfo.url)
+  if (index !== -1) {
+    sidebarRecentItems.splice(index, 1)
+  }
+  sidebarRecentItems.unshift(pageInfo)
+  sidebarRecentItems.splice(12)
+  recentItems.splice(0, recentItems.length, ...sidebarRecentItems)
+
+  await chrome.storage.local.set({ sidebarRecentItems })
+}
+
+async function removeRecentItems(url: string) {
+  const { sidebarRecentItems } = await getLocal({
+    sidebarRecentItems: [] as {
+      url: string
+      icon: string
+      title: string
+    }[],
+  })
+
+  const index = sidebarRecentItems.findIndex((i) => i.url === url)
+  if (index !== -1) {
+    sidebarRecentItems.splice(index, 1)
+  }
+  recentItems.splice(0, recentItems.length, ...sidebarRecentItems)
+  await chrome.storage.local.set({ sidebarRecentItems })
+}
 
 onMounted(() => {
   const q = new URLSearchParams(location.search)
-  const initUrl = q.get("url") || ""
-  url.value = initUrl
+  mode.value = q.get("mode") || "sidepanel"
 
   getLocal({
     popularSites: config.data.popularSites,
@@ -43,6 +107,25 @@ onMounted(() => {
       recentItems.splice(0, recentItems.length, ...sidebarRecentItems)
     }
   })
+
+  getSession({
+    sidebarUrls: {} as Record<string, string>,
+  }).then(({ sidebarUrls }) => {
+    console.log("[sidebar]", sidebarUrls, mode.value)
+    if (sidebarUrls && sidebarUrls[mode.value]) {
+      url.value = sidebarUrls[mode.value]
+    }
+  })
+
+  chrome.tabs.getCurrent().then((t) => {
+    currentTab.tabId = t?.id || -1
+  })
+
+  chrome.runtime.onMessage.addListener(handleMessage)
+})
+
+onUnmounted(() => {
+  chrome.runtime.onMessage.removeListener(handleMessage)
 })
 
 function go(link: string) {
@@ -52,7 +135,7 @@ function go(link: string) {
 
 <template>
   <div class="w-full h-screen">
-    <Webview v-if="!protectedUrl" :url="url" />
+    <Webview v-if="!protectedUrl" :url="url" @page-info="updateRecentItems" />
 
     <div v-else class="flex flex-col p-6 max-w-md mx-auto">
       <div class="flex flex-col items-center gap-2 mx-auto mt-16">
@@ -61,45 +144,25 @@ function go(link: string) {
       </div>
 
       <div class="grid grid-cols-4 gap-y-4 justify-between mt-24">
-        <button
+        <SiteButton
           v-for="item of recentItems"
-          class="group w-16 shrink-0 relative flex flex-col items-center justify-between justify-self-center rounded-lg px-2 py-3 bg-background-soft"
+          :icon="item.icon"
+          :title="item.title"
+          badge="remove"
           @click="go(item.url)"
-        >
-          <div
-            class="size-6 rounded"
-            :style="{
-              background: 'center / contain url(' + item.icon + ')',
-            }"
-          ></div>
-          <div
-            class="text-xs max-w-full mt-1 break-words leading-3 line-clamp-2"
-          >
-            {{ item.title }}
-          </div>
-        </button>
+          @remove="() => removeRecentItems(item.url)"
+        />
       </div>
 
       <!-- <div class="text-center my-3">Popular</div> -->
       <div class="w-full my-6 border-b border-b-slate-400/60 h-0"></div>
       <div class="grid grid-cols-4 gap-y-4 justify-between">
-        <button
+        <SiteButton
           v-for="item of popularItems"
-          class="group w-16 shrink-0 relative flex flex-col items-center justify-between justify-self-center rounded-lg px-2 py-3 bg-background-soft"
+          :icon="item.icon"
+          :title="item.title"
           @click="go(item.url)"
-        >
-          <div
-            class="size-6 rounded"
-            :style="{
-              background: 'center / contain url(' + item.icon + ')',
-            }"
-          ></div>
-          <div
-            class="text-xs max-w-full mt-1 break-words leading-3 line-clamp-2"
-          >
-            {{ item.title }}
-          </div>
-        </button>
+        />
       </div>
     </div>
   </div>

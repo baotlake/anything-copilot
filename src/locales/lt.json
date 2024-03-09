@@ -42,5 +42,6 @@
     "autoSending": "Automatinis siuntimas",
     "chooseContentRelevant": "Pasirinkite turinį, kuris yra labiau susijęs su jumis dominančia tema",
     "notSupported": "Šis puslapis nepalaiko automatinio siuntimo. Nukopijuokite pranešimą ir atsiųskite jį rankiniu būdu."
-  }
+  },
+  "openSidebar": "Atidarykite šoninę juostą"
 }

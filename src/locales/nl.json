@@ -42,5 +42,6 @@
     "autoSending": "Automatisch verzenden",
     "chooseContentRelevant": "Kies inhoud die relevanter is voor het onderwerp dat je wilt leren",
     "notSupported": "Deze pagina ondersteunt geen automatisch verzenden. Kopieer het bericht en stuur het handmatig."
-  }
+  },
+  "openSidebar": "Open de zijbalk"
 }

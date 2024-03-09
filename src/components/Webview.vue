@@ -10,6 +10,10 @@ const props = defineProps<{
   url: string
 }>()
 
+const emit = defineEmits<{
+  pageInfo: [pageInfo: { url: string; title: string; icon: string }]
+}>()
+
 const frame = ref<HTMLIFrameElement>()
 const patchs = reactive(config.data.webviewPatchs)
 const loadUrls = reactive(config.data.loadCandidates)
@@ -32,23 +36,7 @@ function handleFrameMessage(e: MessageEvent) {
         pageInfo.title = e.data.title
         pageInfo.icon = e.data.icon
 
-        getLocal({
-          sidebarRecentItems: [] as {
-            url: string
-            icon: string
-            title: string
-          }[],
-        }).then(({ sidebarRecentItems }) => {
-          const index = sidebarRecentItems.findIndex(
-            (i) => i.url === pageInfo.url
-          )
-          if (index !== -1) {
-            sidebarRecentItems.splice(index, 1)
-          }
-          sidebarRecentItems.unshift(pageInfo)
-          sidebarRecentItems.splice(10)
-          chrome.storage.local.set({ sidebarRecentItems })
-        })
+        emit("pageInfo", pageInfo)
       }
       break
   }
@@ -118,7 +106,7 @@ watch(patch, async (patch) => {
   pageInfo.url = ""
   pageInfo.title = ""
   pageInfo.icon = ""
-  const loadTimeout = 1000 * 1
+  const loadTimeout = 1000 * 100
 
   try {
     await new Promise<void>((resolve, reject) => {

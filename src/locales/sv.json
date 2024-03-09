@@ -42,5 +42,6 @@
     "autoSending": "Automatisk sändning",
     "chooseContentRelevant": "Välj innehåll som är mer relevant för det ämne du vill lära dig om",
     "notSupported": "Denna sida stöder inte automatisk sändning. Kopiera meddelandet och skicka det manuellt."
-  }
+  },
+  "openSidebar": "Öppna sidofältet"
 }

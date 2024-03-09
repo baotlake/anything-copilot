@@ -42,5 +42,6 @@
     "autoSending": "Automatsko slanje",
     "chooseContentRelevant": "Odaberite sadržaj koji je relevantan za temu koju želite naučiti",
     "notSupported": "Ova stranica ne podržava automatsko slanje. Kopirajte poruku i pošaljite je ručno."
-  }
+  },
+  "openSidebar": "Otvorite bočnu traku"
 }

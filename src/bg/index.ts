@@ -6,6 +6,11 @@ import {
 } from "@/types"
 import { waitMessage, tabUpdated, getLocal } from "@/utils/ext"
 import { offscreen } from "./offscreen"
+import {
+  registerContentSidebar,
+  unregisterContentSidebar,
+  handleContentMounted,
+} from "./sidebar"
 import config from "@/assets/config.json"
 import { allFrameScript, mainContentScript } from "@/manifest"
 
@@ -22,6 +27,11 @@ const contentScript = {
 } satisfies chrome.scripting.RegisteredContentScript
 
 chrome.scripting.registerContentScripts([contentScript, mainContentScript])
+chrome.runtime.onMessage.addListener(handleMessage)
+chrome.commands.onCommand.addListener(handleCommand)
+chrome.runtime.onStartup.addListener(() => {
+  updateConfig()
+})
 
 async function openPipBackground(url: string) {
   const tab = await chrome.tabs.create({
@@ -43,7 +53,7 @@ async function pipLaunch(url: string) {
   const tab = await chrome.tabs.create({ url })
   await waitMessage({
     tabId: tab.id!,
-    type: MessageType.contentMount,
+    type: MessageType.contentMounted,
   })
   chrome.tabs.sendMessage(tab.id!, {
     type: MessageType.pipLaunch,
@@ -150,10 +160,17 @@ function handleMessage(message: any, sender: chrome.runtime.MessageSender) {
     case MessageType.invokeRequest:
       handleInvokeRequest(message, sender)
       break
+    case MessageType.contentMounted:
+      handleContentMounted(sender.tab!.id!)
+      break
+    case MessageType.registerContentSidebar:
+      registerContentSidebar({ tabId: sender.tab!.id!, url: message.url })
+      break
+    case MessageType.unregisterContentSidebar:
+      unregisterContentSidebar(sender.tab!.id!)
+      break
   }
 }
-
-chrome.runtime.onMessage.addListener(handleMessage)
 
 async function handleToggleMinimize() {
   const { pipWindowId } = await chrome.storage.local.get({ pipWindowId: null })
@@ -173,8 +190,6 @@ function handleCommand(command: string) {
       break
   }
 }
-
-chrome.commands.onCommand.addListener(handleCommand)
 
 async function updateConfig() {
   const url = "https://config.ziziyi.com/anything-copilot"
@@ -235,7 +250,3 @@ async function updateConfig() {
     loadCandidates,
   })
 }
-
-chrome.runtime.onStartup.addListener(() => {
-  updateConfig()
-})

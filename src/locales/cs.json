@@ -42,5 +42,6 @@
     "autoSending": "Automatické odesílání",
     "chooseContentRelevant": "Vyberte obsah více relevantní k tématu, které chcete studovat",
     "notSupported": "Tato stránka nepodporuje automatické odesílání. Zkopírujte zprávu a odešlete ji ručně."
-  }
+  },
+  "openSidebar": "Otevřete postranní panel"
 }

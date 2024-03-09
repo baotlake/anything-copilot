@@ -12,7 +12,6 @@ const ctx = await esbuild.context({
   entryPoints: {
     // bg: "./src/bg/index.ts",
     "js/content-main": "./src/content/main.ts",
-    "js/content-frame": "./src/content/frame.ts",
     "js/pdf.worker": "./src/assets/pdf.worker.js",
   },
   bundle: true,

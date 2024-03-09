@@ -59,6 +59,7 @@ export default defineConfig({
     outDir: "dist",
     rollupOptions: {
       input: {
+        // dev: "dev.html",
         offscreen: "offscreen.html",
       },
       output: {

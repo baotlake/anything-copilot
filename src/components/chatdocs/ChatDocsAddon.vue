@@ -10,6 +10,7 @@ import { getDocItem, devConfig, type SiteConfig } from "./helper"
 import config from "@/assets/config.json"
 import { getLocal } from "@/utils/ext"
 import { chatDocPrompt } from "@/utils/prompt"
+import { autoPointerCapture } from "@/utils/dom"
 
 const { t } = useI18n()
 const logoUrl = chrome.runtime.getURL("/logo.svg")
@@ -188,8 +189,7 @@ onUnmounted(() => {
   >
     <div
       class="flex items-center px-4 pt-4 pb-1 select-none"
-      @pointerdown="(e) => e.buttons == 1 && (e.target as Element)?.setPointerCapture(e.pointerId)
-      "
+      @pointerdown="autoPointerCapture"
       @pointermove="handlePointerMove"
       @pointerup="adjustPosition"
       @pointercancel="adjustPosition"

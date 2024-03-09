@@ -21,6 +21,12 @@ export const docsAddon = reactive({
   active: false,
 })
 
+export const sidebarAddon = reactive({
+  visible: false,
+  hidden: false,
+  url: "",
+})
+
 type DocInputItem = {
   key: string
   kind: "file" | "string"

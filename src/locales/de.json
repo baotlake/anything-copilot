@@ -42,5 +42,6 @@
     "autoSending": "Automatisches Senden",
     "chooseContentRelevant": "Wählen Sie Inhalte, die zum gewünschten Thema passen",
     "notSupported": "Diese Seite unterstützt das automatische Senden nicht. Bitte kopieren Sie die Nachricht und senden Sie sie manuell."
-  }
+  },
+  "openSidebar": "Öffnen Sie die Seitenleiste"
 }

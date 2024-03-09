@@ -42,5 +42,6 @@
     "autoSending": "自動發送",
     "chooseContentRelevant": "選擇與你想了解的主題更相關的內容",
     "notSupported": "此頁面不支持自動發送。請複制消息並手動發送。"
-  }
+  },
+  "openSidebar": "打開側邊欄"
 }

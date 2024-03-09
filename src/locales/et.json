@@ -42,5 +42,6 @@
     "autoSending": "Automaatne Saatmine",
     "chooseContentRelevant": "Valige teema kohta rohkem seotud sisu",
     "notSupported": "See leht ei toeta automaatset saatmist. Kopeerige sõnum ja saatke see käsitsi."
-  }
+  },
+  "openSidebar": "Avage külgriba"
 }

@@ -98,9 +98,9 @@
         "icon": "https://r2.ziziyi.com/copilot/gemini.svg"
       },
       {
-        "url": "https://claude.ai/",
-        "title": "Claude",
-        "icon": "https://r2.ziziyi.com/copilot/claude-ai.svg"
+        "url": "https://runwayml.com/ai-tools/text-to-image/",
+        "title": "Text to Image",
+        "icon": "https://r2.ziziyi.com/copilot/runway.png"
       }
     ]
   }

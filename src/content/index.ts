@@ -1,5 +1,11 @@
 import { mount, waitMountApp } from "./ui"
-import { chatDocsPanel, pipLauncher, pipLoading, pipWindow } from "@/store"
+import {
+  chatDocsPanel,
+  pipLauncher,
+  pipLoading,
+  pipWindow,
+  sidebarAddon,
+} from "@/store"
 import { ContentEventType, FrameMessageType, MessageType } from "@/types"
 import Copilot from "./Copilot.vue"
 import { waitMessage } from "@/utils/ext"
@@ -45,6 +51,11 @@ function handleMessage(
       break
     case MessageType.showChatDocs:
       chatDocsPanel.visible = true
+      break
+    case MessageType.openContentSidebar:
+      sidebarAddon.visible = true
+      sidebarAddon.hidden = false
+      sidebarAddon.url = message.url
       break
   }
 }
@@ -115,7 +126,7 @@ function run() {
 
 async function postPageInfo() {
   await new Promise((r) => setTimeout(r, 1000 * 3))
-  window.top?.postMessage(
+  window.parent?.postMessage(
     {
       type: FrameMessageType.pageInfo,
       url: location.href,
@@ -126,27 +137,30 @@ async function postPageInfo() {
   )
 }
 
-if (window.self == window.top) {
+function handleFrameMessage(e: MessageEvent) {
+  if (!e.data || typeof e.data !== "object") return
+  const type = e.data.type
+  switch (type) {
+    case FrameMessageType.contentRun:
+      run()
+      postPageInfo()
+      return
+    case FrameMessageType.escapeLoad:
+      return dispatchContentEvent({
+        type: ContentEventType.escapeLoad,
+        detail: { url: e.data.url },
+      })
+  }
+}
+
+if (window.self == window.parent) {
   run()
 } else {
-  window.addEventListener("message", (e) => {
-    if (!e.data || typeof e.data !== "object") return
-    const type = e.data.type
-    switch (type) {
-      case FrameMessageType.contentRun:
-        run()
-        postPageInfo()
-        return
-      case FrameMessageType.escapeLoad:
-        return dispatchContentEvent({
-          type: ContentEventType.escapeLoad,
-          detail: { url: e.data.url },
-        })
-    }
-  })
-  window.top?.postMessage(
+  window.addEventListener("message", handleFrameMessage)
+  window.parent?.postMessage(
     {
       type: FrameMessageType.frameReady,
+      url: location.href,
     },
     chrome.runtime.getURL("")
   )

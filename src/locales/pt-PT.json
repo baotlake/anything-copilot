@@ -42,5 +42,6 @@
     "autoSending": "Envio Automático",
     "chooseContentRelevant": "Escolha conteúdo mais relevante para o tópico que deseja aprender",
     "notSupported": "Esta página não suporta o envio automático. Copie a mensagem e envie -a manualmente."
-  }
+  },
+  "openSidebar": "Abra a barra lateral"
 }

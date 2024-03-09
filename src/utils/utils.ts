@@ -51,7 +51,8 @@ export const semanticClip = (text: string, maxLength: number) => {
   return text.slice(0, breakPoint)
 }
 
-export async function findFrameLoadUrl(urls: string[]) {
+/** Find URL from the same origin that can be embedded */
+export async function findFrameLoadUrl(urls: string[]): Promise<string> {
   const abortController = new AbortController()
 
   let resolve: null | ((url: string) => void) = null

@@ -19,17 +19,18 @@ import IconAmpStories from "@/components/icons/IconAmpStories.vue"
 import IconGppMaybe from "@/components/icons/IconGppMaybe.vue"
 import IconHide from "@/components/icons/IconHide.vue"
 import IconArrowCircleRight from "@/components/icons/IconArrowCircleRight.vue"
-import IconClose from "@/components/icons/IconClose.vue"
 import IconSplitscreenRight from "@/components/icons/IconSplitscreenRight.vue"
+import SiteButton from "@/components/SiteButton.vue"
 
+const isEdge = /Edg/.test(navigator.userAgent)
 const { t } = useI18n()
-
 const activeTab = ref<chrome.tabs.Tab>(emptyTab)
 const manifest = reactive(chrome.runtime.getManifest())
 const avaiable = ref(false)
 const popularItems = reactive(config.data.popularSites)
 const keyboard = reactive({
   ctrl: false,
+  shift: false,
 })
 const horizontalScroller = ref<HTMLElement | null>(null)
 
@@ -98,17 +99,23 @@ function handleKeydown(e: KeyboardEvent) {
   }
   if (e.code == "Backslash" && (e.ctrlKey || e.metaKey)) {
     e.preventDefault()
-    handleOpenSidebar()
+    openSidebar()
   }
 
   if (e.code == "ControlLeft" || e.code == "ControlRight") {
     keyboard.ctrl = true
+  }
+  if (e.code == "ShiftLeft" || e.code == "ShiftRight") {
+    keyboard.shift = true
   }
 }
 
 function hanldeKeyup(e: KeyboardEvent) {
   if (e.code == "ControlLeft" || e.code == "ControlRight") {
     keyboard.ctrl = false
+  }
+  if (e.code == "ShiftLeft" || e.code == "ShiftRight") {
+    keyboard.shift = false
   }
 }
 
@@ -125,7 +132,7 @@ async function handleWriteHtml() {
   const tab = tabs[0]
   if (tab) {
     chrome.tabs.sendMessage(tab.id!, {
-      type: "pip",
+      type: MessageType.pip,
       options: {
         url: tab.url,
         mode: "write-html",
@@ -134,18 +141,31 @@ async function handleWriteHtml() {
   }
 }
 
-async function handleOpenSidebar(url: string = "") {
-  const path = defaultSidebarPath + "?url=" + encodeURIComponent(url)
-  await chrome.sidePanel.setOptions({ path })
+async function openSidebar(url = "") {
   const win = await chrome.windows.getCurrent()
+  await chrome.storage.session.set({
+    sidebarUrls: { sidepanel: url },
+  })
   await chrome.sidePanel.open({ windowId: win.id! })
+
+  window.close()
+}
+
+async function openContentSidebar(url = "") {
+  await chrome.storage.session.set({
+    sidebarUrls: { content: url },
+  })
+  await chrome.tabs.sendMessage(activeTab.value.id!, {
+    type: MessageType.openContentSidebar,
+    url,
+  })
   window.close()
 }
 
 async function handleClickLaunch(url: string) {
   console.log(activeTab.value)
   await chrome.runtime.sendMessage({
-    type: "bg-pip-launch",
+    type: MessageType.bgPipLaunch,
     url,
   })
   window.close()
@@ -207,7 +227,7 @@ function showChatDocs() {
 
     <div
       :class="[
-        'flex gap-1 items-center text-sm my-2 px-2',
+        'flex gap-2 items-center text-sm my-2 px-2',
         {
           'text-rose-800': !avaiable,
         },
@@ -215,15 +235,15 @@ function showChatDocs() {
     >
       <div
         v-if="avaiable"
-        class="w-4 h-4 rounded"
+        class="size-5"
         :style="{
-          background:
-            '#8882 center / contain url(' + activeTab?.favIconUrl + ')',
+          background: 'center / contain url(' + activeTab?.favIconUrl + ')',
         }"
       ></div>
-      <IconGppMaybe v-else class="w-4 h-4" />
-      <div v-if="avaiable" class="truncate">{{ host }}</div>
-      <div v-else class="truncate">{{ t("protectedTabTips") }}</div>
+      <IconGppMaybe v-else class="size-5" />
+      <div class="truncate">
+        {{ avaiable ? host : t("protectedTabTips") }}
+      </div>
     </div>
 
     <div
@@ -234,10 +254,10 @@ function showChatDocs() {
     >
       <button
         v-if="!pipWindow.tab"
-        :disabled="!avaiable"
         class="hover:bg-background-mute bg-background-soft disabled:bg-background-soft disabled:opacity-65"
-        @click="handleWriteHtml"
+        :disabled="!avaiable"
         :title="t('openInPip')"
+        @click="handleWriteHtml"
       >
         <IconAmpStories class="size-8 shrink-0" />
         <div class="flex items-center justify-between flex-1 w-2/3 gap-2">
@@ -251,14 +271,22 @@ function showChatDocs() {
       <PipWindowActions v-else />
 
       <button
-        class="hover:bg-background-mute bg-background-soft"
-        @click="() => handleOpenSidebar(activeTab.url)"
+        class="hover:bg-background-mute bg-background-soft disabled:bg-background-soft disabled:opacity-65"
+        :disabled="isEdge && !avaiable"
         :title="t('openInSidebar')"
+        @click="
+          () => {
+            if (isEdge || keyboard.ctrl) {
+              return openContentSidebar()
+            }
+            openSidebar(activeTab.url)
+          }
+        "
       >
         <IconSplitscreenRight class="size-8 shrink-0 scale-95" />
         <div class="flex items-center justify-between flex-1 w-2/3 gap-2">
           <span class="text-sm font-bold leading-4 truncate">
-            {{ t("openInSidebar") }}
+            {{ isEdge ? t("openSidebar") : t("openInSidebar") }}
           </span>
           <span class="text-xs">CTRL + \</span>
         </div>
@@ -310,37 +338,25 @@ function showChatDocs() {
       @wheel="(e) => horizontalScroller!.scrollLeft += e.deltaY"
       @pointermove="(e) => e.buttons && (horizontalScroller!.scrollLeft -= e.movementX)"
     >
-      <button
+      <SiteButton
         v-for="item of popularItems"
-        class="group w-[58px] shrink-0 relative flex flex-col items-center rounded-lg px-2 py-3 bg-background-soft"
+        :icon="item.icon"
+        :title="item.title"
+        :badge="keyboard.shift || !avaiable ? 'popup' : 'sidebar'"
+        small
         @click="
-          () =>
-            keyboard.ctrl
-              ? handleOpenSidebar(item.url)
-              : handleClickLaunch(item.url)
-        "
-      >
-        <div
-          class="size-6 rounded"
-          :style="{
-            background: 'center / contain url(' + item.icon + ')',
-          }"
-        ></div>
-        <div
-          class="text-xs h-6 leading-3 line-clamp-2 flex flex-col justify-center"
-        >
-          <div>{{ item.title }}</div>
-        </div>
+          () => {
+            if (keyboard.shift || !avaiable) {
+              return handleClickLaunch(item.url)
+            }
 
-        <IconAmpStories
-          v-if="!keyboard.ctrl"
-          class="size-3 absolute top-1 right-1 opacity-0 group-hover:opacity-65"
-        />
-        <IconSplitscreenRight
-          v-else
-          class="size-3 absolute top-1 right-1 opacity-0 group-hover:opacity-65"
-        />
-      </button>
+            if (isEdge || keyboard.ctrl) {
+              return openContentSidebar(item.url)
+            }
+            openSidebar(item.url)
+          }
+        "
+      />
     </div>
 
     <div class="mt-3 flex items-center justify-center opacity-60">

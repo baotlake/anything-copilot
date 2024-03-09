@@ -42,5 +42,6 @@
     "autoSending": "Automaattilähetys",
     "chooseContentRelevant": "Valitse aiheeseesi liittyvämpi sisältö",
     "notSupported": "Tämä sivu ei tue automaattista lähettämistä. Kopioi viesti ja lähetä se manuaalisesti."
-  }
+  },
+  "openSidebar": "Avaa sivupalkki"
 }

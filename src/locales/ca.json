@@ -42,5 +42,6 @@
     "autoSending": "Enviament automàtic",
     "chooseContentRelevant": "Trieu contingut més rellevant pel tema que voleu aprendre",
     "notSupported": "Aquesta pàgina no admet l'enviament automàtic. Copieu el missatge i envieu -lo manualment."
-  }
+  },
+  "openSidebar": "Obriu la barra lateral"
 }

@@ -33,7 +33,6 @@ export function mount(App: Component, doc = document) {
 
 export function mountApp(doc = document) {
   mount(App, doc)
-  chrome.runtime?.sendMessage({ type: MessageType.contentMount })
 }
 
 export function waitMountApp() {

@@ -233,3 +233,9 @@ export function getPageIcon() {
 
   return location.origin + "/favicon.ico"
 }
+
+export function autoPointerCapture(e: PointerEvent) {
+  if (e.buttons == 1) {
+    ;(e.target as HTMLElement)?.setPointerCapture(e.pointerId)
+  }
+}

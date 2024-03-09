@@ -4,10 +4,12 @@ declare namespace chrome.declarativeNetRequest {
   }): Promise<Rule[]>
 }
 
-declare interface Manifest extends chrome.runtime.ManifestV3 {
+declare interface ManifestPatch {
   web_accessible_resources: Array<{
     resources: string[]
     matches: string[]
-    use_dynamic_url?: boolean
+    use_dynamic_url: boolean
   }>
 }
+
+type Manifest = chrome.runtime.ManifestV3 & ManifestPatch
