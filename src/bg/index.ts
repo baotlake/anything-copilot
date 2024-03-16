@@ -13,11 +13,13 @@ import {
 } from "./sidebar"
 import config from "@/assets/config.json"
 import { allFrameScript, mainContentScript } from "@/manifest"
+import { getIsEdge } from "@/utils/ext"
 
 type Config = typeof config
 
 const manifest = chrome.runtime.getManifest()
 const placeholder = manifest.content_scripts![0]
+const isEdge = getIsEdge()
 
 const contentScript = {
   id: ContentScriptId.content,
@@ -32,6 +34,12 @@ chrome.commands.onCommand.addListener(handleCommand)
 chrome.runtime.onStartup.addListener(() => {
   updateConfig()
 })
+
+if (isEdge) {
+  chrome.sidePanel.setOptions({
+    enabled: false,
+  })
+}
 
 async function openPipBackground(url: string) {
   const tab = await chrome.tabs.create({

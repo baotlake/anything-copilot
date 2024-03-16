@@ -238,6 +238,10 @@ export async function updateFrameNetRules(
   })
 }
 
+export function getIsEdge() {
+  return /Edg/.test(navigator.userAgent)
+}
+
 export function isProtectedUrl(url: string) {
   try {
     const u = new URL(url)
@@ -245,7 +249,7 @@ export function isProtectedUrl(url: string) {
       return true
     }
 
-    const isEdge = /Edg/.test(navigator.userAgent)
+    const isEdge = getIsEdge()
 
     if (isEdge && u.hostname == "microsoftedge.microsoft.com") {
       return true

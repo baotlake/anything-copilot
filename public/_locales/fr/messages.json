@@ -1,12 +1,12 @@
 {
   "name": {
-    "message": "Anything Copilot - Assistant multitâche"
+    "message": "Anything Copilot: Outil de multitâche AI, barre latérale Real Chatgpt, Chat"
   },
   "short_name": {
     "message": "Anything Copilot"
   },
   "description": {
-    "message": "Utilisez le site Web officiel ChatGPT ou toute autre page Web gratuitement en tant que votre copilote IA."
+    "message": "Améliorez votre navigation web avec notre outil polyvalent. Ouvrez facilement tout site web dans une barre latérale ou une fenêtre c"
   },
   "toggle_minimize_desc": {
     "message": "Activer/désactiver la fenêtre du copilote"

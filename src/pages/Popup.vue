@@ -5,8 +5,6 @@ import { pipWindow } from "@/store"
 import { MessageType } from "@/types"
 import { useI18n } from "@/utils/i18n"
 import config from "@/assets/config.json"
-import { defaultSidebarPath } from "@/manifest"
-// import { sitesConfig as chatDocsSites } from "@/components/chatdocs/chat"
 import PipWindowActions from "@/components/popup/PipWindowActions.vue"
 import IconThumbUp from "@/components/icons/IconThumbUp.vue"
 import IconThumbDown from "@/components/icons/IconThumbDown.vue"
@@ -21,8 +19,9 @@ import IconHide from "@/components/icons/IconHide.vue"
 import IconArrowCircleRight from "@/components/icons/IconArrowCircleRight.vue"
 import IconSplitscreenRight from "@/components/icons/IconSplitscreenRight.vue"
 import SiteButton from "@/components/SiteButton.vue"
+import { getIsEdge } from "@/utils/ext"
 
-const isEdge = /Edg/.test(navigator.userAgent)
+const isEdge = getIsEdge()
 const { t } = useI18n()
 const activeTab = ref<chrome.tabs.Tab>(emptyTab)
 const manifest = reactive(chrome.runtime.getManifest())
@@ -342,11 +341,11 @@ function showChatDocs() {
         v-for="item of popularItems"
         :icon="item.icon"
         :title="item.title"
-        :badge="keyboard.shift || !avaiable ? 'popup' : 'sidebar'"
+        :badge="keyboard.shift || (isEdge && !avaiable) ? 'popup' : 'sidebar'"
         small
         @click="
           () => {
-            if (keyboard.shift || !avaiable) {
+            if (keyboard.shift || (isEdge && !avaiable)) {
               return handleClickLaunch(item.url)
             }
 

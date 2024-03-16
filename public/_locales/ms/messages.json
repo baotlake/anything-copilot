@@ -1,12 +1,12 @@
 {
   "name": {
-    "message": "Anything Copilot - Penolong Pelbagai Tugas"
+    "message": "Anything Copilot: AI Alat Pelbagai Tugas, Bar Sisi Chatgpt Sebenar, Chatdoc"
   },
   "short_name": {
     "message": "Anything Copilot"
   },
   "description": {
-    "message": "Gunakan laman web rasmi ChatGPT atau laman web lain secara percuma sebagai pembantu pemandu AI anda."
+    "message": "Perkasa pelayaran web anda dengan alat serbaguna kami. Buka laman web mana-mana dalam sidebar atau tetingkap popup untuk multitugas"
   },
   "toggle_minimize_desc": {
     "message": "Togol papar/sorok tetingkap Pembantu"

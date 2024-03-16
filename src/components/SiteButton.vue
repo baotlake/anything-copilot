@@ -21,14 +21,20 @@ defineEmits(["click", "remove"])
     ]"
     @click="$emit('click')"
   >
-    <span
+    <!-- <span
       class="size-6 rounded mt-2 mb-1"
       :style="{
         background: 'center / contain url(' + icon + ')',
       }"
     >
-    </span>
-    <div class="flex flex-col justify-center h-6 my-1">
+    </span> -->
+    <img
+      class="size-6 rounded mt-2 mb-1"
+      :src="icon"
+      loading="lazy"
+      @error="(e) => (e.target as HTMLImageElement).src = ''"
+    />
+    <div class="flex flex-col justify-center h-6 my-1 w-full">
       <div class="text-xs max-w-full break-words leading-3 line-clamp-2">
         {{ title }}
       </div>

@@ -1,12 +1,12 @@
 {
   "name": {
-    "message": "Anything Copilot - Multitasking assistant"
+    "message": "Anything Copilot: AI Narzędzie wielozadaniowe, Prawdziwy pasek boczny Chatg"
   },
   "short_name": {
     "message": "Anything Copilot"
   },
   "description": {
-    "message": "Używaj oficjalnej strony internetowej ChatGPT lub dowolnej innej strony za darmo jako swojego współpilota AI."
+    "message": "Ulepsz swoje przeglądanie sieci za pomocą naszego wszechstronnego narzędzia. Otwórz dowolną stronę w panelu bocznym lub oknie popup."
   },
   "toggle_minimize_desc": {
     "message": "Przełącz pokaż/ukryj okno Współpilota"

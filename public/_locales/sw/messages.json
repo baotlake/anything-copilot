@@ -1,12 +1,12 @@
 {
   "name": {
-    "message": "Anything Copilot - Multitasking assistant"
+    "message": "Anything Copilot: AI Multitasking Tool, Real Chatgpt sidebar, Chatdoc"
   },
   "short_name": {
     "message": "Anything Copilot"
   },
   "description": {
-    "message": "Tumia tovuti rasmi ya ChatGPT au ukurasa wowote mwingine wa wavuti bure kama mpalaji wako wa AI."
+    "message": "Förbättra din webbläsning med vårt mångsidiga verktyg. Öppna enkelt vilken webbplats som helst i en sidofält eller popup-fönster för"
   },
   "toggle_minimize_desc": {
     "message": "Badilisha kuonyesha/ficha dirisha la Mpangilio"

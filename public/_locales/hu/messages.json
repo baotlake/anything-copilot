@@ -1,12 +1,12 @@
 {
   "name": {
-    "message": "Anything Copilot - Többfeladatos segítő"
+    "message": "Anything Copilot: AI Multitasking Tool, Valódi Chatgpt oldalsáv, Chatdoc"
   },
   "short_name": {
     "message": "Anything Copilot"
   },
   "description": {
-    "message": "Használd az hivatalos ChatGPT weboldalt vagy bármely más weboldalt ingyen az AI autóvezetőddé."
+    "message": "Fokozza webes böngészését sokoldalú eszközünkkel. Nyisson bármely webhelyet oldalsávban vagy felugró ablakban az egyszerű többfelada"
   },
   "toggle_minimize_desc": {
     "message": "Váltás az Autóvezető ablak megjelenítése/elrejtése között"

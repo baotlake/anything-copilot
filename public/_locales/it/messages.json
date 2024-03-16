@@ -1,12 +1,12 @@
 {
   "name": {
-    "message": "Anything Copilot - App web, copilota AI"
+    "message": "Anything Copilot: AI Multitasking Tool, Real Chatgpt sidebar, Chatdoc"
   },
   "short_name": {
     "message": "Anything Copilot"
   },
   "description": {
-    "message": "Utilizza il sito web ufficiale di ChatGPT o qualsiasi altra pagina web gratuitamente come tuo copilota AI."
+    "message": "Enhance your web browsing with our versatile tool. Easily open any website in a sidebar or popup window for seamless multitasking."
   },
   "toggle_minimize_desc": {
     "message": "Attiva/disattiva visualizzazione/nascondi finestra Copilot"

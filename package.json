@@ -9,8 +9,7 @@
     "build": "npm run build:esbuild && vite build",
     "build:esbuild": "node esbuild.mjs",
     "type-check": "vue-tsc --noEmit -p tsconfig.app.json --composite false",
-    "zip:win": "7z a anything-copilot.zip .\\dist\\*",
-    "zip": "",
+    "zip": "node utils/zip.js",
     "test": "vitest"
   },
   "dependencies": {
@@ -43,6 +42,8 @@
     "@vue/tsconfig": "^0.4.0",
     "autoprefixer": "^10.4.16",
     "cross-env": "^7.0.3",
+    "gulp": "^4.0.2",
+    "gulp-zip": "^6.0.0",
     "npm-run-all2": "^6.1.1",
     "postcss": "^8.4.31",
     "rollup-plugin-copy": "^3.5.0",

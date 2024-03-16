@@ -1,12 +1,12 @@
 {
   "name": {
-    "message": "Anything Copilot - Večopravilni pomočnik"
+    "message": "Anything Copilot: AI Multitasking Tool, Real Chatgpt sidebar, Chatdoc\nTrans"
   },
   "short_name": {
     "message": "Anything Copilot"
   },
   "description": {
-    "message": "Brezplačno uporabite uradno spletno mesto ChatGPT ali katero koli drugo spletno stran kot svoj AI sovoznik."
+    "message": "Poboljšajte svoje pregledavanje weba s našim svestranim alatom. Otvorite bilo koju web stranicu u bočnoj traci ili iskačućem prozoru"
   },
   "toggle_minimize_desc": {
     "message": "Preklopite prikaz/skrivanje okna Sovoznika"

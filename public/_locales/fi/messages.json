@@ -1,12 +1,12 @@
 {
   "name": {
-    "message": "Anything Copilot - Monitoimintavastaanottaja"
+    "message": "Anything Copilot: Työkalu moniajoon, Oikea Chatgpt-sivupalkki, Chatdoc"
   },
   "short_name": {
     "message": "Anything Copilot"
   },
   "description": {
-    "message": "Käytä virallista ChatGPT-verkkosivustoa tai mitä tahansa muuta verkkosivua ilmaiseksi tekoäly-apukuskina."
+    "message": "Paranna verkkoselaamistasi monipuolisella työkalullamme. Avaa helposti mikä tahansa verkkosivusto sivupalkissa tai ponnahdusikkunass"
   },
   "toggle_minimize_desc": {
     "message": "Vaihda Copilot-ikkunan näyttö/piilotus"

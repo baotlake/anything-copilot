@@ -1,12 +1,12 @@
 {
   "name": {
-    "message": "Anything Copilot - Ứng dụng web, phi công AI"
+    "message": "Anything Copilot: Công cụ AI đa nhiệm, thanh bên Chatgpt thực, Chatdoc"
   },
   "short_name": {
     "message": "Anything Copilot"
   },
   "description": {
-    "message": "Sử dụng trang web chính thức của ChatGPT hoặc bất kỳ trang web nào khác miễn phí như là phi công AI của bạn."
+    "message": "Nâng cao trải nghiệm duyệt web với công cụ linh hoạt của chúng tôi. Mở trang web trong thanh bên hoặc cửa sổ popup để thực hiện nhiề"
   },
   "toggle_minimize_desc": {
     "message": "Mở/đóng cửa sổ Copilot"

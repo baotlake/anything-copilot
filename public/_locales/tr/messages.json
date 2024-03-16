@@ -1,12 +1,12 @@
 {
   "name": {
-    "message": "Anything Copilot - Çoklu Görevli Yardımcı"
+    "message": "Anything Copilot: AI Çoklu Görev Aracı, Gerçek Chatgpt kenar çubuğu, Chatdo"
   },
   "short_name": {
     "message": "Anything Copilot"
   },
   "description": {
-    "message": "Resmi ChatGPT sitesini veya herhangi bir web sayfasını ücretsiz olarak yapay zeka yardımcınız olarak kullanın."
+    "message": "Çok yönlü aracımızla web taramanızı geliştirin. Herhangi bir web sitesini yan çubukta veya açılır pencerede kolayca açın."
   },
   "toggle_minimize_desc": {
     "message": "Yardımcı pencereyi göster/gizle"

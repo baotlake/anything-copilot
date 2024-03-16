@@ -23,12 +23,15 @@ export default defineConfig({
     __INTLIFY_DROP_MESSAGE_COMPILER__: true,
     __DEV__: process.env.NODE_ENV === "development",
   },
-
+  server: {
+    port: 5173,
+    strictPort: true,
+    hmr: {
+      port: 5173,
+    },
+    watch: {},
+  },
   plugins: [
-    copy({
-      hook: "buildEnd",
-      targets: __DEV__ ? [{ src: "public/*", dest: "dist" }] : [],
-    }),
     vue({}),
     vueJsx(),
     vueI18n({
@@ -41,6 +44,9 @@ export default defineConfig({
     crx({ manifest, contentScripts: { injectCss: false } }),
     wasm(),
     topLevelAwait(),
+    copy({
+      targets: __DEV__ ? [{ src: "public/*", dest: "dist" }] : [],
+    }),
   ],
   resolve: {
     alias: {

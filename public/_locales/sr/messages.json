@@ -1,12 +1,12 @@
 {
   "name": {
-    "message": "Anything Copilot - Web aplikacija, AI kopilot"
+    "message": "Anything Copilot: AI Multitasking Alat, Real Chatgpt bočna traka, Chatdoc"
   },
   "short_name": {
     "message": "Anything Copilot"
   },
   "description": {
-    "message": "Besplatno koristite zvaničnu ChatGPT veb stranicu ili bilo koju drugu veb stranicu kao vaš AI kopilot."
+    "message": "Unaprijedite svoje surfanje webom uz naš svestrani alat. Lako otvorite bilo koju stranicu u bočnoj traci ili iskačućem prozoru za be"
   },
   "toggle_minimize_desc": {
     "message": "Prikaži/sakrij prozor kopilota"

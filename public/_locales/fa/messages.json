@@ -1,12 +1,12 @@
 {
   "name": {
-    "message": "Anything Copilot - کمک کننده چند وظیفه"
+    "message": "Anything Copilot: ابزار چند وظیفه‌ای هوش مصنوعی، نوار کناری Real Chatgpt، C"
   },
   "short_name": {
     "message": "Anything Copilot"
   },
   "description": {
-    "message": "از وب سایت رسمی چت جی پی تی یا هر صفحه وب دیگر به عنوان همراه راننده خود برای رایگان استفاده کنید."
+    "message": "با ابزار چندکاره ما، مرور وب خود را بهبود دهید. به آسانی هر وب سایتی را در نوار کناری یا پنجره popup باز کنید."
   },
   "toggle_minimize_desc": {
     "message": "تغییر حالت نمایش / عدم نمایش پنجره همراه راننده"

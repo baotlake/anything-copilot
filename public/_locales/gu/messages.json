@@ -1,12 +1,12 @@
 {
   "name": {
-    "message": "Anything Copilot - વેબ ઍપ, AI કોપાયલોટ"
+    "message": "Anything Copilot: AI Multitasking Tool, Real Chatgpt sidebar, Chatdoc\nTrans"
   },
   "short_name": {
     "message": "Anything Copilot"
   },
   "description": {
-    "message": "Use the official ChatGPT website or any webpage as your AI copilot."
+    "message": "Kuza web browsing with our versatile tool. Open any website in a sidebar or popup."
   },
   "toggle_minimize_desc": {
     "message": "કોપાયલોટ વિંડો બતાવવા/છુપાવવા ટૉગલ કરો"

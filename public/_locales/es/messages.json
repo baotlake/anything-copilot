@@ -1,12 +1,12 @@
 {
   "name": {
-    "message": "Anything Copilot - Asistente multitarea"
+    "message": "Anything Copilot: Herramienta de IA multitarea, barra lateral de Chatgpt re"
   },
   "short_name": {
     "message": "Anything Copilot"
   },
   "description": {
-    "message": "Utiliza el sitio web oficial de ChatGPT o cualquier otra página web de forma gratuita como tu copiloto de IA."
+    "message": "Mejora tu navegación web con nuestra herramienta versátil. Abre sitios en una barra lateral o ventana emergente para multitarea."
   },
   "toggle_minimize_desc": {
     "message": "Alternar mostrar/ocultar ventana de Copiloto"

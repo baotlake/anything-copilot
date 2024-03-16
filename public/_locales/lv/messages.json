@@ -1,12 +1,12 @@
 {
   "name": {
-    "message": "Anything Copilot - Daudzfunkciju palīgs"
+    "message": "Anything Copilot: AI Vairdarbības Rīks, Reālā Chatgpt Sānjosla, Chatdoc"
   },
   "short_name": {
     "message": "Anything Copilot"
   },
   "description": {
-    "message": "Bezmaksas izmantojiet oficiālo ChatGPT mājaslapu vai jebkuru citu tīmekļa lapu kā savu AI līdzpilotu."
+    "message": "Uzlabojiet savu tīmekļa pārlūkošanu ar mūsu daudzpusīgo rīku. Ērti atveriet jebkuru tīmekļa vietni sānjoslā vai uznirstošajā logā, l"
   },
   "toggle_minimize_desc": {
     "message": "Pārslēgt Kopilota loga rādīšanu/paslēpšanu"

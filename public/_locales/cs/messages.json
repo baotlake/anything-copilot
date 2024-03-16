@@ -1,12 +1,12 @@
 {
   "name": {
-    "message": "Anything Copilot - Víceúlohový asistent"
+    "message": "Anything Copilot: Nástroj AI pro multitasking, Real Chatgpt boční panel, Ch"
   },
   "short_name": {
     "message": "Anything Copilot"
   },
   "description": {
-    "message": "Použijte oficiální webovou stránku ChatGPT nebo jakoukoli jinou webovou stránku jako svého AI spolujezdce."
+    "message": "Vylepšete svůj webový prohlížeč pomocí našeho všestranného nástroje. Otevírejte webové stránky v postranním panelu nebo vyskakovacím"
   },
   "toggle_minimize_desc": {
     "message": "Přepnout zobrazení/skrytí okna Spolujezdce"

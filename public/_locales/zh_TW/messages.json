@@ -1,12 +1,12 @@
 {
   "name": {
-    "message": "Anything Copilot - 無限應用、AI助手"
+    "message": "Anything Copilot: AI多工工具，實時Chatgpt側邊欄，Chatdoc"
   },
   "short_name": {
     "message": "Anything Copilot"
   },
   "description": {
-    "message": "免費將ChatGPT官網或其他頁面化為您的AI助手，立即體驗GPTs、GPT4及其他新功能。可與開源大模型、文心一言對話，用Google Translate翻譯及抖音刷短視頻。"
+    "message": "使用我們多功能工具增強網頁瀏覽體驗，輕鬆在側邊欄或彈出視窗中打開網站。"
   },
   "toggle_minimize_desc": {
     "message": "切換顯示/隱藏Copilot視窗"

@@ -1,12 +1,12 @@
 {
   "name": {
-    "message": "Anything Copilot - Multifunktionsassistent"
+    "message": "Anything Copilot: AI Multitasking Verktyg, Real Chatgpt sidofält, Chatdoc"
   },
   "short_name": {
     "message": "Anything Copilot"
   },
   "description": {
-    "message": "Använd den officiella ChatGPT-webbplatsen eller vilken annan webbsida som helst gratis som din AI-co-pilot."
+    "message": "Förbättra din webbläsning med vårt mångsidiga verktyg. Öppna enkelt vilken webbplats som helst i en sidofält eller popup-fönster för"
   },
   "toggle_minimize_desc": {
     "message": "Växla visa/dölj co-pilot-fönstret"

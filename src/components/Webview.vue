@@ -164,7 +164,7 @@ watch(patch, async (patch) => {
 </script>
 
 <template>
-  <iframe class="w-full h-full" ref="frame" :src="frameUrl"></iframe>
+  <iframe class="w-full h-full bg-white" ref="frame" :src="frameUrl"></iframe>
 </template>
 
 <style scoped></style>

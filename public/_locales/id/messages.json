@@ -1,12 +1,12 @@
 {
   "name": {
-    "message": "Anything Copilot - Aplikasi web, kopilot AI"
+    "message": "Anything Copilot: Alat Multitasking AI, Chatgpt samping nyata, Chatdoc"
   },
   "short_name": {
     "message": "Anything Copilot"
   },
   "description": {
-    "message": "Gunakan situs web resmi ChatGPT atau halaman web lainnya secara gratis sebagai kopilot AI Anda."
+    "message": "Perkaya penjelajahan web Anda dengan alat serbaguna kami. Buka situs web mana pun di sisi atau jendela popup untuk multitasking yang"
   },
   "toggle_minimize_desc": {
     "message": "Aktifkan/Tutup tampilan jendela Kopilot"
