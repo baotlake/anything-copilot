@@ -8,6 +8,7 @@ import { fetchDoc } from "@/content/pip"
 
 const props = defineProps<{
   url: string
+  ua?: string
 }>()
 
 const emit = defineEmits<{
@@ -76,7 +77,7 @@ const patch = computed(() => {
 
   return {
     url,
-    ua: patch?.ua || "",
+    ua: patch?.ua || props.ua || "",
     l: patch?.l || "",
   }
 })

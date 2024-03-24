@@ -89,6 +89,13 @@ def cli(
             continue
 
         last_hash = current_hash
+
+        if locales_data["msg_name"].find("<code>") == -1:
+            msg_path = os.path.join(i18n_dir, locales_data["msg_name"])
+            update_msg(msg_path, data, overwrite=overwrite)
+            print(f'{time.strftime("%H:%M:%S")} UPDATED hash={current_hash}')
+            continue
+
         for code in data:
             filename = locales_data["msg_name"].replace("<code>", code)
             msg_path = os.path.join(i18n_dir, filename)

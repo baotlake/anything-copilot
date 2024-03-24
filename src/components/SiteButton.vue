@@ -2,6 +2,9 @@
 import IconSplitscreenRight from "@/components/icons/IconSplitscreenRight.vue"
 import IconAmpStories from "@/components/icons/IconAmpStories.vue"
 import IconClose from "./icons/IconClose.vue"
+import { handleImgError } from "@/utils/dom"
+
+const globeImg = chrome.runtime.getURL("img/globe.svg")
 
 defineProps<{
   icon: string
@@ -16,26 +19,22 @@ defineEmits(["click", "remove"])
 <template>
   <button
     :class="[
-      'group shrink-0 relative flex flex-col items-center justify-self-center rounded-lg p-1 bg-background-soft hover:bg-background-mute',
+      'group shrink-0 relative flex flex-col items-center justify-self-center rounded-lg py-1 px-0.5 hover:bg-background-soft',
       small ? 'w-[58px]' : 'w-16',
     ]"
     @click="$emit('click')"
   >
-    <!-- <span
-      class="size-6 rounded mt-2 mb-1"
-      :style="{
-        background: 'center / contain url(' + icon + ')',
-      }"
-    >
-    </span> -->
-    <img
-      class="size-6 rounded mt-2 mb-1"
-      :src="icon"
-      loading="lazy"
-      @error="(e) => (e.target as HTMLImageElement).src = ''"
-    />
-    <div class="flex flex-col justify-center h-6 my-1 w-full">
-      <div class="text-xs max-w-full break-words leading-3 line-clamp-2">
+    <div class="p-2.5 rounded-full bg-background-soft">
+      <img
+        class="size-6 rounded"
+        :src="icon"
+        :data-fallback="globeImg"
+        loading="lazy"
+        @error="handleImgError"
+      />
+    </div>
+    <div class="flex flex-col justify-center h-8 w-full">
+      <div class="text-xs max-w-full break-words leading-tight line-clamp-2">
         {{ title }}
       </div>
     </div>
@@ -53,7 +52,7 @@ defineEmits(["click", "remove"])
       v-if="badge === 'remove'"
       :class="[
         'size-4 absolute top-[-4px] right-[-4px] opacity-0 group-hover:opacity-65 rounded-full',
-        'bg-background-soft hover:text-red-500 flex items-center justify-center',
+        'bg-background-soft hover:bg-red-100 hover:text-red-600 hover:scale-105 flex items-center justify-center',
       ]"
       @click="
         (e) => {

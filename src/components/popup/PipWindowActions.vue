@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, watch } from "vue"
-import { pipWindow } from "@/store"
+import { pipWindow } from "@/store/content"
 import IconHide from "@/components/icons/IconHide.vue"
 import IconArrowCircleRight from "@/components/icons/IconArrowCircleRight.vue"
 import IconClose from "@/components/icons/IconClose.vue"

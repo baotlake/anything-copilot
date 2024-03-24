@@ -22,14 +22,14 @@ export const allFrameScript = {
 export const defaultSidebarPath = "sidebar.html"
 
 const manifest = {
-  manifest_version: 3,
   // maximum of 45 characters
   name: "__MSG_name__",
+  version: "1.2.7",
   // edge 12 characters
   // short_name: "__MSG_short_name__",
   // no more than 132 characters
   description: "__MSG_description__",
-  version: "1.2.5",
+  manifest_version: 3,
   action: {
     default_icon: {
       16: "logo.png",
@@ -92,7 +92,7 @@ const manifest = {
   },
   web_accessible_resources: [
     {
-      resources: ["/js/*", "/assets/*", "sidebar.html", "logo.svg"],
+      resources: ["/js/*", "/assets/*", "/img/*", "sidebar.html", "logo.svg"],
       matches: ["<all_urls>"],
       use_dynamic_url: true,
     },

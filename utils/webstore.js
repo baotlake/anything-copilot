@@ -46,10 +46,7 @@ async function main(data = window.json) {
 
       if (item.desc) {
         desc = item.desc
-        desc = desc.replace(/\s+😎/, "\n\n\n😎")
-        desc = desc.replace(/\s+😘/, "\n\n😘")
-        desc = desc.replace(/\s+😊/, "\n\n😊")
-        desc = desc.replace(/\s+👻/, "\n\n👻")
+        log("inputDesc: ", desc)
         await inputDesc(desc)
       }
 
@@ -110,9 +107,22 @@ async function click({ target, waitFor }) {
 }
 
 async function dispatchInput(input, value) {
-  input.value = value
-  input.dispatchEvent(new Event("input", { bubbles: true }))
-  input.dispatchEvent(new Event("change", { bubbles: true }))
+  let success = false
+  let count = 0
+
+  while (!success) {
+    input.value = value
+    input.dispatchEvent(new Event("input", { bubbles: true }))
+    input.dispatchEvent(new Event("change", { bubbles: true }))
+    count++
+    await sleep(150)
+
+    if (input.value == value || count > 30) {
+      break
+    }
+
+    log("waiting for: input value")
+  }
 }
 
 async function goDetail(code) {
@@ -120,6 +130,7 @@ async function goDetail(code) {
     const label = edgeLanguages[code]
     await click({
       target: `#extensionListTable #edit-button[aria-label*="${label}"]`,
+      waitFor: 'textarea[aria-label*="Description"]',
     })
 
     return
@@ -136,13 +147,15 @@ async function inputDesc(desc) {
     const textarea = document.querySelector(
       'textarea[aria-label*="Description"]'
     )
-    dispatchInput(textarea, desc)
+    await dispatchInput(textarea, desc)
 
     return
   }
 
-  const textarea = document.querySelectorAll("article section label textarea")[1]
-  dispatchInput(textarea, desc)
+  const textarea = document.querySelectorAll(
+    "article section label textarea"
+  )[0]
+  await dispatchInput(textarea, desc)
 }
 
 async function saveDraft() {
@@ -151,7 +164,7 @@ async function saveDraft() {
   }
 
   await click({
-    target: ".command-bar-right he-button:nth-child(1)",
+    target: ".command-bar-right v6_he-button:nth-child(1)",
     waitFor: ".alert.alert-success",
   })
 }
@@ -162,7 +175,7 @@ async function closeDetails() {
   }
 
   await click({
-    target: ".command-bar-right he-button:nth-child(2)",
+    target: ".command-bar-right v6_he-button:nth-child(2)",
     waitFor: "#extensionListTable",
   })
 }

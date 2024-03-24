@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { pipLauncher } from "@/store"
+import { pipLauncher } from "@/store/content"
 import PipLauncher from "@/components/PipLauncher.vue"
 import { MessageType } from "@/types"
 

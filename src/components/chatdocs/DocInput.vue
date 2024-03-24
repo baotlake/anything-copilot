@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import IconNoteStackAdd from "@/components/icons/IconNoteStackAdd.vue"
-import type { chatDocsPanel } from "@/store"
+import type { chatDocsPanel } from "@/store/content"
 import { ref } from "vue"
 import { useI18n } from "@/utils/i18n"
 import { getDocItem } from "./helper"

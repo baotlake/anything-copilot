@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Multitasking from "@/components/Multitasking.vue"
 import PipSplash from "@/components/PipSplash.vue"
-import { pipLoading } from "@/store"
+import { pipLoading } from "@/store/content"
 import LoadingBar from "@/components/LoadingBar.vue"
 import ChatDocsAddon from "@/components/chatdocs/ChatDocsAddon.vue"
 </script>

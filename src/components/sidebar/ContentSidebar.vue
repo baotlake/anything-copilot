@@ -115,7 +115,7 @@ onUnmounted(() => {
   >
     <PageScrollbar class="ml-[-2px]" />
 
-    <div class="relative flex-1 flex flex-col bg-background">
+    <div class="relative flex-1 flex flex-col bg-background shadow-md">
       <div
         class="absolute h-full w-1 top-0 left-[-2px] cursor-ew-resize"
         @pointerdown="autoPointerCapture"

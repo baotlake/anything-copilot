@@ -13,6 +13,7 @@ import Webview from "@/components/Webview.vue"
 import { useI18n } from "@/utils/i18n"
 import { MessageType } from "@/types"
 import SiteButton from "@/components/SiteButton.vue"
+import Search from "@/components/Search.vue"
 
 const logoUrl = chrome.runtime.getURL("/logo.svg")
 const { t } = useI18n()
@@ -21,13 +22,13 @@ const url = ref("")
 const mode = ref("")
 const popularItems = reactive(config.data.popularSites)
 const recentItems = reactive<{ url: string; title: string; icon: string }[]>([])
+const currentTab = reactive({
+  tabId: 0,
+})
+const ua = ref("")
 
 const protectedUrl = computed(() => {
   return isProtectedUrl(url.value)
-})
-
-const currentTab = reactive({
-  tabId: 0,
 })
 
 async function handleMessage(message: any) {
@@ -95,6 +96,8 @@ async function removeRecentItems(url: string) {
 onMounted(() => {
   const q = new URLSearchParams(location.search)
   mode.value = q.get("mode") || "sidepanel"
+  // ua.value =
+  //   "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1"
 
   getLocal({
     popularSites: config.data.popularSites,
@@ -135,7 +138,12 @@ function go(link: string) {
 
 <template>
   <div class="w-full h-screen">
-    <Webview v-if="!protectedUrl" :url="url" @page-info="updateRecentItems" />
+    <Webview
+      v-if="!protectedUrl"
+      :url="url"
+      :ua="ua"
+      @page-info="updateRecentItems"
+    />
 
     <div v-else class="flex flex-col p-6 max-w-md mx-auto">
       <div class="flex flex-col items-center gap-2 mx-auto mt-16">
@@ -143,7 +151,11 @@ function go(link: string) {
         <span class="text-2xl font-bold my-2">{{ t("sidebar") }}</span>
       </div>
 
-      <div class="grid grid-cols-4 gap-y-4 justify-between mt-24">
+      <div class="my-12">
+        <Search @go="go" />
+      </div>
+
+      <div class="flex flex-wrap gap-x-4 gap-y-4 justify-center">
         <SiteButton
           v-for="item of recentItems"
           :icon="item.icon"
@@ -155,8 +167,8 @@ function go(link: string) {
       </div>
 
       <!-- <div class="text-center my-3">Popular</div> -->
-      <div class="w-full my-6 border-b border-b-slate-400/60 h-0"></div>
-      <div class="grid grid-cols-4 gap-y-4 justify-between">
+      <div class="w-full my-6 border-b border-background-soft h-0"></div>
+      <div class="flex flex-wrap gap-x-4 gap-y-4 justify-center">
         <SiteButton
           v-for="item of popularItems"
           :icon="item.icon"

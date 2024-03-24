@@ -239,3 +239,11 @@ export function autoPointerCapture(e: PointerEvent) {
     ;(e.target as HTMLElement)?.setPointerCapture(e.pointerId)
   }
 }
+
+export function handleImgError(e: Event) {
+  const img = e.target
+  if (!img || !(img instanceof HTMLImageElement)) return
+  if (!img.dataset.fallback) return
+  if (img.src == img.dataset.fallback) return
+  setTimeout(() => (img.src = img.dataset.fallback || ""), 100)
+}

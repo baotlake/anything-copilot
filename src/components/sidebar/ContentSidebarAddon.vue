@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue"
 import ContentSidebar from "./ContentSidebar.vue"
-import { sidebarAddon } from "@/store"
+import { sidebarAddon } from "@/store/content"
 import { autoPointerCapture } from "@/utils/dom"
 const logoUrl = chrome.runtime.getURL("/logo.svg")
 
@@ -18,7 +18,7 @@ function handlePointerMove(e: PointerEvent) {
 <template>
   <ContentSidebar
     v-if="sidebarAddon.visible"
-    :hidden="sidebarAddon.hidden"
+    :hidden="sidebarAddon.hidden" 
     @close="sidebarAddon.visible = false"
     @hide="sidebarAddon.hidden = true"
   />

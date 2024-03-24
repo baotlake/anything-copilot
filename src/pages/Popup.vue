@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, computed, reactive, watch } from "vue"
 import { emptyTab, checkContent, getStoreUrl, getLocal } from "@/utils/ext"
-import { pipWindow } from "@/store"
+import { pipWindow } from "@/store/popup"
 import { MessageType } from "@/types"
 import { useI18n } from "@/utils/i18n"
 import config from "@/assets/config.json"
@@ -20,6 +20,9 @@ import IconArrowCircleRight from "@/components/icons/IconArrowCircleRight.vue"
 import IconSplitscreenRight from "@/components/icons/IconSplitscreenRight.vue"
 import SiteButton from "@/components/SiteButton.vue"
 import { getIsEdge } from "@/utils/ext"
+import { handleImgError } from "@/utils/dom"
+
+const globeImg = chrome.runtime.getURL("img/globe.svg")
 
 const isEdge = getIsEdge()
 const { t } = useI18n()
@@ -232,13 +235,21 @@ function showChatDocs() {
         },
       ]"
     >
-      <div
+      <!-- <div
         v-if="avaiable"
         class="size-5"
         :style="{
           background: 'center / contain url(' + activeTab?.favIconUrl + ')',
         }"
-      ></div>
+      ></div> -->
+      <img
+        v-if="avaiable"
+        class="size-5"
+        loading="lazy"
+        :src="activeTab?.favIconUrl || ''"
+        :data-fallback="globeImg"
+        @error="handleImgError"
+      />
       <IconGppMaybe v-else class="size-5" />
       <div class="truncate">
         {{ avaiable ? host : t("protectedTabTips") }}
@@ -253,7 +264,7 @@ function showChatDocs() {
     >
       <button
         v-if="!pipWindow.tab"
-        class="hover:bg-background-mute bg-background-soft disabled:bg-background-soft disabled:opacity-65"
+        class="hover:bg-background-mute bg-background-soft disabled:bg-background-soft disabled:opacity-50 disabled:cursor-not-allowed"
         :disabled="!avaiable"
         :title="t('openInPip')"
         @click="handleWriteHtml"
@@ -270,7 +281,7 @@ function showChatDocs() {
       <PipWindowActions v-else />
 
       <button
-        class="hover:bg-background-mute bg-background-soft disabled:bg-background-soft disabled:opacity-65"
+        class="hover:bg-background-mute bg-background-soft disabled:bg-background-soft disabled:opacity-50 disabled:cursor-not-allowed"
         :disabled="isEdge && !avaiable"
         :title="t('openInSidebar')"
         @click="

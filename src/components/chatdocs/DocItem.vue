@@ -2,7 +2,7 @@
 import IconClose from "@/components/icons/IconClose.vue"
 import IconProgressActivity from "@/components/icons/IconProgressActivity.vue"
 import IconNoteStack from "@/components/icons/IconNoteStack.vue"
-import type { chatDocsPanel } from "@/store"
+import type { chatDocsPanel } from "@/store/content"
 import { useI18n } from "@/utils/i18n"
 
 defineProps<{

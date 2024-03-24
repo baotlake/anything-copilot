@@ -1,4 +1,4 @@
-import type { chatDocsPanel } from "@/store"
+import type { chatDocsPanel } from "@/store/content/content"
 
 type Selector = {
   input: string

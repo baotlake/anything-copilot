@@ -2,7 +2,7 @@
 import { onMounted, onUnmounted, reactive, ref, computed } from "vue"
 import IconNoteStackAdd from "@/components/icons/IconNoteStackAdd.vue"
 import IconClose from "@/components/icons/IconClose.vue"
-import { chatDocsPanel, docsAddon } from "@/store"
+import { chatDocsPanel, docsAddon } from "@/store/content"
 import ChatDocsPanel from "@/components/chatdocs/ChatDocsPanel.vue"
 import { watchEffect } from "vue"
 import { useI18n } from "@/utils/i18n"

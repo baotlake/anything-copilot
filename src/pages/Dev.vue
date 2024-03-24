@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import ContentSidebar from "@/components/sidebar/ContentSidebar.vue"
+import ContentSidebarAddon from "@/components/sidebar/ContentSidebarAddon.vue"
 </script>
 
 <template>
-  <ContentSidebar />
+  <!-- <ContentSidebarAddon /> -->
 </template>
 
 <style scoped></style>

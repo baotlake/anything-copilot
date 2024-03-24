@@ -5,7 +5,7 @@ import {
   pipLoading,
   pipWindow,
   sidebarAddon,
-} from "@/store"
+} from "@/store/content"
 import { ContentEventType, FrameMessageType, MessageType } from "@/types"
 import Copilot from "./Copilot.vue"
 import { waitMessage } from "@/utils/ext"

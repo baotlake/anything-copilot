@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { watch, computed, reactive, ref, onMounted, watchEffect } from "vue"
-import { chatDocsPanel } from "@/store"
+import { chatDocsPanel } from "@/store/content"
 import { contentService } from "@/utils/service"
 import { convertBlobToBase64, semanticClip } from "@/utils/utils"
 import ScrollView from "@/components/ScrollView.vue"
