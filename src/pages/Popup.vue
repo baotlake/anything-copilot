@@ -144,6 +144,11 @@ async function handleWriteHtml() {
 }
 
 async function openSidebar(url = "") {
+  chrome.runtime.sendMessage({
+    type: MessageType.openInSidebar,
+    tabId: -1,
+    url,
+  })
   const win = await chrome.windows.getCurrent()
   await chrome.storage.session.set({
     sidebarUrls: { sidepanel: url },
@@ -159,6 +164,7 @@ async function openContentSidebar(url = "") {
   })
   await chrome.tabs.sendMessage(activeTab.value.id!, {
     type: MessageType.openContentSidebar,
+    tabId: activeTab.value.id,
     url,
   })
   window.close()
@@ -320,18 +326,6 @@ function showChatDocs() {
     <div v-if="false">
       <div>More Tools</div>
       <div class="flex gap-3">
-        <button
-          class="flex flex-col items-center p-2 bg-background-soft rounded"
-        >
-          <IconNoteStack class="size-7" />
-          <div class="text-xs">Chat Doc</div>
-        </button>
-        <button
-          class="flex flex-col items-center p-2 bg-background-soft rounded"
-        >
-          <IconNoteStack class="size-7" />
-          <div class="text-xs">Chat Doc</div>
-        </button>
         <button
           class="flex flex-col items-center p-2 bg-background-soft rounded"
         >

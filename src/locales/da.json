@@ -43,5 +43,6 @@
     "chooseContentRelevant": "Vælg indhold mere relevant for det emne, du ønsker at lære om",
     "notSupported": "Denne side understøtter ikke automatisk afsendelse. Kopier meddelelsen og send den manuelt."
   },
-  "openSidebar": "Åbn sidebjælken"
+  "openSidebar": "Åbn sidebjælken",
+  "searchPlaceholder": "Søg eller skriv en URL"
 }

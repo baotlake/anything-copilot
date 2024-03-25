@@ -43,5 +43,6 @@
     "chooseContentRelevant": "选择与你想了解的主题更相关的内容",
     "notSupported": "此页面不支持自动发送，请复制消息发送"
   },
-  "openSidebar": "打开侧边栏"
+  "openSidebar": "打开侧边栏",
+  "searchPlaceholder": "搜索或输入 URL"
 }

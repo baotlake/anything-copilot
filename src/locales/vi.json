@@ -43,5 +43,6 @@
     "chooseContentRelevant": "Chọn nội dung liên quan hơn đến chủ đề bạn muốn tìm hiểu",
     "notSupported": "Trang này không hỗ trợ gửi tự động. Vui lòng sao chép tin nhắn và gửi thủ công."
   },
-  "openSidebar": "Mở thanh bên"
+  "openSidebar": "Mở thanh bên",
+  "searchPlaceholder": "Tìm kiếm hoặc nhập URL"
 }

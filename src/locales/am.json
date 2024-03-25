@@ -43,5 +43,6 @@
     "chooseContentRelevant": "ከመረጡ የሚያሳውቁ ተግባራዎችን ለመረጡ ይችላሉ",
     "notSupported": "ይህ ገጽ ራስ-ሰር መላክን አይደግፍም. እባክዎ መልዕክቱን ይቅዱ እና እራስዎ ይላኩ."
   },
-  "openSidebar": "የጎን አሞሌውን ይክፈቱ"
+  "openSidebar": "የጎን አሞሌውን ይክፈቱ",
+  "searchPlaceholder": "ዩአርኤል ይፈልጉ ወይም ይተይቡ"
 }

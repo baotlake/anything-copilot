@@ -43,5 +43,6 @@
     "chooseContentRelevant": "Izvēlieties saturu, kas ir saistīts ar tēmu, par kuru vēlaties uzzināt",
     "notSupported": "Šī lapa neatbalsta automātisku sūtīšanu. Lūdzu, nokopējiet ziņojumu un nosūtiet to manuāli."
   },
-  "openSidebar": "Atveriet sānjoslu"
+  "openSidebar": "Atveriet sānjoslu",
+  "searchPlaceholder": "Meklējiet vai ierakstiet URL"
 }

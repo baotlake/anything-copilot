@@ -43,5 +43,6 @@
     "chooseContentRelevant": "Choose content more relevant to the topic you want to learn about",
     "notSupported": "This page does not support automatic sending. Please copy the message and send it manually."
   },
-  "openSidebar": "Open Sidebar"
+  "openSidebar": "Open Sidebar",
+  "searchPlaceholder": "Search or type a URL"
 }

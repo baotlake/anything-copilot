@@ -43,5 +43,6 @@
     "chooseContentRelevant": "Choisissez un contenu plus pertinent pour le sujet que vous souhaitez apprendre",
     "notSupported": "Cette page ne prend pas en charge l'envoi automatique. Veuillez copier le message et l'envoyer manuellement."
   },
-  "openSidebar": "Ouvrir la barre latérale"
+  "openSidebar": "Ouvrir la barre latérale",
+  "searchPlaceholder": "Rechercher ou saisir une URL"
 }

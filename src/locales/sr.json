@@ -43,5 +43,6 @@
     "chooseContentRelevant": "Izaberite sadržaj koji je relevantniji za temu koju želite naučiti",
     "notSupported": "Ова страница не подржава аутоматско слање. Копирајте поруку и пошаљите га ручно."
   },
-  "openSidebar": "Отвори бочну траку"
+  "openSidebar": "Отвори бочну траку",
+  "searchPlaceholder": "Претражите или унесите УРЛ"
 }

@@ -43,5 +43,6 @@
     "chooseContentRelevant": "Alegeți conținut mai relevant pentru subiectul pe care doriți să îl învățați",
     "notSupported": "Această pagină nu acceptă trimiterea automată. Vă rugăm să copiați mesajul și să -l trimiteți manual."
   },
-  "openSidebar": "Deschideți bara laterală"
+  "openSidebar": "Deschideți bara laterală",
+  "searchPlaceholder": "Căutați sau introduceți o adresă URL"
 }

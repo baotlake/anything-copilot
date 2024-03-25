@@ -43,5 +43,6 @@
     "chooseContentRelevant": "Velg innhold som er mer relevant for emnet du vil lære om",
     "notSupported": "Denne siden støtter ikke automatisk sending. Kopier meldingen og send den manuelt."
   },
-  "openSidebar": "Åpne sidefeltet"
+  "openSidebar": "Åpne sidefeltet",
+  "searchPlaceholder": "Søk eller skriv inn en URL"
 }

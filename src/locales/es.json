@@ -43,5 +43,6 @@
     "chooseContentRelevant": "Elige contenido más relevante para el tema que deseas aprender",
     "notSupported": "Esta página no admite el envío automático. Copie el mensaje y envíelo manualmente."
   },
-  "openSidebar": "Abrir la barra lateral"
+  "openSidebar": "Abrir la barra lateral",
+  "searchPlaceholder": "Buscar o escribir una URL"
 }

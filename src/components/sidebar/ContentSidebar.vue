@@ -121,24 +121,24 @@ onUnmounted(() => {
         @pointerdown="autoPointerCapture"
         @pointermove="pointermove"
       ></div>
-      <div class="flex gap-2 items-center justify-between h-9 px-2">
+      <div class="flex gap-2 items-center justify-between h-8 px-2">
         <button
           @click=""
-          class="size-6 flex items-center justify-center mr-auto"
+          class="size-7 flex items-center justify-center mr-auto"
         >
           <img class="size-4" :src="logoUrl" />
         </button>
         <button
           @click="emit('hide')"
-          class="size-6 rounded-full hover:bg-background-soft flex items-center justify-center"
+          class="size-7 rounded-full hover:bg-background-soft flex items-center justify-center"
         >
-          <IconSplitscreenRight class="size-4 scale-95" />
+          <IconSplitscreenRight class="size-5 scale-95" />
         </button>
         <button
           @click="emit('close')"
-          class="size-6 rounded-full hover:bg-background-soft flex items-center justify-center"
+          class="size-7 rounded-full hover:bg-background-soft flex items-center justify-center"
         >
-          <IconClose class="size-4" />
+          <IconClose class="size-5" />
         </button>
       </div>
       <iframe class="w-full h-full flex-1" :src="sidebarUrl"></iframe>

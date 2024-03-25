@@ -260,8 +260,8 @@ export function isProtectedUrl(url: string) {
     }
 
     return false
-  } catch (e) {
-    console.warn(e)
+  } catch (err) {
+    console.warn(err)
   }
 
   return true

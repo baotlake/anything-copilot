@@ -43,5 +43,6 @@
     "chooseContentRelevant": "Öğrenmek istediğiniz konuyla daha ilgili içerik seçin",
     "notSupported": "Bu sayfa otomatik göndermeyi desteklemez. Lütfen mesajı kopyalayın ve manuel olarak gönderin."
   },
-  "openSidebar": "Kenar çubuğunu aç"
+  "openSidebar": "Kenar çubuğunu aç",
+  "searchPlaceholder": "Bir URL arayın veya yazın"
 }

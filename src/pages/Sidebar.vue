@@ -14,6 +14,7 @@ import { useI18n } from "@/utils/i18n"
 import { MessageType } from "@/types"
 import SiteButton from "@/components/SiteButton.vue"
 import Search from "@/components/Search.vue"
+import SidebarHome from "@/components/sidebar/SidebarHome.vue"
 
 const logoUrl = chrome.runtime.getURL("/logo.svg")
 const { t } = useI18n()
@@ -34,7 +35,7 @@ const protectedUrl = computed(() => {
 async function handleMessage(message: any) {
   switch (message.type) {
     case MessageType.openInSidebar:
-      if (!currentTab.tabId) {
+      if (currentTab.tabId == 0) {
         const current = await chrome.tabs.getCurrent()
         currentTab.tabId = current?.id || -1
       }
@@ -76,7 +77,7 @@ async function updateRecentItems(pageInfo: {
   await chrome.storage.local.set({ sidebarRecentItems })
 }
 
-async function removeRecentItems(url: string) {
+async function removeRecentItem(url: string) {
   const { sidebarRecentItems } = await getLocal({
     sidebarRecentItems: [] as {
       url: string
@@ -137,46 +138,18 @@ function go(link: string) {
 </script>
 
 <template>
-  <div class="w-full h-screen">
-    <Webview
-      v-if="!protectedUrl"
-      :url="url"
-      :ua="ua"
-      @page-info="updateRecentItems"
-    />
-
-    <div v-else class="flex flex-col p-6 max-w-md mx-auto">
-      <div class="flex flex-col items-center gap-2 mx-auto mt-16">
-        <img :src="logoUrl" class="size-16" />
-        <span class="text-2xl font-bold my-2">{{ t("sidebar") }}</span>
-      </div>
-
-      <div class="my-12">
-        <Search @go="go" />
-      </div>
-
-      <div class="flex flex-wrap gap-x-4 gap-y-4 justify-center">
-        <SiteButton
-          v-for="item of recentItems"
-          :icon="item.icon"
-          :title="item.title"
-          badge="remove"
-          @click="go(item.url)"
-          @remove="() => removeRecentItems(item.url)"
-        />
-      </div>
-
-      <!-- <div class="text-center my-3">Popular</div> -->
-      <div class="w-full my-6 border-b border-background-soft h-0"></div>
-      <div class="flex flex-wrap gap-x-4 gap-y-4 justify-center">
-        <SiteButton
-          v-for="item of popularItems"
-          :icon="item.icon"
-          :title="item.title"
-          @click="go(item.url)"
-        />
-      </div>
+  <div class="w-full h-screen flex flex-col">
+    <div class="w-full h-full" v-if="!protectedUrl">
+      <Webview :url="url" :ua="ua" @page-info="updateRecentItems" />
     </div>
+
+    <SidebarHome
+      v-else
+      :recentItems="recentItems"
+      :popularItems="popularItems"
+      @go="go"
+      @remove-recent-item="removeRecentItem"
+    />
   </div>
 
   <!-- <LoadingBar /> -->

@@ -43,5 +43,6 @@
     "chooseContentRelevant": "学びたいトピックに関連するコンテンツを選択してください",
     "notSupported": "このページは、自動送信をサポートしていません。メッセージをコピーして手動で送信してください。"
   },
-  "openSidebar": "サイドバーを開きます"
+  "openSidebar": "サイドバーを開きます",
+  "searchPlaceholder": "URLを検索または入力します"
 }

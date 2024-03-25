@@ -4,10 +4,12 @@ import { throttle } from "lodash-es"
 import IconSearch from "@/components/icons/IconSearch.vue"
 import IconGlobe from "@/components/icons/IconGlobe.vue"
 import { getLocal } from "@/utils/ext"
+import { useI18n } from "@/utils/i18n"
 import config from "@/assets/config.json"
 
 const bingImg = chrome.runtime.getURL("img/bing.svg")
 const googleImg = chrome.runtime.getURL("img/google.svg")
+const { t } = useI18n()
 
 enum Engine {
   google = "google",
@@ -124,7 +126,7 @@ function switchEngine(value: Engine) {
             type="text"
             autocomplete="search"
             class="border-none outline-none bg-transparent text-base w-full"
-            placeholder="Search..."
+            :placeholder="t('searchPlaceholder')"
             v-model="value"
             @focus="engineListVisible = !(focus = true)"
             @blur="focus = false"
@@ -134,7 +136,7 @@ function switchEngine(value: Engine) {
         </div>
       </div>
 
-      <div v-if="engineListVisible" class="border-t">
+      <div v-if="engineListVisible" class="border-t border-foreground/20">
         <div
           class="flex items-center px-2 py-1 cursor-pointer hover:bg-background-soft"
           @click="switchEngine(Engine.google)"
@@ -158,7 +160,7 @@ function switchEngine(value: Engine) {
       <div
         v-if="!collapsed && value"
         :class="[
-          'scrollbar overflow-auto border-t transition-all duration-300 ease-in-out',
+          'scrollbar overflow-auto border-t border-foreground/20 transition-all duration-300 ease-in-out',
           !collapsed ? 'max-h-52' : 'max-h-0',
         ]"
       >

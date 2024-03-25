@@ -43,5 +43,6 @@
     "chooseContentRelevant": "Izberite vsebino, ki je bolj relevantna za temo, ki se je želite naučiti",
     "notSupported": "Ta stran ne podpira samodejnega pošiljanja. Kopirajte sporočilo in ga pošljite ročno."
   },
-  "openSidebar": "Odprite stransko vrstico"
+  "openSidebar": "Odprite stransko vrstico",
+  "searchPlaceholder": "Iščite ali vnesite URL"
 }
