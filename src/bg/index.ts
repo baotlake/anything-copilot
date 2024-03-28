@@ -12,7 +12,7 @@ import {
   handleContentMounted,
 } from "./sidebar"
 import config from "@/assets/config.json"
-import { allFrameScript, mainContentScript } from "@/manifest"
+import { allFrameScript, contentMainScript } from "@/manifest"
 import { getIsEdge } from "@/utils/ext"
 
 type Config = typeof config
@@ -28,7 +28,7 @@ const contentScript = {
   runAt: placeholder.run_at as "document_start",
 } satisfies chrome.scripting.RegisteredContentScript
 
-chrome.scripting.registerContentScripts([contentScript, mainContentScript])
+chrome.scripting.registerContentScripts([contentScript, contentMainScript])
 chrome.runtime.onMessage.addListener(handleMessage)
 chrome.commands.onCommand.addListener(handleCommand)
 chrome.runtime.onStartup.addListener(() => {

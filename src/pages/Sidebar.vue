@@ -1,20 +1,17 @@
 <script setup lang="ts">
 import { ref, onMounted, reactive, computed, onUnmounted } from "vue"
-import {
-  emptyTab,
-  getLocal,
-  getSession,
-  isProtectedUrl,
-  updateFrameNetRules,
-} from "@/utils/ext"
+import { getLocal, getSession, isProtectedUrl } from "@/utils/ext"
 import config from "@/assets/config.json"
-import LoadingBar from "@/components/LoadingBar.vue"
 import Webview from "@/components/Webview.vue"
 import { useI18n } from "@/utils/i18n"
 import { MessageType } from "@/types"
-import SiteButton from "@/components/SiteButton.vue"
-import Search from "@/components/Search.vue"
 import SidebarHome from "@/components/sidebar/SidebarHome.vue"
+import IconClose from "@/components/icons/IconClose.vue"
+import IconSplitscreenRight from "@/components/icons/IconSplitscreenRight.vue"
+import IconNavigateBefore from "@/components/icons/IconNavigateBefore.vue"
+import IconNavigateNext from "@/components/icons/IconNavigateNext.vue"
+import IconRefresh from "@/components/icons/IconRefresh.vue"
+import IconHome from "@/components/icons/IconHome.vue"
 
 const logoUrl = chrome.runtime.getURL("/logo.svg")
 const { t } = useI18n()
@@ -27,6 +24,7 @@ const currentTab = reactive({
   tabId: 0,
 })
 const ua = ref("")
+const webview = ref<InstanceType<typeof Webview> | null>(null)
 
 const protectedUrl = computed(() => {
   return isProtectedUrl(url.value)
@@ -139,8 +137,51 @@ function go(link: string) {
 
 <template>
   <div class="w-full h-screen flex flex-col">
+    <div
+      :class="[
+        'flex gap-1 items-center justify-between h-8 px-1',
+        '*:size-7 *:rounded-full *:flex *:items-center *:justify-center ',
+      ]"
+    >
+      <button @click="" class="group hover:bg-background-soft mr-auto">
+        <!-- <img class="size-4" :src="logoUrl" /> -->
+        <IconHome class="size-5 group-active:scale-90 transition-transform" />
+      </button>
+      <button class="group hover:bg-background-soft" @click="webview?.goBack()">
+        <IconNavigateBefore
+          class="size-5 scale-125 group-active:-translate-x-1 transition-transform"
+        />
+      </button>
+      <button
+        class="group hover:bg-background-soft"
+        @click="webview?.goForward()"
+      >
+        <IconNavigateNext
+          class="size-5 scale-125 group-active:translate-x-1 transition-transform"
+        />
+      </button>
+      <button class="group hover:bg-background-soft" @click="webview?.reload()">
+        <IconRefresh
+          class="size-5 group-active:rotate-180 transition-transform"
+        />
+      </button>
+      <button class="group hover:bg-background-soft">
+        <IconSplitscreenRight
+          class="size-5 scale-95 group-active:scale-90 transition-transform"
+        />
+      </button>
+      <button class="group hover:bg-background-soft">
+        <IconClose class="size-5 group-active:scale-90 transition-transform" />
+      </button>
+    </div>
+
     <div class="w-full h-full" v-if="!protectedUrl">
-      <Webview :url="url" :ua="ua" @page-info="updateRecentItems" />
+      <Webview
+        ref="webview"
+        :url="url"
+        :ua="ua"
+        @page-info="updateRecentItems"
+      />
     </div>
 
     <SidebarHome

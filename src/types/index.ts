@@ -51,7 +51,10 @@ export enum ContentEventType {
 
 export enum FrameMessageType {
   frameReady = "anything-copilot_frame-ready",
-  contentRun = "anything-copilot_content-run",
+  webviewRun = "anything-copilot_webview-run",
   escapeLoad = "anything-copilot_escape-load",
   pageInfo = "anything-copilot_page-info",
+  reload = "anything-copilot_reload",
+  goBack = "anything-copilot_go-back",
+  goForward = "anything-copilot_go-forward",
 }

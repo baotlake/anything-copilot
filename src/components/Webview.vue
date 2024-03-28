@@ -15,33 +15,20 @@ const emit = defineEmits<{
   pageInfo: [pageInfo: { url: string; title: string; icon: string }]
 }>()
 
+defineExpose({
+  reload,
+  goBack,
+  goForward,
+})
+
+const onceCallback = new Map<string, (e: MessageEvent) => boolean>()
+
 const frame = ref<HTMLIFrameElement>()
 const patchs = reactive(config.data.webviewPatchs)
 const loadUrls = reactive(config.data.loadCandidates)
 const inited = ref(false)
 const frameUrl = ref("")
 const pageInfo = reactive({ url: "", title: "", icon: "" })
-
-const onceCallback = new Map<string, (e: MessageEvent) => boolean>()
-function handleFrameMessage(e: MessageEvent) {
-  console.log("frame message: ", e, e.source !== frame.value?.contentWindow)
-  if (e.source !== frame.value?.contentWindow) return
-  const type = e.data.type
-  if (!type) return
-  onceCallback.get(type)?.(e) && onceCallback.delete(type)
-
-  switch (type) {
-    case FrameMessageType.pageInfo:
-      if (!pageInfo.url) {
-        pageInfo.url = e.data.url
-        pageInfo.title = e.data.title
-        pageInfo.icon = e.data.icon
-
-        emit("pageInfo", pageInfo)
-      }
-      break
-  }
-}
 
 onMounted(() => {
   getLocal({
@@ -157,11 +144,63 @@ watch(patch, async (patch) => {
   }
   iframe.contentWindow?.postMessage(
     {
-      type: FrameMessageType.contentRun,
+      type: FrameMessageType.webviewRun,
     },
     "*"
   )
 })
+
+function handleFrameMessage(e: MessageEvent) {
+  console.log("frame message: ", e, e.source !== frame.value?.contentWindow)
+  if (e.source !== frame.value?.contentWindow) return
+  const type = e.data.type
+  if (!type) return
+  onceCallback.get(type)?.(e) && onceCallback.delete(type)
+
+  switch (type) {
+    case FrameMessageType.pageInfo:
+      if (!pageInfo.url) {
+        pageInfo.url = e.data.url
+        pageInfo.title = e.data.title
+        pageInfo.icon = e.data.icon
+
+        emit("pageInfo", pageInfo)
+      }
+      break
+  }
+}
+
+function reload() {
+  console.log("reload")
+  frame.value?.contentWindow?.postMessage(
+    {
+      type: FrameMessageType.reload,
+    },
+    "*"
+  )
+}
+
+function goBack() {
+  console.log("goBack")
+
+  frame.value?.contentWindow?.postMessage(
+    {
+      type: FrameMessageType.goBack,
+    },
+    "*"
+  )
+}
+
+function goForward() {
+  console.log("goForward")
+
+  frame.value?.contentWindow?.postMessage(
+    {
+      type: FrameMessageType.goForward,
+    },
+    "*"
+  )
+}
 </script>
 
 <template>

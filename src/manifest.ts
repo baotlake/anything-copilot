@@ -3,7 +3,7 @@ import { ContentScriptId } from "./types"
 const __DEV__ = process.env.NODE_ENV == "development"
 
 /** Manually register in the service worker */
-export const mainContentScript = {
+export const contentMainScript = {
   id: ContentScriptId.main,
   js: ["js/content-main.js"],
   runAt: "document_start",
@@ -24,7 +24,7 @@ export const defaultSidebarPath = "sidebar.html"
 const manifest = {
   // maximum of 45 characters
   name: "__MSG_name__",
-  version: "1.2.7",
+  version: "1.2.8",
   // edge 12 characters
   // short_name: "__MSG_short_name__",
   // no more than 132 characters

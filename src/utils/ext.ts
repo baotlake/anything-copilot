@@ -1,4 +1,4 @@
-import { mainContentScript } from "@/manifest"
+import { contentMainScript } from "@/manifest"
 import { MessageType } from "@/types"
 
 type MessageSender = chrome.runtime.MessageSender
@@ -114,7 +114,7 @@ export async function checkContent(tabId: number) {
     return false
   }
 
-  const contentScripts = [...manifest.content_scripts, mainContentScript]
+  const contentScripts = [...manifest.content_scripts, contentMainScript]
 
   try {
     for (let item of contentScripts) {

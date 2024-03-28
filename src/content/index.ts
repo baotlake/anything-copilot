@@ -125,7 +125,7 @@ function run() {
 }
 
 async function postPageInfo() {
-  await new Promise((r) => setTimeout(r, 1000 * 3))
+  await new Promise((r) => setTimeout(r, 200))
   window.parent?.postMessage(
     {
       type: FrameMessageType.pageInfo,
@@ -141,7 +141,7 @@ function handleFrameMessage(e: MessageEvent) {
   if (!e.data || typeof e.data !== "object") return
   const type = e.data.type
   switch (type) {
-    case FrameMessageType.contentRun:
+    case FrameMessageType.webviewRun:
       run()
       postPageInfo()
       return
@@ -150,6 +150,12 @@ function handleFrameMessage(e: MessageEvent) {
         type: ContentEventType.escapeLoad,
         detail: { url: e.data.url },
       })
+    case FrameMessageType.reload:
+      return location.reload()
+    case FrameMessageType.goBack:
+      return history.back()
+    case FrameMessageType.goForward:
+      return history.forward()
   }
 }
 
