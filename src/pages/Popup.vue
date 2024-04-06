@@ -21,6 +21,7 @@ import IconSplitscreenRight from "@/components/icons/IconSplitscreenRight.vue"
 import SiteButton from "@/components/SiteButton.vue"
 import { getIsEdge } from "@/utils/ext"
 import { handleImgError } from "@/utils/dom"
+import { homeUrl, feedbackUrl } from "@/utils/const"
 
 const globeImg = chrome.runtime.getURL("img/globe.svg")
 
@@ -151,7 +152,7 @@ async function openSidebar(url = "") {
   })
   const win = await chrome.windows.getCurrent()
   await chrome.storage.session.set({
-    sidebarUrls: { sidepanel: url },
+    sidebarInitUrl: { sidepanel: url },
   })
   await chrome.sidePanel.open({ windowId: win.id! })
 
@@ -160,7 +161,7 @@ async function openSidebar(url = "") {
 
 async function openContentSidebar(url = "") {
   await chrome.storage.session.set({
-    sidebarUrls: { content: url },
+    sidebarInitUrl: { content: url },
   })
   await chrome.tabs.sendMessage(activeTab.value.id!, {
     type: MessageType.openContentSidebar,
@@ -180,7 +181,7 @@ async function handleClickLaunch(url: string) {
 }
 
 function feedback() {
-  open("https://tawk.to/anythingcopilot", "_blank")
+  open(feedbackUrl, "_blank")
 }
 function fivestar() {
   open(
@@ -194,7 +195,7 @@ function fivestar() {
 }
 
 function goHome() {
-  open("https://ziziyi.com/copilot", "_blank")
+  open(homeUrl, "_blank")
 }
 
 function showChatDocs() {
@@ -347,6 +348,7 @@ function showChatDocs() {
         :icon="item.icon"
         :title="item.title"
         :badge="keyboard.shift || (isEdge && !avaiable) ? 'popup' : 'sidebar'"
+        :url="item.url"
         small
         @click="
           () => {

@@ -32,6 +32,7 @@ const engine = ref(Engine.google)
 const engineListVisible = ref(false)
 
 let timerId = -1
+let timerId2 = -1
 
 watch(focus, (value) => {
   if (value) {
@@ -103,20 +104,37 @@ function switchEngine(value: Engine) {
   engine.value = value
   chrome.storage.local.set({ searchEngine: value })
 }
+
+function handlePointerLeave() {
+  timerId2 = window.setTimeout(() => {
+    engineListVisible.value = false
+  }, 800)
+}
+
+function handlePointerEnter() {
+  clearTimeout(timerId2)
+}
 </script>
 
 <template>
   <div class="relative h-10 w-full">
     <div
-      class="absolute border border-foreground/20 rounded-[20px] w-full shadow bg-background z-10 overflow-hidden"
+      :class="[
+        'absolute border border-foreground/20 rounded-[20px] w-full shadow bg-background z-10 overflow-hidden',
+        'focus-within:shadow-md',
+      ]"
+      @pointerleave="handlePointerLeave"
+      @pointerenter="handlePointerEnter"
     >
       <div aria-label="search box" class="flex px-2 items-center">
         <button
-          class="size-8 flex items-center justify-center shrink-0 rounded-full hover:bg-background-soft cursor-pointer"
+          :class="[
+            'group size-8 flex items-center justify-center shrink-0 rounded-full hover:bg-background-soft cursor-pointer',
+          ]"
           @click="engineListVisible = !engineListVisible"
         >
           <img
-            class="size-5"
+            class="size-5 group-active:scale-90 transition-transform"
             :src="engine == Engine.bing ? bingImg : googleImg"
           />
         </button>

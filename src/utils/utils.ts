@@ -52,7 +52,10 @@ export const semanticClip = (text: string, maxLength: number) => {
 }
 
 /** Find URL from the same origin that can be embedded */
-export async function findFrameLoadUrl(urls: string[]): Promise<string> {
+export async function findFrameLoadUrl(
+  urls: string[],
+  base?: string
+): Promise<string> {
   const abortController = new AbortController()
 
   let resolve: null | ((url: string) => void) = null
@@ -65,8 +68,9 @@ export async function findFrameLoadUrl(urls: string[]): Promise<string> {
     return !csp.includes("frame-ancestors")
   }
 
-  const promises = urls.map((url) =>
-    fetch(url, {
+  const promises = urls.map((url) => {
+    const u = new URL(url, base)
+    return fetch(u.href, {
       signal: abortController.signal,
     })
       .then((res) => {
@@ -74,12 +78,12 @@ export async function findFrameLoadUrl(urls: string[]): Promise<string> {
         const xFrameOptions = h.get("X-Frame-Options")
         const csp = h.get("Content-Security-Policy")
         if (!xFrameOptions && checkCSP(csp)) {
-          resolve && resolve(url)
+          resolve && resolve(u.href)
           abortController.abort()
         }
       })
       .catch(() => {})
-  )
+  })
 
   Promise.all(promises).then(() => {
     resolve && resolve("")

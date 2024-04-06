@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { watch, computed, reactive, ref, onMounted, watchEffect } from "vue"
 import { chatDocsPanel } from "@/store/content"
-import { contentService } from "@/utils/service"
+import { contentInvoke } from "@/utils/invoke"
 import { convertBlobToBase64, semanticClip } from "@/utils/utils"
 import ScrollView from "@/components/ScrollView.vue"
 import IconArrowBack from "@/components/icons/IconArrowBack.vue"
@@ -21,7 +21,7 @@ import {
   getInputValue,
 } from "@/utils/dom"
 import { getLocal } from "@/utils/ext"
-import { chatDocPrompt } from "@/utils/prompt"
+import { chatDocPrompt } from "@/utils/const"
 import { useI18n } from "@/utils/i18n"
 
 type Sheet = "" | "docSelect" | "promptTemplate"
@@ -126,7 +126,7 @@ watch(
 
     if (maxInputType !== "token") return
     if (!message) return
-    const tokenLength = await contentService.calcTokens(message)
+    const tokenLength = await contentInvoke.calcTokens(message)
     const rate = (message.length / tokenLength) * 0.95
     const exceedMaxInput = tokenLength > maxInput
     if (exceedMaxInput) {
@@ -172,7 +172,7 @@ watch(
 
         if (item.kind == "file" && typeof item.data != "string") {
           const url = await convertBlobToBase64(item.data)
-          const results = await contentService.parseDoc({
+          const results = await contentInvoke.parseDoc({
             key: item.key,
             type: item.type,
             size: item.data.size,
@@ -640,4 +640,4 @@ input:hover {
     transform: translate(100%, 0);
   }
 }
-</style>
+</style>@/utils/const@/utils/invoke/service@/utils/invokeb

@@ -6,6 +6,13 @@ type CallbackItem = {
 interface InvokeReq {
   func: string
   args: any[]
+  timeout?: number
+}
+
+interface InvokeRes {
+  key: string
+  success: boolean
+  value: any
 }
 
 abstract class Invoke {
@@ -25,14 +32,14 @@ abstract class Invoke {
     return `${this.name}-${this.uniqueId}-${this.count++}`
   }
 
-  protected getReturnValue(key: string, req: InvokeReq, timeout?: number) {
+  protected getReturnValue(key: string, req: InvokeReq) {
     let timer: any
+    const { func, timeout } = req
     const promise = new Promise<any>((resolve, reject) => {
       this.pendingCallback[key] = { resolve, reject }
       if (timeout) {
         timer = setTimeout(
-          () =>
-            reject(`"${this.name}" invoke timeout: ${req.func} key: ${key}`),
+          () => reject(`"${this.name}" invoke timeout: ${func} key: ${key}`),
           timeout
         )
       }
@@ -46,11 +53,11 @@ abstract class Invoke {
     return promise
   }
 
-  protected setReturnValue(key: string, success: boolean, payload: any) {
+  protected setReturnValue(key: string, success: boolean, value: any) {
     const callback = this.pendingCallback[key]
     if (callback) {
       const fn = success != false ? callback.resolve : callback.reject
-      fn(payload)
+      fn(value)
     } else {
       console.error(`unknown invoke callback message: ${key}`)
       console.log(this.pendingCallback)
@@ -58,11 +65,12 @@ abstract class Invoke {
   }
 
   abstract send(req: InvokeReq): Promise<{ key: string; response: any }>
-  abstract handleMessage(message: InvokeReq): void
+  abstract handleResMsg(message: InvokeRes): void
 
-  public async invoke<T = any>(req: InvokeReq, timeout = 20000): Promise<T> {
+  public async invoke<T = any>(req: InvokeReq): Promise<T> {
     const { key } = await this.send(req)
-    return this.getReturnValue(key, req, timeout)
+    req.timeout = req.timeout || 20000
+    return this.getReturnValue(key, req)
   }
 }
 

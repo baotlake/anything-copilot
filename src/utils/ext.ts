@@ -185,56 +185,116 @@ export function getSession<T extends Record<string, any>>(key: string | T) {
 }
 
 type NetRulesOptions = {
+  id?: number
   ua?: string
   tabIds?: number[]
+  requestDomains?: string[]
   initiatorDomains?: string[]
+  enabled?: boolean
 }
 
-export async function updateFrameNetRules(
-  { ua, tabIds, initiatorDomains }: NetRulesOptions = {
-    tabIds: [-1],
-    initiatorDomains: [chrome.runtime.id],
-  }
-) {
+export async function updateFrameNetRules({
+  id,
+  ua,
+  tabIds,
+  initiatorDomains,
+  requestDomains,
+  enabled,
+}: NetRulesOptions) {
   ua = ua || navigator.userAgent
+  // const noneTab = tabIds?.length == 1 && tabIds[0] == -1
+  // if (!initiatorDomains && !noneTab) {
+  //   initiatorDomains = [chrome.runtime.id]
+  // }
   await chrome.declarativeNetRequest.updateSessionRules({
-    removeRuleIds: [1],
-    addRules: [
-      {
-        id: 1,
-        priority: 1,
-        action: {
-          type: chrome.declarativeNetRequest.RuleActionType.MODIFY_HEADERS,
-          responseHeaders: [
+    removeRuleIds: [id || 1],
+    addRules:
+      enabled != false
+        ? [
             {
-              header: "X-Frame-Options",
-              operation: chrome.declarativeNetRequest.HeaderOperation.REMOVE,
+              id: id || 1,
+              priority: 1,
+              action: {
+                type: chrome.declarativeNetRequest.RuleActionType
+                  .MODIFY_HEADERS,
+                responseHeaders: [
+                  {
+                    header: "X-Frame-Options",
+                    operation:
+                      chrome.declarativeNetRequest.HeaderOperation.REMOVE,
+                  },
+                  {
+                    header: "Content-Security-Policy",
+                    operation:
+                      chrome.declarativeNetRequest.HeaderOperation.REMOVE,
+                  },
+                ],
+                requestHeaders: [
+                  {
+                    header: "User-Agent",
+                    value: ua,
+                    operation: chrome.declarativeNetRequest.HeaderOperation.SET,
+                  },
+                  {
+                    header: "Sec-Fetch-Dest",
+                    value: "document",
+                    operation: chrome.declarativeNetRequest.HeaderOperation.SET,
+                  },
+                ],
+              },
+              condition: {
+                // resourceTypes: [chrome.declarativeNetRequest.ResourceType.SUB_FRAME],
+                initiatorDomains,
+                requestDomains,
+                tabIds,
+              },
             },
+          ]
+        : [],
+  })
+}
+
+export async function updateUANetRules({
+  id,
+  ua,
+  requestDomains,
+  initiatorDomains,
+  tabIds,
+  enabled,
+}: NetRulesOptions & { id: number }) {
+  // const noneTab = tabIds?.length == 1 && tabIds[0] == -1
+  // if (!initiatorDomains && !noneTab) {
+  //   initiatorDomains = [chrome.runtime.id]
+  // }
+
+  await chrome.declarativeNetRequest.updateSessionRules({
+    removeRuleIds: [id],
+    addRules:
+      enabled != false
+        ? [
             {
-              header: "Content-Security-Policy",
-              operation: chrome.declarativeNetRequest.HeaderOperation.REMOVE,
+              id,
+              priority: 2,
+              action: {
+                type: chrome.declarativeNetRequest.RuleActionType
+                  .MODIFY_HEADERS,
+                requestHeaders: [
+                  {
+                    header: "User-Agent",
+                    value: ua,
+                    operation: chrome.declarativeNetRequest.HeaderOperation.SET,
+                  },
+                ],
+              },
+              condition: {
+                // resourceTypes: [chrome.declarativeNetRequest.ResourceType.SUB_FRAME],
+                initiatorDomains,
+                requestDomains,
+                tabIds,
+              },
             },
-          ],
-          requestHeaders: [
-            {
-              header: "User-Agent",
-              value: ua,
-              operation: chrome.declarativeNetRequest.HeaderOperation.SET,
-            },
-            {
-              header: "Sec-Fetch-Dest",
-              value: "document",
-              operation: chrome.declarativeNetRequest.HeaderOperation.SET,
-            },
-          ],
-        },
-        condition: {
-          resourceTypes: [chrome.declarativeNetRequest.ResourceType.SUB_FRAME],
-          initiatorDomains,
-          tabIds,
-        },
-      },
-    ],
+          ]
+        : [],
   })
 }
 
@@ -250,12 +310,13 @@ export function isProtectedUrl(url: string) {
     }
 
     const isEdge = getIsEdge()
-
     if (isEdge && u.hostname == "microsoftedge.microsoft.com") {
       return true
     }
 
-    if (u.hostname == "chrome.google.com") {
+    if (
+      ["chromewebstore.google.com", "chrome.google.com"].includes(u.hostname)
+    ) {
       return true
     }
 

@@ -217,7 +217,7 @@ export async function waitFor(
 }
 
 export function getPageIcon() {
-  const icons = document.querySelectorAll<HTMLLinkElement>('link[rel="icon"]')
+  const icons = document.querySelectorAll<HTMLLinkElement>('link[rel~="icon"]')
   for (let item of icons) {
     if (item.getAttribute("type") == "image/svg+xml") {
       return item.href
@@ -229,6 +229,13 @@ export function getPageIcon() {
 
   if (icons.length) {
     return icons[0].href
+  }
+
+  const touchIcon = document.querySelector<HTMLLinkElement>(
+    'link[rel="apple-touch-icon"]'
+  )
+  if (touchIcon) {
+    return touchIcon.href
   }
 
   return location.origin + "/favicon.ico"

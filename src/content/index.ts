@@ -6,15 +6,20 @@ import {
   pipWindow,
   sidebarAddon,
 } from "@/store/content"
-import { ContentEventType, FrameMessageType, MessageType } from "@/types"
+import {
+  ContentEventType,
+  FrameMessageType,
+  MessageType,
+  WebviewFunc,
+  WindowName,
+} from "@/types"
 import Copilot from "./Copilot.vue"
-import { waitMessage } from "@/utils/ext"
 import {
   dispatchContentEvent,
   addContentEventListener,
   removeContentEventListener,
 } from "@/content/event"
-import { contentService } from "@/utils/service"
+import { contentInvoke } from "@/utils/invoke"
 import { getPageIcon } from "@/utils/dom"
 // import { PipEventName } from "@/types/pip"
 
@@ -47,7 +52,7 @@ function handleMessage(
       })
       break
     case MessageType.invokeResponse:
-      contentService.handleMessage(message)
+      contentInvoke.handleResMsg(message)
       break
     case MessageType.showChatDocs:
       chatDocsPanel.visible = true
@@ -150,18 +155,50 @@ function handleFrameMessage(e: MessageEvent) {
         type: ContentEventType.escapeLoad,
         detail: { url: e.data.url },
       })
-    case FrameMessageType.reload:
-      return location.reload()
-    case FrameMessageType.goBack:
-      return history.back()
-    case FrameMessageType.goForward:
-      return history.forward()
+    case FrameMessageType.invokeRequest:
+      handleInvokeRequest(e.data, e.source as Window)
+      break
   }
 }
 
-if (window.self == window.parent) {
+async function handleInvokeRequest(message: any, source: Window) {
+  const { key, func, args } = message
+  let result = null
+  let error = null
+  try {
+    switch (func) {
+      case WebviewFunc.reload:
+        location.reload()
+        break
+      case WebviewFunc.goBack:
+        history.back()
+        break
+      case WebviewFunc.goForward:
+        history.forward()
+        break
+    }
+  } catch (err) {
+    console.error("invoke error: ", err)
+    error = err
+  }
+  console.log("invoke response: ", result, error)
+  source.postMessage(
+    {
+      type: FrameMessageType.invokeResponse,
+      key,
+      success: !error,
+      payload: !error ? result : error,
+    },
+    chrome.runtime.getURL("")
+  )
+}
+
+if (window.top === window) {
   run()
-} else {
+}
+
+// webview
+if (window.top !== window && window.name.startsWith(WindowName.webview)) {
   window.addEventListener("message", handleFrameMessage)
   window.parent?.postMessage(
     {

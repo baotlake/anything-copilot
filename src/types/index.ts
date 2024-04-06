@@ -54,7 +54,18 @@ export enum FrameMessageType {
   webviewRun = "anything-copilot_webview-run",
   escapeLoad = "anything-copilot_escape-load",
   pageInfo = "anything-copilot_page-info",
-  reload = "anything-copilot_reload",
-  goBack = "anything-copilot_go-back",
-  goForward = "anything-copilot_go-forward",
+  collapseSidebar = "anything-copilot_collapse-sidebar",
+  closeSidebar = "anything-copilot_close-sidebar",
+  invokeRequest = "anything-copilot_invoke-request",
+  invokeResponse = "anything-copilot_invoke-response",
+}
+
+export enum WindowName {
+  webview = "anything-copilot_webview",
+}
+
+export enum WebviewFunc {
+  reload = "reload",
+  goBack = "goBack",
+  goForward = "goForward",
 }

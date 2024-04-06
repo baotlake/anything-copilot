@@ -11,29 +11,32 @@ defineProps<{
   title: string
   badge?: "popup" | "sidebar" | "remove"
   small?: boolean
+  url?: string
 }>()
 
 defineEmits(["click", "remove"])
 </script>
 
 <template>
-  <button
+  <a
     :class="[
-      'group shrink-0 relative flex flex-col items-center justify-self-center rounded-lg py-1 px-0.5 hover:bg-background-soft',
+      'group shrink-0 relative flex flex-col items-center justify-self-center rounded-lg ',
+      'py-1 px-0.5 hover:bg-background-soft text-inherit cursor-pointer',
       small ? 'w-[58px]' : 'w-16',
     ]"
-    @click="$emit('click')"
+    @click="(e) => (e.preventDefault(), $emit('click'))"
+    :href="url"
   >
     <div class="p-2.5 rounded-full bg-background-soft">
       <img
-        class="size-6 rounded"
+        class="size-6 rounded pointer-events-none"
         :src="icon"
         :data-fallback="globeImg"
         loading="lazy"
         @error="handleImgError"
       />
     </div>
-    <div class="flex flex-col justify-center h-8 w-full">
+    <div class="flex flex-col justify-center h-8 w-full text-center">
       <div class="text-xs max-w-full break-words leading-tight line-clamp-2">
         {{ title }}
       </div>
@@ -64,7 +67,7 @@ defineEmits(["click", "remove"])
     >
       <IconClose class="size-3" />
     </div>
-  </button>
+  </a>
 </template>
 
 <style scoped></style>

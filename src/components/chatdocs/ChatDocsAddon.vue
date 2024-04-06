@@ -9,7 +9,7 @@ import { useI18n } from "@/utils/i18n"
 import { getDocItem, devConfig, type SiteConfig } from "./helper"
 import config from "@/assets/config.json"
 import { getLocal } from "@/utils/ext"
-import { chatDocPrompt } from "@/utils/prompt"
+import { chatDocPrompt } from "@/utils/const"
 import { autoPointerCapture } from "@/utils/dom"
 
 const { t } = useI18n()
@@ -211,4 +211,4 @@ onUnmounted(() => {
   </div>
 </template>
 
-<style scoped></style>
+<style scoped></style>@/utils/const

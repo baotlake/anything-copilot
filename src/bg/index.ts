@@ -164,7 +164,7 @@ function handleMessage(message: any, sender: chrome.runtime.MessageSender) {
     case MessageType.setupOffscreenDocument:
       return offscreen.setup()
     case MessageType.fromOffscreen:
-      return offscreen.handleMessage(message)
+      return offscreen.handleResMsg(message)
     case MessageType.invokeRequest:
       handleInvokeRequest(message, sender)
       break

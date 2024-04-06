@@ -1,6 +1,6 @@
 {
   "data": {
-    "configVersion": 20240310,
+    "configVersion": 20240330,
     "chatDocSites": [
       {
         "host": "huggingface.co",
@@ -135,6 +135,13 @@
     ],
     "search": {
       "defaultEngine": "google"
+    },
+    "embedView": {
+      "defaultUA": "",
+      "hostUA": {
+        "www.google.com": 1,
+        "bing.com": 1
+      }
     }
   }
 }

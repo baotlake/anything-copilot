@@ -1,5 +1,5 @@
 import { MessageType, ServiceFunc, type ParseDocOptions } from "@/types"
-import Invoke from "@/utils/Invoke"
+import { Invoke } from "@/utils/invoke"
 
 let creating: Promise<void> | null // A global promise to avoid concurrency issues
 
@@ -60,7 +60,7 @@ class Offscreen extends Invoke {
     return { key, response }
   }
 
-  public handleMessage(message: any): void {
+  public handleResMsg(message: any): void {
     const { type, key, payload, success } = message
     if (type === MessageType.fromOffscreen) {
       this.setReturnValue(key, success, payload)

@@ -1,18 +1,31 @@
 <script setup lang="ts">
 import { ref, reactive, watch, onMounted, computed, onUnmounted } from "vue"
-import config from "@/assets/config.json"
-import { getLocal, updateFrameNetRules } from "@/utils/ext"
-import { ContentScriptId, FrameMessageType } from "@/types"
+import { updateFrameNetRules } from "@/utils/ext"
+import {
+  ContentScriptId,
+  FrameMessageType,
+  WindowName,
+  WebviewFunc,
+} from "@/types"
 import { findFrameLoadUrl } from "@/utils/utils"
 import { fetchDoc } from "@/content/pip"
+import { WebviewInvoke } from "@/utils/invoke"
+
+export type PageInfo = {
+  url: string
+  title: string
+  icon: string
+}
 
 const props = defineProps<{
   url: string
   ua?: string
+  preloadUrl?: string
+  preloadCandidates?: string[]
 }>()
 
 const emit = defineEmits<{
-  pageInfo: [pageInfo: { url: string; title: string; icon: string }]
+  load: [PageInfo]
 }>()
 
 defineExpose({
@@ -24,59 +37,42 @@ defineExpose({
 const onceCallback = new Map<string, (e: MessageEvent) => boolean>()
 
 const frame = ref<HTMLIFrameElement>()
-const patchs = reactive(config.data.webviewPatchs)
-const loadUrls = reactive(config.data.loadCandidates)
-const inited = ref(false)
 const frameUrl = ref("")
 const pageInfo = reactive({ url: "", title: "", icon: "" })
+const webviewInvoke = ref<WebviewInvoke>()
+
+watch(
+  () => props.ua,
+  async (ua) => {
+    const tab = await chrome.tabs.getCurrent()
+    await updateFrameNetRules({
+      ua: ua,
+      tabIds: [tab?.id || -1],
+      initiatorDomains: [chrome.runtime.id],
+    })
+  }
+)
 
 onMounted(() => {
-  getLocal({
-    webviewPatchs: config.data.webviewPatchs,
-    loadCandidates: config.data.loadCandidates,
-  }).then(({ webviewPatchs, loadCandidates }) => {
-    if (webviewPatchs) {
-      patchs.splice(0, patchs.length, ...webviewPatchs)
-    }
-    if (loadCandidates) {
-      loadUrls.splice(0, loadUrls.length, ...loadCandidates)
-    }
-    inited.value = true
-  })
-
+  webviewInvoke.value = new WebviewInvoke("webview", frame.value!)
   window.addEventListener("message", handleFrameMessage)
+  console.log("loadFrame", props.url, props.ua)
+  loadFrame(props.url, props.ua)
 })
 
 onUnmounted(() => {
   window.removeEventListener("message", handleFrameMessage)
 })
 
-const patch = computed(() => {
-  const url = inited.value ? props.url : ""
-  const patch = patchs.find((p) => {
-    try {
-      return new RegExp(p.re).test(url)
-    } catch (e) {
-      console.error(e)
-    }
-    return false
-  })
-
-  return {
-    url,
-    ua: patch?.ua || props.ua || "",
-    l: patch?.l || "",
-  }
-})
-
-watch(patch, async (patch) => {
+async function loadFrame(url: string, ua?: string) {
   const iframe = frame.value
-  if (!patch.url || !iframe) return
+  if (!url || !iframe) return
 
   const tab = await chrome.tabs.getCurrent()
   await updateFrameNetRules({
-    ua: patch.ua,
+    ua: ua,
     tabIds: [tab?.id || -1],
+    initiatorDomains: [chrome.runtime.id],
   })
 
   await chrome.scripting.updateContentScripts([
@@ -90,7 +86,7 @@ watch(patch, async (patch) => {
     },
   ])
 
-  frameUrl.value = patch.url
+  frameUrl.value = url
   pageInfo.url = ""
   pageInfo.title = ""
   pageInfo.icon = ""
@@ -108,11 +104,18 @@ watch(patch, async (patch) => {
     })
   } catch (e) {
     console.warn(e)
-    const url = new URL(props.url)
-    let loadUrl = url.origin + patch.l
-    if (!loadUrl) {
-      const u = await findFrameLoadUrl(loadUrls)
+    let loadUrl = ""
+    if (props.preloadUrl) {
+      const u = new URL(props.preloadUrl || "", props.url)
+      loadUrl = u.href
+    }
+    if (!loadUrl && props.preloadCandidates) {
+      const u = await findFrameLoadUrl(props.preloadCandidates, props.url)
       u && (loadUrl = u)
+    }
+    if (!loadUrl) {
+      console.warn("No preload url found")
+      return
     }
 
     try {
@@ -148,7 +151,7 @@ watch(patch, async (patch) => {
     },
     "*"
   )
-})
+}
 
 function handleFrameMessage(e: MessageEvent) {
   console.log("frame message: ", e, e.source !== frame.value?.contentWindow)
@@ -164,47 +167,56 @@ function handleFrameMessage(e: MessageEvent) {
         pageInfo.title = e.data.title
         pageInfo.icon = e.data.icon
 
-        emit("pageInfo", pageInfo)
+        emit("load", pageInfo)
       }
+      break
+    case FrameMessageType.invokeResponse:
+      webviewInvoke.value?.handleResMsg(e.data)
       break
   }
 }
 
 function reload() {
-  console.log("reload")
-  frame.value?.contentWindow?.postMessage(
-    {
-      type: FrameMessageType.reload,
-    },
-    "*"
-  )
+  console.log("reload", pageInfo.url)
+  webviewInvoke.value
+    ?.invoke({
+      func: WebviewFunc.reload,
+      args: [],
+      timeout: 1000,
+    })
+    .catch((e) => {
+      console.warn("reload failed", e)
+      if (frame.value) {
+        frame.value.src = pageInfo.url || props.url
+      }
+    })
 }
 
 function goBack() {
   console.log("goBack")
-
-  frame.value?.contentWindow?.postMessage(
-    {
-      type: FrameMessageType.goBack,
-    },
-    "*"
-  )
+  webviewInvoke.value?.invoke({
+    func: WebviewFunc.goBack,
+    args: [],
+  })
 }
 
 function goForward() {
   console.log("goForward")
-
-  frame.value?.contentWindow?.postMessage(
-    {
-      type: FrameMessageType.goForward,
-    },
-    "*"
-  )
+  webviewInvoke.value?.invoke({
+    func: WebviewFunc.goForward,
+    args: [],
+  })
 }
 </script>
 
 <template>
-  <iframe class="w-full h-full bg-white" ref="frame" :src="frameUrl"></iframe>
+  <iframe
+    class="w-full h-full bg-white"
+    ref="frame"
+    sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
+    :src="frameUrl"
+    :name="WindowName.webview"
+  ></iframe>
 </template>
 
 <style scoped></style>

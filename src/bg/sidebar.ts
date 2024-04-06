@@ -19,7 +19,7 @@ export async function handleContentMounted(tabId: number) {
   const sidebar = contentSidebarMap.get(tabId)
   if (sidebar) {
     await chrome.storage.session.set({
-      sidebarUrls: { content: sidebar.url },
+      sidebarInitUrl: { content: sidebar.url },
     })
     chrome.tabs.sendMessage(tabId, {
       type: MessageType.openContentSidebar,

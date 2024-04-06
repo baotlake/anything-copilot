@@ -1,4 +1,4 @@
-import { ContentEventType } from "@/types"
+import { ContentEventType, WindowName } from "@/types"
 import { addContentEventListener } from "./event"
 import { copilotNavigateTo, pip, fetchDoc, writeHtml } from "./pip"
 
@@ -27,3 +27,8 @@ async function handleEscapeLoadEvent(event: CustomEvent | Event) {
 addContentEventListener(ContentEventType.pip, handlePipEvent)
 addContentEventListener(ContentEventType.pipLoad, handlePipLoadDocEvent)
 addContentEventListener(ContentEventType.escapeLoad, handleEscapeLoadEvent)
+
+if (window.name.startsWith(WindowName.webview)) {
+  window.parent = window
+  window.top = window
+}

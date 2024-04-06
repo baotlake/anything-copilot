@@ -5,7 +5,7 @@ import { getLocal } from "@/utils/ext"
 import IconClose from "@/components/icons/IconClose.vue"
 import IconSplitscreenRight from "@/components/icons/IconSplitscreenRight.vue"
 import PageScrollbar from "./PageScrollbar.vue"
-import { MessageType } from "@/types"
+import { FrameMessageType, MessageType } from "@/types"
 import { autoPointerCapture } from "@/utils/dom"
 
 const props = defineProps<{
@@ -16,6 +16,7 @@ const emit = defineEmits(["close", "hide"])
 const sidebarHtml = chrome.runtime.getURL("sidebar.html")
 const sidebarUrl = sidebarHtml + "?mode=content"
 const logoUrl = chrome.runtime.getURL("/logo.svg")
+const extRootUrl = chrome.runtime.getURL("/")
 let sheet: CSSStyleSheet | null = null
 let invisibleTimer = 0
 
@@ -62,6 +63,21 @@ function handleKeyUp(e: KeyboardEvent) {
   }
 }
 
+function handleMessage(e: MessageEvent) {
+  if (!extRootUrl.startsWith(e.origin)) {
+    return
+  }
+  // console.log(e)
+  switch (e.data?.type) {
+    case FrameMessageType.collapseSidebar:
+      emit("hide")
+      break
+    case FrameMessageType.closeSidebar:
+      emit("close")
+      break
+  }
+}
+
 watch(
   width,
   debounce((value) => {
@@ -90,6 +106,7 @@ onMounted(() => {
   updatePageStyle(width.value)
   window.addEventListener("keydown", handleKeydown)
   window.addEventListener("keyup", handleKeyUp)
+  window.addEventListener("message", handleMessage)
   chrome.runtime.sendMessage({
     type: MessageType.registerContentSidebar,
   })
@@ -99,6 +116,7 @@ onUnmounted(() => {
   disablePageStyle()
   window.removeEventListener("keydown", handleKeydown)
   window.removeEventListener("keyup", handleKeyUp)
+  window.removeEventListener("message", handleMessage)
   chrome.runtime.sendMessage({
     type: MessageType.unregisterContentSidebar,
   })
@@ -121,7 +139,10 @@ onUnmounted(() => {
         @pointerdown="autoPointerCapture"
         @pointermove="pointermove"
       ></div>
-      <div class="flex gap-2 items-center justify-between h-8 px-2">
+      <div
+        v-if="false"
+        class="flex gap-2 items-center justify-between h-8 px-2"
+      >
         <button
           @click=""
           class="size-7 flex items-center justify-center mr-auto"

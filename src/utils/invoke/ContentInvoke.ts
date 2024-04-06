@@ -1,7 +1,7 @@
 import { MessageType, ServiceFunc, type ParseDocOptions } from "@/types"
 import Invoke from "./Invoke"
 
-class Service extends Invoke {
+class ContentInvoke extends Invoke {
   public async send(req: any) {
     const key = this.key
     const response = await chrome.runtime.sendMessage({
@@ -13,7 +13,7 @@ class Service extends Invoke {
     return { key, response }
   }
 
-  public handleMessage(message: any) {
+  public handleResMsg(message: any) {
     if (message?.type === MessageType.invokeResponse) {
       const { key, success, payload } = message
       this.setReturnValue(key, success, payload)
@@ -42,6 +42,6 @@ class Service extends Invoke {
   }
 }
 
-const contentService = new Service("content")
+const contentInvoke = new ContentInvoke("content")
 
-export { Service, contentService }
+export { ContentInvoke, contentInvoke }

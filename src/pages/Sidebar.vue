@@ -1,8 +1,14 @@
 <script setup lang="ts">
-import { ref, onMounted, reactive, computed, onUnmounted } from "vue"
-import { getLocal, getSession, isProtectedUrl } from "@/utils/ext"
+import { ref, onMounted, reactive, computed, onUnmounted, watch } from "vue"
+import {
+  getLocal,
+  getSession,
+  isProtectedUrl,
+  updateFrameNetRules,
+  updateUANetRules,
+} from "@/utils/ext"
 import config from "@/assets/config.json"
-import Webview from "@/components/Webview.vue"
+import Webview, { type PageInfo } from "@/components/Webview.vue"
 import { useI18n } from "@/utils/i18n"
 import { MessageType } from "@/types"
 import SidebarHome from "@/components/sidebar/SidebarHome.vue"
@@ -12,22 +18,138 @@ import IconNavigateBefore from "@/components/icons/IconNavigateBefore.vue"
 import IconNavigateNext from "@/components/icons/IconNavigateNext.vue"
 import IconRefresh from "@/components/icons/IconRefresh.vue"
 import IconHome from "@/components/icons/IconHome.vue"
+import IconPhone from "@/components/icons/IconPhone.vue"
+import { handleImgError } from "@/utils/dom"
+import { FrameMessageType } from "@/types"
+import { homeUrl } from "@/utils/const"
 
 const logoUrl = chrome.runtime.getURL("/logo.svg")
+const globeImg = chrome.runtime.getURL("img/globe.svg")
 const { t } = useI18n()
+const mobileUA =
+  "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1"
 
-const url = ref("")
 const mode = ref("")
 const popularItems = reactive(config.data.popularSites)
 const recentItems = reactive<{ url: string; title: string; icon: string }[]>([])
 const currentTab = reactive({
-  tabId: 0,
+  tabId: -1,
 })
-const ua = ref("")
-const webview = ref<InstanceType<typeof Webview> | null>(null)
+const defaultUA = ref(config.data.embedView.defaultUA)
+const patchs = reactive(config.data.webviewPatchs)
+const preloadUrls = reactive(config.data.loadCandidates)
 
-const protectedUrl = computed(() => {
-  return isProtectedUrl(url.value)
+const pages = reactive<{ url: string }[]>([])
+const webviews = ref<InstanceType<typeof Webview>[]>([])
+const webviewsAttr = computed(() => {
+  return pages.map(({ url }) => {
+    const patch = patchs.find((i) => new RegExp(i.re).test(url))
+    return {
+      url: url,
+      preloadUrl: patch?.l || "",
+      preloadCandidates: preloadUrls,
+    }
+  })
+})
+const active = ref(-1)
+const pagesInfo = reactive<{ [index: number]: PageInfo }>({})
+const hostUA = reactive<Record<string, number>>(config.data.embedView.hostUA)
+
+const isPointerIn = ref(false)
+
+const isMobileUA = computed(() => {
+  if (active.value === -1) {
+    return /Mobile/.test(defaultUA.value)
+  }
+
+  const url = pagesInfo[active.value]?.url || pages[active.value].url
+  const u = new URL(url)
+
+  if (u.host in hostUA) {
+    return hostUA[u.host] === 1
+  }
+
+  const parent = Object.keys(hostUA).find((k) => {
+    return u.host.endsWith(k)
+  })
+
+  console.log("parent", hostUA, u.host, parent)
+
+  if (parent) {
+    return hostUA[parent] === 1
+  }
+
+  return /Mobile/.test(defaultUA.value)
+})
+
+watch(isPointerIn, () => {
+  updateNetRules()
+})
+
+onMounted(() => {
+  const q = new URLSearchParams(location.search)
+  mode.value = q.get("mode") || "sidepanel"
+  // ua.value =
+  //   "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1"
+
+  getLocal({
+    popularSites: config.data.popularSites,
+    sidebarRecentItems: [],
+    webviewPatchs: config.data.webviewPatchs,
+    loadCandidates: config.data.loadCandidates,
+    presetEmbedView: config.data.embedView,
+    customEmbedView: { defaultUA: "", hostUA: {} },
+  }).then(
+    ({
+      popularSites,
+      sidebarRecentItems,
+      webviewPatchs,
+      loadCandidates,
+      presetEmbedView,
+      customEmbedView,
+    }) => {
+      if (popularSites) {
+        popularItems.splice(0, popularItems.length, ...popularSites)
+      }
+      if (sidebarRecentItems) {
+        recentItems.splice(0, recentItems.length, ...sidebarRecentItems)
+      }
+      if (webviewPatchs) {
+        patchs.splice(0, patchs.length, ...webviewPatchs)
+      }
+      if (loadCandidates) {
+        preloadUrls.splice(0, preloadUrls.length, ...loadCandidates)
+      }
+      defaultUA.value = customEmbedView.defaultUA || presetEmbedView.defaultUA
+
+      Object.entries({
+        ...presetEmbedView.hostUA,
+        ...customEmbedView.hostUA,
+      }).map(([k, v]) => {
+        hostUA[k] = v
+      })
+    }
+  )
+
+  getSession({
+    sidebarInitUrl: {} as Record<string, string>,
+  }).then(({ sidebarInitUrl }) => {
+    console.log("[sidebar]", sidebarInitUrl, mode.value)
+    const url = sidebarInitUrl?.[mode.value]
+    if (url && !isProtectedUrl(url)) {
+      go(url)
+    }
+  })
+
+  chrome.tabs.getCurrent().then((t) => {
+    currentTab.tabId = t?.id || -1
+  })
+
+  chrome.runtime.onMessage.addListener(handleMessage)
+})
+
+onUnmounted(() => {
+  chrome.runtime.onMessage.removeListener(handleMessage)
 })
 
 async function handleMessage(message: any) {
@@ -38,30 +160,25 @@ async function handleMessage(message: any) {
         currentTab.tabId = current?.id || -1
       }
       if (message.tabId == currentTab.tabId) {
-        url.value = message.url
+        const url = message.url
+        go(url)
       }
       break
   }
 }
 
-async function updateRecentItems(pageInfo: {
-  url: string
-  title: string
-  icon: string
-}) {
+async function handlePageLoad(i: number, pageInfo: PageInfo) {
+  pagesInfo[i] = pageInfo
+
   if (mode.value === "content") {
     chrome.runtime.sendMessage({
       type: MessageType.registerContentSidebar,
-      url: url.value,
+      pages: pages,
     })
   }
 
   const { sidebarRecentItems } = await getLocal({
-    sidebarRecentItems: [] as {
-      url: string
-      icon: string
-      title: string
-    }[],
+    sidebarRecentItems: [] as PageInfo[],
   })
 
   const index = sidebarRecentItems.findIndex((i) => i.url === pageInfo.url)
@@ -69,7 +186,7 @@ async function updateRecentItems(pageInfo: {
     sidebarRecentItems.splice(index, 1)
   }
   sidebarRecentItems.unshift(pageInfo)
-  sidebarRecentItems.splice(12)
+  sidebarRecentItems.splice(36)
   recentItems.splice(0, recentItems.length, ...sidebarRecentItems)
 
   await chrome.storage.local.set({ sidebarRecentItems })
@@ -92,105 +209,258 @@ async function removeRecentItem(url: string) {
   await chrome.storage.local.set({ sidebarRecentItems })
 }
 
-onMounted(() => {
-  const q = new URLSearchParams(location.search)
-  mode.value = q.get("mode") || "sidepanel"
-  // ua.value =
-  //   "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1"
-
-  getLocal({
-    popularSites: config.data.popularSites,
-    sidebarRecentItems: [],
-  }).then(({ popularSites, sidebarRecentItems }) => {
-    if (popularSites) {
-      popularItems.splice(0, popularItems.length, ...popularSites)
-    }
-    if (sidebarRecentItems) {
-      recentItems.splice(0, recentItems.length, ...sidebarRecentItems)
-    }
-  })
-
-  getSession({
-    sidebarUrls: {} as Record<string, string>,
-  }).then(({ sidebarUrls }) => {
-    console.log("[sidebar]", sidebarUrls, mode.value)
-    if (sidebarUrls && sidebarUrls[mode.value]) {
-      url.value = sidebarUrls[mode.value]
-    }
-  })
-
-  chrome.tabs.getCurrent().then((t) => {
-    currentTab.tabId = t?.id || -1
-  })
-
-  chrome.runtime.onMessage.addListener(handleMessage)
-})
-
-onUnmounted(() => {
-  chrome.runtime.onMessage.removeListener(handleMessage)
-})
-
 function go(link: string) {
-  url.value = link
+  const len = pages.push({ url: link })
+  active.value = len - 1
+}
+
+function goBack() {
+  const webview = webviews.value[active.value]
+  webview?.goBack()
+}
+
+function goForward() {
+  const webview = webviews.value[active.value]
+  webview?.goForward()
+}
+
+function reload() {
+  const webview = webviews.value[active.value]
+  webview?.reload()
+}
+
+function closeWebview(index: number) {
+  pages.splice(index, 1)
+  delete pagesInfo[index]
+  if (active.value > pages.length - 1) {
+    active.value = pages.length - 1
+  }
+}
+
+function collapseSidebar() {
+  if (mode.value == "content") {
+    parent.postMessage({ type: FrameMessageType.collapseSidebar }, "*")
+  }
+}
+
+function closeSidebar() {
+  if (mode.value == "content") {
+    parent.postMessage({ type: FrameMessageType.closeSidebar }, "*")
+  } else {
+    window.close()
+  }
+}
+
+async function toggleMobileUA() {
+  if (active.value === -1) {
+    defaultUA.value = isMobileUA.value ? "" : mobileUA
+    return
+  }
+
+  const url = pagesInfo[active.value]?.url || pages[active.value].url
+  const u = new URL(url)
+  hostUA[u.host] = isMobileUA.value ? 0 : 1
+
+  await updateNetRules()
+  reload()
+}
+
+async function updateNetRules() {
+  console.log("isPointerIn", defaultUA.value)
+  const tabId = currentTab.tabId
+  const extId = chrome.runtime.id
+
+  await updateFrameNetRules({
+    id: 2,
+    ua: defaultUA.value,
+    tabIds: [tabId],
+    enabled: isPointerIn.value,
+  })
+
+  const mobileHosts = ["mobile.ziziyi.com"]
+  const desktopHosts = ["desktop.ziziyi.com"]
+  Object.entries(hostUA).forEach(([k, v]) => {
+    if (v === 1) {
+      mobileHosts.push(k)
+    } else {
+      desktopHosts.push(k)
+    }
+  })
+
+  await updateUANetRules({
+    id: 3,
+    ua: mobileUA,
+    requestDomains: mobileHosts,
+    tabIds: [tabId],
+    enabled: isPointerIn.value,
+  })
+  await updateUANetRules({
+    id: 4,
+    ua: navigator.userAgent,
+    requestDomains: desktopHosts,
+    tabIds: [tabId],
+    enabled: isPointerIn.value,
+  })
+}
+
+let timer = 0
+
+function handlePointerEnter() {
+  isPointerIn.value = true
+  clearTimeout(timer)
+}
+
+function handlePointerLeave() {
+  timer = window.setTimeout(() => {
+    isPointerIn.value = false
+  }, 350)
 }
 </script>
 
 <template>
-  <div class="w-full h-screen flex flex-col">
+  <div
+    class="w-full h-screen flex flex-col"
+    @pointerenter="handlePointerEnter"
+    @pointerleave="handlePointerLeave"
+  >
     <div
       :class="[
-        'flex gap-1 items-center justify-between h-8 px-1',
-        '*:size-7 *:rounded-full *:flex *:items-center *:justify-center ',
+        'flex gap-1 items-center justify-between h-9 px-1 z-10 shadow-sm',
+        '*:size-7 *:flex *:items-center *:justify-center ',
       ]"
     >
-      <button @click="" class="group hover:bg-background-soft mr-auto">
-        <!-- <img class="size-4" :src="logoUrl" /> -->
-        <IconHome class="size-5 group-active:scale-90 transition-transform" />
-      </button>
-      <button class="group hover:bg-background-soft" @click="webview?.goBack()">
+      <a
+        @click="(e) => (e.preventDefault(), (active = -1))"
+        :href="homeUrl"
+        :class="[
+          'group rounded-lg relative box-border border',
+          active === -1
+            ? 'bg-primary/10 border-primary-500'
+            : 'border-transparent hover:bg-background-mute bg-background-soft',
+        ]"
+      >
+        <img
+          :class="[
+            'size-4 group-hover:opacity-85 transition-all pointer-events-none',
+            false ? 'opacity-85' : 'opacity-50',
+          ]"
+          :src="logoUrl"
+        />
+        <!-- <IconHome class="size-5 group-active:scale-90 transition-transform" /> -->
+      </a>
+
+      <a
+        v-for="(page, i) of pages"
+        @click="(e) => (e.preventDefault(), (active = i))"
+        :href="page.url"
+        :class="[
+          'group rounded-lg relative box-border border',
+          active === i
+            ? 'bg-primary/10 border-primary-500'
+            : 'border-transparent hover:bg-background-mute bg-background-soft',
+        ]"
+      >
+        <img
+          class="size-5 scale-90 pointer-events-none"
+          loading="lazy"
+          :src="pagesInfo[i]?.icon || globeImg"
+          :data-fallback="globeImg"
+          @error="handleImgError"
+        />
+        <span
+          v-if="active === i"
+          class="absolute hidden group-hover:block rounded-full bg-primary-500 text-white -top-0.5 -right-0.5 transition-all p-0.5"
+          @click="
+            (e) => {
+              e.preventDefault()
+              e.stopPropagation()
+              closeWebview(i)
+            }
+          "
+        >
+          <IconClose class="size-2" />
+        </span>
+      </a>
+
+      <span class="mx-auto"></span>
+      <!-- <button
+        @click="goBack()"
+        class="group hover:bg-background-soft rounded-full"
+      >
         <IconNavigateBefore
           class="size-5 scale-125 group-active:-translate-x-1 transition-transform"
         />
       </button>
       <button
-        class="group hover:bg-background-soft"
-        @click="webview?.goForward()"
+        @click="goForward()"
+        class="group hover:bg-background-soft rounded-full"
       >
         <IconNavigateNext
           class="size-5 scale-125 group-active:translate-x-1 transition-transform"
         />
-      </button>
-      <button class="group hover:bg-background-soft" @click="webview?.reload()">
+      </button> -->
+      <button
+        @click="reload()"
+        class="group hover:bg-background-soft rounded-full"
+      >
         <IconRefresh
           class="size-5 group-active:rotate-180 transition-transform"
         />
       </button>
-      <button class="group hover:bg-background-soft">
+      <button
+        @click="toggleMobileUA"
+        :class="[
+          'group hover:bg-background-soft rounded-full transition ease-in-out delay-200',
+          { 'bg-background-soft text-primary-500 ': isMobileUA },
+          isPointerIn ? '' : ' opacity-75',
+        ]"
+      >
+        <IconPhone class="size-4 group-active:scale-90 transition-transform" />
+      </button>
+      <button
+        v-if="mode == 'content'"
+        @click="collapseSidebar()"
+        class="group hover:bg-background-soft rounded-full"
+      >
         <IconSplitscreenRight
           class="size-5 scale-95 group-active:scale-90 transition-transform"
         />
       </button>
-      <button class="group hover:bg-background-soft">
+      <button
+        v-if="mode == 'content'"
+        @click="closeSidebar()"
+        class="group hover:bg-background-soft rounded-full"
+      >
         <IconClose class="size-5 group-active:scale-90 transition-transform" />
       </button>
     </div>
 
-    <div class="w-full h-full" v-if="!protectedUrl">
-      <Webview
-        ref="webview"
-        :url="url"
-        :ua="ua"
-        @page-info="updateRecentItems"
+    <div :class="['w-full h-full', { hidden: active != -1 }]">
+      <SidebarHome
+        :recentItems="recentItems"
+        :popularItems="popularItems"
+        @go="go"
+        @remove-recent-item="removeRecentItem"
       />
     </div>
 
-    <SidebarHome
-      v-else
-      :recentItems="recentItems"
-      :popularItems="popularItems"
-      @go="go"
-      @remove-recent-item="removeRecentItem"
-    />
+    <div
+      v-for="(attr, i) of webviewsAttr"
+      :class="[
+        'w-full h-full rounded-sm overflow-hidden',
+        { hidden: active != i },
+      ]"
+    >
+      <Webview
+        ref="webviews"
+        :key="i"
+        :url="attr.url"
+        :ua="defaultUA"
+        :preload-url="attr.preloadUrl"
+        :preload-candidates="attr.preloadCandidates"
+        @load="(info) => handlePageLoad(i, info)"
+      />
+    </div>
   </div>
 
   <!-- <LoadingBar /> -->
