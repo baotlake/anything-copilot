@@ -1,24 +1,40 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, watch } from "vue"
-import { pipWindow } from "@/store/content"
+import { pipWindow } from "@/store/popup"
 import IconHide from "@/components/icons/IconHide.vue"
 import IconArrowCircleRight from "@/components/icons/IconArrowCircleRight.vue"
 import IconClose from "@/components/icons/IconClose.vue"
-import { MessageType } from "@/types"
+import { MessageType, ServiceFunc } from "@/types"
+import { computed } from "vue"
+import { contentInvoke } from "@/utils/invoke"
+import { handleImgError } from "@/utils/dom"
 
-async function handleUpdatePip(state: "normal" | "minimized") {
-  await chrome.runtime.sendMessage({
-    type: MessageType.updateWindow,
-    options: {
-      windowId: pipWindow.id,
-      windowInfo: {
-        state,
-      },
-    },
+const globeImg = chrome.runtime.getURL("img/globe.svg")
+
+const isMinimized = computed(() => {
+  if (pipWindow.windowsWindow) {
+    const { width, height } = pipWindow.windowsWindow
+    return width! < 300 && height! < 100
+  }
+  return false
+})
+
+async function toggleMinimize() {
+  await contentInvoke.invoke({
+    tabId: pipWindow.tabId,
+    func: ServiceFunc.toggleMinimize,
+    args: [],
   })
+
+  if (pipWindow.id) {
+    const win = await chrome.windows.get(pipWindow.id)
+    pipWindow.windowsWindow = win
+  }
 }
 
 async function closePip() {
+  pipWindow.windowsWindow = null
+
   await chrome.runtime.sendMessage({
     type: MessageType.updateWindow,
     options: {
@@ -40,24 +56,25 @@ async function closePip() {
 
 <template>
   <div class="justify-between border-2 border-solid border-background-mute">
-    <div
+    <img
+      :src="pipWindow.icon"
+      :data-fallback="globeImg"
       class="size-7 rounded mr-auto"
-      :style="{
-        background: `#8881 center / contain url('${pipWindow.tab?.favIconUrl}')`,
-      }"
-    ></div>
+      loading="lazy"
+      @error="handleImgError"
+    />
 
     <button
-      v-if="pipWindow.windowsWindow?.state === 'normal'"
+      v-if="!isMinimized"
       class="bg-background-soft hover:bg-background-mute rounded-full size-8 p-1 flex items-center justify-center"
-      @click="handleUpdatePip('minimized')"
+      @click="toggleMinimize"
     >
       <IconHide class="size-5" />
     </button>
     <button
-      v-if="pipWindow.windowsWindow?.state === 'minimized'"
+      v-else
       class="bg-background-soft hover:bg-background-mute rounded-full size-8 p-1 flex items-center justify-center"
-      @click="handleUpdatePip('normal')"
+      @click="toggleMinimize"
     >
       <IconArrowCircleRight class="size-5" />
     </button>

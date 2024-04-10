@@ -44,5 +44,7 @@
     "notSupported": "Šis puslapis nepalaiko automatinio siuntimo. Nukopijuokite pranešimą ir atsiųskite jį rankiniu būdu."
   },
   "openSidebar": "Atidarykite šoninę juostą",
-  "searchPlaceholder": "Ieškokite arba įveskite URL"
+  "searchPlaceholder": "Ieškokite arba įveskite URL",
+  "setShortcutKeys": "Nustatykite sparčiuosius klavišus",
+  "mobileView": "Mobilusis vaizdas"
 }

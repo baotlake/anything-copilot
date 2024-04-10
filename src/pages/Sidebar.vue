@@ -19,6 +19,7 @@ import IconNavigateNext from "@/components/icons/IconNavigateNext.vue"
 import IconRefresh from "@/components/icons/IconRefresh.vue"
 import IconHome from "@/components/icons/IconHome.vue"
 import IconPhone from "@/components/icons/IconPhone.vue"
+import IconHide from "@/components/icons/IconHide.vue"
 import { handleImgError } from "@/utils/dom"
 import { FrameMessageType } from "@/types"
 import { homeUrl } from "@/utils/const"
@@ -52,7 +53,7 @@ const webviewsAttr = computed(() => {
   })
 })
 const active = ref(-1)
-const pagesInfo = reactive<{ [index: number]: PageInfo }>({})
+const pagesInfo = reactive<(PageInfo | null)[]>([])
 const hostUA = reactive<Record<string, number>>(config.data.embedView.hostUA)
 
 const isPointerIn = ref(false)
@@ -155,12 +156,8 @@ onUnmounted(() => {
 async function handleMessage(message: any) {
   switch (message.type) {
     case MessageType.openInSidebar:
-      if (currentTab.tabId == 0) {
-        const current = await chrome.tabs.getCurrent()
-        currentTab.tabId = current?.id || -1
-      }
-      if (message.tabId == currentTab.tabId) {
-        const url = message.url
+      const url = message.url
+      if (message.tabId == currentTab.tabId && !isProtectedUrl(url)) {
         go(url)
       }
       break
@@ -231,7 +228,7 @@ function reload() {
 
 function closeWebview(index: number) {
   pages.splice(index, 1)
-  delete pagesInfo[index]
+  pagesInfo.splice(index, 1)
   if (active.value > pages.length - 1) {
     active.value = pages.length - 1
   }
@@ -332,8 +329,9 @@ function handlePointerLeave() {
       <a
         @click="(e) => (e.preventDefault(), (active = -1))"
         :href="homeUrl"
+        title="Anything Copilot"
         :class="[
-          'group rounded-lg relative box-border border',
+          'group rounded-full relative box-border border',
           active === -1
             ? 'bg-primary/10 border-primary-500'
             : 'border-transparent hover:bg-background-mute bg-background-soft',
@@ -352,16 +350,17 @@ function handlePointerLeave() {
       <a
         v-for="(page, i) of pages"
         @click="(e) => (e.preventDefault(), (active = i))"
-        :href="page.url"
+        :href="pagesInfo[i]?.url"
+        :title="pagesInfo[i]?.title"
         :class="[
-          'group rounded-lg relative box-border border',
+          'group rounded-full relative box-border border',
           active === i
             ? 'bg-primary/10 border-primary-500'
             : 'border-transparent hover:bg-background-mute bg-background-soft',
         ]"
       >
         <img
-          class="size-5 scale-90 pointer-events-none"
+          class="size-4 pointer-events-none"
           loading="lazy"
           :src="pagesInfo[i]?.icon || globeImg"
           :data-fallback="globeImg"
@@ -401,6 +400,7 @@ function handlePointerLeave() {
       </button> -->
       <button
         @click="reload()"
+        :title="t('refresh')"
         class="group hover:bg-background-soft rounded-full"
       >
         <IconRefresh
@@ -409,6 +409,7 @@ function handlePointerLeave() {
       </button>
       <button
         @click="toggleMobileUA"
+        :title="t('mobileView')"
         :class="[
           'group hover:bg-background-soft rounded-full transition ease-in-out delay-200',
           { 'bg-background-soft text-primary-500 ': isMobileUA },
@@ -420,15 +421,17 @@ function handlePointerLeave() {
       <button
         v-if="mode == 'content'"
         @click="collapseSidebar()"
+        :title="t('minimize')"
         class="group hover:bg-background-soft rounded-full"
       >
-        <IconSplitscreenRight
+        <IconHide
           class="size-5 scale-95 group-active:scale-90 transition-transform"
         />
       </button>
       <button
         v-if="mode == 'content'"
         @click="closeSidebar()"
+        :title="t('close')"
         class="group hover:bg-background-soft rounded-full"
       >
         <IconClose class="size-5 group-active:scale-90 transition-transform" />

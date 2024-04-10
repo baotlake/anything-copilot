@@ -6,13 +6,13 @@ export enum MessageType {
   bgPipLaunch = "bg-pip-launch",
   pipLaunch = "pip-launch",
   contentMounted = "content-mount",
-  getPipWinInfo = "get-pip-win-info",
-  pipWinInfo = "pip-win-info",
+  // getPipWinInfo = "get-pip-win-info",
+  // pipWinInfo = "pip-win-info",
   updateWindow = "update-window",
   removeWindow = "remove-window",
-  setupOffscreenDocument = "setup-offscreen-document",
-  toOffscreen = "to-offscreen",
-  fromOffscreen = "from-offscreen",
+  forwardToTab = "forward-to-tab",
+  // toOffscreen = "to-offscreen",
+  // fromOffscreen = "from-offscreen",
   invokeRequest = "invoke-request",
   invokeResponse = "invoke-Response",
   showChatDocs = "show-chat-docs",
@@ -23,9 +23,15 @@ export enum MessageType {
 }
 
 export enum ServiceFunc {
+  setupOffscreen = "setup-offscreen",
   parseDoc = "parse-doc",
   calcTokens = "calc-tokens",
   tokenSlice = "token-slice",
+  getAllCommands = "get-all-commands",
+  createTab = "create-tab",
+  toggleMinimize = "toggle-minimize",
+  getPipWindow = "get-pip-window",
+  getMyTab = "get-my-tab",
 }
 
 export type ParseDocOptions = {
@@ -51,7 +57,6 @@ export enum ContentEventType {
 
 export enum FrameMessageType {
   frameReady = "anything-copilot_frame-ready",
-  webviewRun = "anything-copilot_webview-run",
   escapeLoad = "anything-copilot_escape-load",
   pageInfo = "anything-copilot_page-info",
   collapseSidebar = "anything-copilot_collapse-sidebar",

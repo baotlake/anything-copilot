@@ -44,5 +44,7 @@
     "notSupported": "This page does not support automatic sending. Please copy the message and send it manually."
   },
   "openSidebar": "Open Sidebar",
-  "searchPlaceholder": "Search or type a URL"
+  "searchPlaceholder": "Search or type a URL",
+  "setShortcutKeys": "Set shortcut keys",
+  "mobileView": "Mobile View"
 }

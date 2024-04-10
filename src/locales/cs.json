@@ -44,5 +44,7 @@
     "notSupported": "Tato stránka nepodporuje automatické odesílání. Zkopírujte zprávu a odešlete ji ručně."
   },
   "openSidebar": "Otevřete postranní panel",
-  "searchPlaceholder": "Vyhledejte nebo zadejte adresu URL"
+  "searchPlaceholder": "Vyhledejte nebo zadejte adresu URL",
+  "setShortcutKeys": "Nastavit klávesové zkratky",
+  "mobileView": "Mobilní pohled"
 }

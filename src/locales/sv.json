@@ -44,5 +44,7 @@
     "notSupported": "Denna sida stöder inte automatisk sändning. Kopiera meddelandet och skicka det manuellt."
   },
   "openSidebar": "Öppna sidofältet",
-  "searchPlaceholder": "Sök eller skriv en URL"
+  "searchPlaceholder": "Sök eller skriv en URL",
+  "setShortcutKeys": "Ställ in kortkommandon",
+  "mobileView": "Mobilvy"
 }

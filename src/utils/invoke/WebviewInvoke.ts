@@ -18,13 +18,6 @@ class WebviewInvoke extends Invoke {
     win?.postMessage({ type: FrameMessageType.invokeRequest, key, ...req }, "*")
     return { key, response: null }
   }
-
-  public handleResMsg(message: any) {
-    if (message?.type === FrameMessageType.invokeResponse) {
-      const { key, success, payload } = message
-      this.setReturnValue(key, success, payload)
-    }
-  }
 }
 
 export { WebviewInvoke }

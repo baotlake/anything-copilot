@@ -6,9 +6,9 @@ import type ZhMessage from "@/locales/zh-CN.json"
 type MessageSchema = typeof EnMessage & typeof ZhMessage
 
 export function getLocale() {
-  if (__DEV__) {
-    return "zh-CN"
-  }
+  // if (__DEV__) {
+  //   return "zh-CN"
+  // }
 
   const language = chrome.i18n.getUILanguage()
   let code = language

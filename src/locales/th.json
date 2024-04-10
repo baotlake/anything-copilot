@@ -44,5 +44,7 @@
     "notSupported": "หน้านี้ไม่รองรับการส่งอัตโนมัติ กรุณาคัดลอกข้อความและส่งด้วยตนเอง"
   },
   "openSidebar": "เปิดแถบด้านข้าง",
-  "searchPlaceholder": "ค้นหาหรือพิมพ์ URL"
+  "searchPlaceholder": "ค้นหาหรือพิมพ์ URL",
+  "setShortcutKeys": "ตั้งค่าปุ่มลัด",
+  "mobileView": "มุมมองมือถือ"
 }

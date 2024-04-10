@@ -126,6 +126,7 @@ watch(
 
     if (maxInputType !== "token") return
     if (!message) return
+    await contentInvoke.setupOffscreen()
     const tokenLength = await contentInvoke.calcTokens(message)
     const rate = (message.length / tokenLength) * 0.95
     const exceedMaxInput = tokenLength > maxInput
@@ -172,6 +173,7 @@ watch(
 
         if (item.kind == "file" && typeof item.data != "string") {
           const url = await convertBlobToBase64(item.data)
+          await contentInvoke.setupOffscreen()
           const results = await contentInvoke.parseDoc({
             key: item.key,
             type: item.type,
@@ -640,4 +642,5 @@ input:hover {
     transform: translate(100%, 0);
   }
 }
-</style>@/utils/const@/utils/invoke/service@/utils/invokeb
+</style>
+@/utils/const@/utils/invoke/service@/utils/invokeb

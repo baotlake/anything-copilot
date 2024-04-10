@@ -44,5 +44,7 @@
     "notSupported": "Trang này không hỗ trợ gửi tự động. Vui lòng sao chép tin nhắn và gửi thủ công."
   },
   "openSidebar": "Mở thanh bên",
-  "searchPlaceholder": "Tìm kiếm hoặc nhập URL"
+  "searchPlaceholder": "Tìm kiếm hoặc nhập URL",
+  "setShortcutKeys": "Đặt phím tắt",
+  "mobileView": "Chế độ xem trên thiết bị di động"
 }

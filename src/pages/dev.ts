@@ -1,6 +1,7 @@
 import "@/assets/main.css"
 import { createApp } from "vue"
 import "@/content/index"
+import "@/content/main"
 // import "@/pages/popup"
 
 import Dev from "./Dev.vue"

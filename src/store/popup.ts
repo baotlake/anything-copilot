@@ -5,4 +5,6 @@ export const pipWindow = reactive({
   window: null as Window | null,
   windowsWindow: null as chrome.windows.Window | null,
   tab: null as chrome.tabs.Tab | null,
+  tabId: 0,
+  icon: "" as string,
 })

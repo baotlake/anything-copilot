@@ -44,5 +44,7 @@
     "notSupported": "Ukurasa huu hauungi mkono kutuma moja kwa moja. Tafadhali nakili ujumbe na utumie kwa mikono."
   },
   "openSidebar": "Fungua pembeni",
-  "searchPlaceholder": "Tafuta au charaza URL"
+  "searchPlaceholder": "Tafuta au charaza URL",
+  "setShortcutKeys": "Weka funguo za njia za mkato",
+  "mobileView": "Mwonekano wa rununu"
 }

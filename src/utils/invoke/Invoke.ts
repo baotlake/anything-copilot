@@ -3,29 +3,33 @@ type CallbackItem = {
   reject: (e: any) => void
 }
 
-interface InvokeReq {
+export interface InvokeReq {
   func: string
   args: any[]
   timeout?: number
+  key?: string
+  [key: string]: any
 }
 
-interface InvokeRes {
+export interface InvokeRes {
   key: string
   success: boolean
   value: any
 }
 
-abstract class Invoke {
+export abstract class Invoke {
   private pendingCallback: Record<string, CallbackItem>
   private count: number
   private name: string
   private uniqueId: string
+  private services: Map<string, Function>
 
   constructor(name: string) {
     this.name = name
     this.uniqueId = `${Math.round(Math.random() * 1e6)}`
     this.pendingCallback = {}
     this.count = 0
+    this.services = new Map()
   }
 
   protected get key() {
@@ -64,15 +68,48 @@ abstract class Invoke {
     }
   }
 
-  abstract send(req: InvokeReq): Promise<{ key: string; response: any }>
-  abstract handleResMsg(message: InvokeRes): void
+  abstract send(req: InvokeReq): Promise<{ key: string }>
+  public handleResMsg(message: InvokeRes) {
+    const { key, success, value } = message
+    this.setReturnValue(key, success, value)
+  }
+
+  public async handleReqMsg(message: InvokeReq) {
+    const { key, func, args, timeout } = message
+    let result = null
+    let error = null
+    try {
+      const service = this.services.get(func)
+      if (service) {
+        result = await service(...args)
+      } else {
+        error = `unknown service: ${func}`
+        console.warn(`unknown service: ${func}`)
+        return null
+      }
+    } catch (err) {
+      console.error("invoke error: ", err)
+      error = err
+    }
+
+    return { key, success: !error, value: !error ? result : error }
+  }
 
   public async invoke<T = any>(req: InvokeReq): Promise<T> {
     const { key } = await this.send(req)
     req.timeout = req.timeout || 20000
     return this.getReturnValue(key, req)
   }
+
+  public register(func: string, service: Function) {
+    this.services.set(func, service)
+    return this
+  }
+
+  public unregister(func: string) {
+    this.services.delete(func)
+    return this
+  }
 }
 
 export default Invoke
-export { Invoke }

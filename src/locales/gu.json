@@ -44,5 +44,7 @@
     "notSupported": "આ પૃષ્ઠ સ્વચાલિત મોકલવાનું સમર્થન કરતું નથી. કૃપા કરીને સંદેશની નકલ કરો અને તેને જાતે મોકલો."
   },
   "openSidebar": "સાઇડબાર ખોલો",
-  "searchPlaceholder": "URL શોધો અથવા લખો"
+  "searchPlaceholder": "URL શોધો અથવા લખો",
+  "setShortcutKeys": "શોર્ટકટ કી સેટ કરો",
+  "mobileView": "મોબાઇલ દૃશ્ય"
 }

@@ -44,5 +44,7 @@
     "notSupported": "ይህ ገጽ ራስ-ሰር መላክን አይደግፍም. እባክዎ መልዕክቱን ይቅዱ እና እራስዎ ይላኩ."
   },
   "openSidebar": "የጎን አሞሌውን ይክፈቱ",
-  "searchPlaceholder": "ዩአርኤል ይፈልጉ ወይም ይተይቡ"
+  "searchPlaceholder": "ዩአርኤል ይፈልጉ ወይም ይተይቡ",
+  "setShortcutKeys": "አቋራጭ ቁልፎችን አዘጋጅ",
+  "mobileView": "የሞባይል እይታ"
 }

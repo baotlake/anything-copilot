@@ -6,9 +6,9 @@ import TurndownService from "turndown"
 import { MessageType, ServiceFunc, type ParseDocOptions } from "@/types"
 import { Tiktoken } from "tiktoken/lite"
 import cl100k_base from "tiktoken/encoders/cl100k_base.json"
+import { contentInvoke } from "@/utils/invoke"
 
 pdfjs.GlobalWorkerOptions.workerSrc = "/js/pdf.worker.js"
-
 
 async function parsePdf(file: File) {
   const buffer = await file.arrayBuffer()
@@ -102,33 +102,26 @@ async function handleMessage(
   message: any,
   sender: chrome.runtime.MessageSender
 ) {
-  if (message?.type === MessageType.toOffscreen) {
-    console.log("offscreen message: ", message, sender)
-    const { func, args } = message
-    let taskPromise: Promise<any> | null = null
-    switch (func) {
-      case ServiceFunc.parseDoc:
-        taskPromise = parseDoc(...(args as [any]))
-        break
-      case ServiceFunc.calcTokens:
-        taskPromise = calcTokens(...(args as [any]))
-        break
-      case ServiceFunc.tokenSlice:
-        taskPromise = tokenSlice(...(args as [any, any]))
-        break
-    }
-
-    if (taskPromise) {
-      const result = await taskPromise
+  console.log("offscreen message: ", message, sender)
+  if (message?.type === MessageType.invokeRequest) {
+    const result = await contentInvoke.handleReqMsg(message)
+    if (result) {
       chrome.runtime.sendMessage({
-        type: MessageType.fromOffscreen,
-        key: message.key,
-        task: message.task,
-        payload: result,
+        type: MessageType.forwardToTab,
+        tabId: sender.tab?.id,
+        message: {
+          type: MessageType.invokeResponse,
+          ...result,
+        },
       })
     }
   }
 }
+
+contentInvoke
+  .register(ServiceFunc.parseDoc, parseDoc)
+  .register(ServiceFunc.calcTokens, calcTokens)
+  .register(ServiceFunc.tokenSlice, tokenSlice)
 
 chrome.runtime.onMessage.addListener(handleMessage)
 

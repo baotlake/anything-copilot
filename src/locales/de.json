@@ -44,5 +44,7 @@
     "notSupported": "Diese Seite unterstützt das automatische Senden nicht. Bitte kopieren Sie die Nachricht und senden Sie sie manuell."
   },
   "openSidebar": "Öffnen Sie die Seitenleiste",
-  "searchPlaceholder": "Suchen oder geben Sie eine URL ein"
+  "searchPlaceholder": "Suchen oder geben Sie eine URL ein",
+  "setShortcutKeys": "Legen Sie Tastenkombinationen fest",
+  "mobileView": "Mobile Ansicht"
 }

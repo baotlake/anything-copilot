@@ -44,5 +44,7 @@
     "notSupported": "See leht ei toeta automaatset saatmist. Kopeerige sõnum ja saatke see käsitsi."
   },
   "openSidebar": "Avage külgriba",
-  "searchPlaceholder": "Otsige või sisestage URL"
+  "searchPlaceholder": "Otsige või sisestage URL",
+  "setShortcutKeys": "Määrake kiirklahvid",
+  "mobileView": "Mobiilivaade"
 }

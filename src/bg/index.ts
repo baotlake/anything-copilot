@@ -4,8 +4,8 @@ import {
   type ParseDocOptions,
   ContentScriptId,
 } from "@/types"
-import { waitMessage, tabUpdated, getLocal } from "@/utils/ext"
-import { offscreen } from "./offscreen"
+import { waitMessage, tabUpdated, getLocal, getPipWindow } from "@/utils/ext"
+import { setupOffscreenDocument, offscreenHtmlPath } from "./offscreen"
 import {
   registerContentSidebar,
   unregisterContentSidebar,
@@ -14,6 +14,7 @@ import {
 import config from "@/assets/config.json"
 import { allFrameScript, contentMainScript } from "@/manifest"
 import { getIsEdge } from "@/utils/ext"
+import { contentInvoke } from "@/utils/invoke"
 
 type Config = typeof config
 
@@ -69,33 +70,6 @@ async function pipLaunch(url: string) {
   })
 }
 
-type QueryOptions = {
-  windowId?: number
-  width?: number
-  height?: number
-}
-async function getPipWindow(
-  id: number,
-  { windowId, width, height }: QueryOptions
-) {
-  if (windowId) {
-    const win = await chrome.windows.get(windowId)
-    chrome.tabs.sendMessage(id, {
-      type: MessageType.pipWinInfo,
-      window: win,
-    })
-    return win
-  }
-
-  const windows = await chrome.windows.getAll({})
-  const win = windows.find((w) => w.width === width && w.height === height)
-  chrome.tabs.sendMessage(id, {
-    type: MessageType.pipWinInfo,
-    window: win,
-  })
-  return win
-}
-
 type UpdatePipWinOption = {
   windowId: number
   windowInfo: Partial<chrome.windows.UpdateInfo>
@@ -105,42 +79,38 @@ async function updateWindow({ windowId, windowInfo }: UpdatePipWinOption) {
   await chrome.windows.update(windowId, windowInfo)
 }
 
+let currentSender: chrome.runtime.MessageSender | null = null
+
+contentInvoke
+  .register(ServiceFunc.setupOffscreen, () =>
+    setupOffscreenDocument(offscreenHtmlPath)
+  )
+  .register(ServiceFunc.getAllCommands, () => chrome.commands.getAll())
+  .register(ServiceFunc.createTab, (p: chrome.tabs.CreateProperties) =>
+    chrome.tabs.create(p)
+  )
+  .register(ServiceFunc.getPipWindow, getPipWindow)
+  .register(ServiceFunc.getMyTab, () =>
+    chrome.tabs.get(currentSender!.tab!.id!)
+  )
+
 async function handleInvokeRequest(
   message: any,
   sender: chrome.runtime.MessageSender
 ) {
-  const { key, func, args } = message
-
-  let result = null
-  let error = null
-  try {
-    switch (func) {
-      case ServiceFunc.parseDoc:
-      case ServiceFunc.calcTokens:
-      case ServiceFunc.tokenSlice:
-        result = await offscreen.invoke({
-          func,
-          args,
-        })
-        break
-    }
-  } catch (err) {
-    console.error("invoke error: ", err)
-    error = err
-  }
-
-  console.log("invoke response: ", result, error)
+  currentSender = sender
+  let result = await contentInvoke.handleReqMsg(message)
 
   if (!sender.tab?.id) {
     console.error("sender tab id is undefined", sender)
   }
 
-  chrome.tabs.sendMessage(sender.tab?.id!, {
-    type: MessageType.invokeResponse,
-    key,
-    success: !error,
-    payload: !error ? result : error,
-  })
+  if (result) {
+    chrome.tabs.sendMessage(sender.tab?.id!, {
+      type: MessageType.invokeResponse,
+      ...result,
+    })
+  }
 }
 
 function handleMessage(message: any, sender: chrome.runtime.MessageSender) {
@@ -152,19 +122,15 @@ function handleMessage(message: any, sender: chrome.runtime.MessageSender) {
     case MessageType.bgPipLaunch:
       pipLaunch(message.url)
       break
-    case MessageType.getPipWinInfo:
-      getPipWindow(sender.tab?.id!, message.options)
-      break
     case MessageType.updateWindow:
       updateWindow(message.options)
       break
     case MessageType.removeWindow:
       chrome.windows.remove(message.options.windowId)
       break
-    case MessageType.setupOffscreenDocument:
-      return offscreen.setup()
-    case MessageType.fromOffscreen:
-      return offscreen.handleResMsg(message)
+    case MessageType.forwardToTab:
+      chrome.tabs.sendMessage(message.tabId, message.message)
+      break
     case MessageType.invokeRequest:
       handleInvokeRequest(message, sender)
       break
@@ -181,12 +147,17 @@ function handleMessage(message: any, sender: chrome.runtime.MessageSender) {
 }
 
 async function handleToggleMinimize() {
-  const { pipWindowId } = await chrome.storage.local.get({ pipWindowId: null })
-  if (!pipWindowId) return
-  const windowInfo = await chrome.windows.get(pipWindowId)
+  const { pipWindow } = await chrome.storage.local.get({ pipWindow: null })
+  if (!pipWindow) return
+  const windowInfo = await chrome.windows.get(pipWindow.windowId)
   if (!windowInfo) return
-  await chrome.windows.update(pipWindowId, {
-    state: windowInfo.state == "minimized" ? "normal" : "minimized",
+
+  const tabId = pipWindow.tabId
+
+  contentInvoke.invoke({
+    tabId,
+    func: ServiceFunc.toggleMinimize,
+    args: [],
   })
 }
 

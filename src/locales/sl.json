@@ -44,5 +44,7 @@
     "notSupported": "Ta stran ne podpira samodejnega pošiljanja. Kopirajte sporočilo in ga pošljite ročno."
   },
   "openSidebar": "Odprite stransko vrstico",
-  "searchPlaceholder": "Iščite ali vnesite URL"
+  "searchPlaceholder": "Iščite ali vnesite URL",
+  "setShortcutKeys": "Nastavite tipke za bližnjice",
+  "mobileView": "Mobilni pogled"
 }

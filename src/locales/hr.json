@@ -44,5 +44,7 @@
     "notSupported": "Ova stranica ne podržava automatsko slanje. Kopirajte poruku i pošaljite je ručno."
   },
   "openSidebar": "Otvorite bočnu traku",
-  "searchPlaceholder": "Pretražite ili upišite URL"
+  "searchPlaceholder": "Pretražite ili upišite URL",
+  "setShortcutKeys": "Postavite tipke prečaca",
+  "mobileView": "Mobilni prikaz"
 }

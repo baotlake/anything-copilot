@@ -44,5 +44,7 @@
     "notSupported": "Deze pagina ondersteunt geen automatisch verzenden. Kopieer het bericht en stuur het handmatig."
   },
   "openSidebar": "Open de zijbalk",
-  "searchPlaceholder": "Zoek of typ een URL"
+  "searchPlaceholder": "Zoek of typ een URL",
+  "setShortcutKeys": "Sneltoetsen instellen",
+  "mobileView": "Mobiele weergave"
 }

@@ -44,5 +44,7 @@
     "notSupported": "Această pagină nu acceptă trimiterea automată. Vă rugăm să copiați mesajul și să -l trimiteți manual."
   },
   "openSidebar": "Deschideți bara laterală",
-  "searchPlaceholder": "Căutați sau introduceți o adresă URL"
+  "searchPlaceholder": "Căutați sau introduceți o adresă URL",
+  "setShortcutKeys": "Setați tastele de comandă rapidă",
+  "mobileView": "Vizualizare mobilă"
 }

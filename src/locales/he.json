@@ -44,5 +44,7 @@
     "notSupported": "דף זה אינו תומך בשליחה אוטומטית. אנא העתק את ההודעה ושלח אותה ידנית."
   },
   "openSidebar": "פתח את סרגל הצד",
-  "searchPlaceholder": "חפש או הקלד כתובת אתר"
+  "searchPlaceholder": "חפש או הקלד כתובת אתר",
+  "setShortcutKeys": "הגדר מקשי קיצור",
+  "mobileView": "נוף נייד"
 }

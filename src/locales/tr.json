@@ -44,5 +44,7 @@
     "notSupported": "Bu sayfa otomatik göndermeyi desteklemez. Lütfen mesajı kopyalayın ve manuel olarak gönderin."
   },
   "openSidebar": "Kenar çubuğunu aç",
-  "searchPlaceholder": "Bir URL arayın veya yazın"
+  "searchPlaceholder": "Bir URL arayın veya yazın",
+  "setShortcutKeys": "Kısayol tuşlarını ayarla",
+  "mobileView": "Mobil görünüm"
 }

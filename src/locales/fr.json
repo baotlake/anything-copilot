@@ -44,5 +44,7 @@
     "notSupported": "Cette page ne prend pas en charge l'envoi automatique. Veuillez copier le message et l'envoyer manuellement."
   },
   "openSidebar": "Ouvrir la barre latérale",
-  "searchPlaceholder": "Rechercher ou saisir une URL"
+  "searchPlaceholder": "Rechercher ou saisir une URL",
+  "setShortcutKeys": "Définir les touches de raccourci",
+  "mobileView": "Vue mobile"
 }

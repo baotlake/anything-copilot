@@ -2,4 +2,3 @@ export const chatDocPrompt = `Here is some relevant reference information. Pleas
 
 export const homeUrl = 'https://ziziyi.com/copilot'
 export const feedbackUrl = 'https://tawk.to/anythingcopilot'
-

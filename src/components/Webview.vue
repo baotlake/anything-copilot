@@ -145,12 +145,6 @@ async function loadFrame(url: string, ua?: string) {
       // iframe.srcdoc = html
     }
   }
-  iframe.contentWindow?.postMessage(
-    {
-      type: FrameMessageType.webviewRun,
-    },
-    "*"
-  )
 }
 
 function handleFrameMessage(e: MessageEvent) {
@@ -162,13 +156,10 @@ function handleFrameMessage(e: MessageEvent) {
 
   switch (type) {
     case FrameMessageType.pageInfo:
-      if (!pageInfo.url) {
-        pageInfo.url = e.data.url
-        pageInfo.title = e.data.title
-        pageInfo.icon = e.data.icon
-
-        emit("load", pageInfo)
-      }
+      pageInfo.url = e.data.url
+      pageInfo.title = e.data.title
+      pageInfo.icon = e.data.icon
+      emit("load", pageInfo)
       break
     case FrameMessageType.invokeResponse:
       webviewInvoke.value?.handleResMsg(e.data)

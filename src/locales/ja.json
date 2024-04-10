@@ -44,5 +44,7 @@
     "notSupported": "このページは、自動送信をサポートしていません。メッセージをコピーして手動で送信してください。"
   },
   "openSidebar": "サイドバーを開きます",
-  "searchPlaceholder": "URLを検索または入力します"
+  "searchPlaceholder": "URLを検索または入力します",
+  "setShortcutKeys": "ショートカットキーを設定する",
+  "mobileView": "モバイルビュー"
 }

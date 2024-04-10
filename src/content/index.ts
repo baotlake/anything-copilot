@@ -10,6 +10,7 @@ import {
   ContentEventType,
   FrameMessageType,
   MessageType,
+  ServiceFunc,
   WebviewFunc,
   WindowName,
 } from "@/types"
@@ -45,12 +46,6 @@ function handleMessage(
       })
       sendResponse({ type: MessageType.contentHere })
       break
-    case MessageType.pipWinInfo:
-      pipWindow.windowsWindow = message.window
-      chrome.storage.local.set({
-        pipWindowId: message.window.id,
-      })
-      break
     case MessageType.invokeResponse:
       contentInvoke.handleResMsg(message)
       break
@@ -61,6 +56,16 @@ function handleMessage(
       sidebarAddon.visible = true
       sidebarAddon.hidden = false
       sidebarAddon.url = message.url
+      break
+    case MessageType.invokeRequest:
+      contentInvoke.handleReqMsg(message).then((result) => {
+        if (result) {
+          chrome.runtime.sendMessage({
+            type: MessageType.invokeResponse,
+            ...result,
+          })
+        }
+      })
       break
   }
 }
@@ -90,18 +95,33 @@ async function handlePipEvent(event: any) {
       addContentEventListener(ContentEventType.pipLoaded, handlePipLoaded)
     })
 
-    // may be 0 if not wait document is loaded
-    chrome.runtime.sendMessage({
-      type: MessageType.getPipWinInfo,
-      options: {
-        width: win.outerWidth,
-        height: win.outerHeight,
+    const window = await contentInvoke.invoke({
+      func: ServiceFunc.getPipWindow,
+      args: [
+        {
+          width: win.outerWidth,
+          height: win.outerHeight,
+        },
+      ],
+    })
+
+    const tab = await contentInvoke.invoke({
+      func: ServiceFunc.getMyTab,
+      args: [],
+    })
+
+    pipWindow.windowsWindow = window
+    chrome.storage.local.set({
+      pipWindow: {
+        windowId: window.id,
+        tabId: tab.id,
+        icon: getPageIcon(),
       },
     })
 
     win.addEventListener("pagehide", () => {
       chrome.storage.local.set({
-        pipWindowId: 0,
+        pipWindow: null,
       })
     })
   }
@@ -146,10 +166,6 @@ function handleFrameMessage(e: MessageEvent) {
   if (!e.data || typeof e.data !== "object") return
   const type = e.data.type
   switch (type) {
-    case FrameMessageType.webviewRun:
-      run()
-      postPageInfo()
-      return
     case FrameMessageType.escapeLoad:
       return dispatchContentEvent({
         type: ContentEventType.escapeLoad,
@@ -207,9 +223,13 @@ if (window.top !== window && window.name.startsWith(WindowName.webview)) {
     },
     chrome.runtime.getURL("")
   )
+
+  run()
+  postPageInfo()
 }
 
 // dev
 if (location.host == chrome.runtime.id && location.hash == "#copilot") {
+  pipWindow.window = window
   mount(Copilot, window.document)
 }

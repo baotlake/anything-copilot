@@ -44,5 +44,7 @@
     "notSupported": "Denne siden støtter ikke automatisk sending. Kopier meldingen og send den manuelt."
   },
   "openSidebar": "Åpne sidefeltet",
-  "searchPlaceholder": "Søk eller skriv inn en URL"
+  "searchPlaceholder": "Søk eller skriv inn en URL",
+  "setShortcutKeys": "Angi snarveistaster",
+  "mobileView": "Mobil visning"
 }

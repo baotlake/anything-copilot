@@ -44,5 +44,7 @@
     "notSupported": "Tämä sivu ei tue automaattista lähettämistä. Kopioi viesti ja lähetä se manuaalisesti."
   },
   "openSidebar": "Avaa sivupalkki",
-  "searchPlaceholder": "Hae tai kirjoita URL-osoite"
+  "searchPlaceholder": "Hae tai kirjoita URL-osoite",
+  "setShortcutKeys": "Aseta pikanäppäimet",
+  "mobileView": "Mobiilinäkymä"
 }

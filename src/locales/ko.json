@@ -44,5 +44,7 @@
     "notSupported": "이 페이지는 자동 전송을 지원하지 않습니다. 메시지를 복사하여 수동으로 보내주십시오."
   },
   "openSidebar": "사이드 바를 엽니 다",
-  "searchPlaceholder": "URL을 검색하거나 입력하세요."
+  "searchPlaceholder": "URL을 검색하거나 입력하세요.",
+  "setShortcutKeys": "단축키 설정",
+  "mobileView": "모바일 보기"
 }

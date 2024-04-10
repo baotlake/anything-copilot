@@ -44,5 +44,7 @@
     "notSupported": "Aquesta pàgina no admet l'enviament automàtic. Copieu el missatge i envieu -lo manualment."
   },
   "openSidebar": "Obriu la barra lateral",
-  "searchPlaceholder": "Cerqueu o escriviu un URL"
+  "searchPlaceholder": "Cerqueu o escriviu un URL",
+  "setShortcutKeys": "Estableix tecles de drecera",
+  "mobileView": "Vista mòbil"
 }

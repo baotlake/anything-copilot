@@ -44,5 +44,7 @@
     "notSupported": "هذه الصفحة لا تدعم الإرسال التلقائي. يرجى نسخ الرسالة وإرسالها يدويًا."
   },
   "openSidebar": "افتح الشريط الجانبي",
-  "searchPlaceholder": "ابحث عن عنوان URL أو اكتبه"
+  "searchPlaceholder": "ابحث عن عنوان URL أو اكتبه",
+  "setShortcutKeys": "تعيين مفاتيح الاختصار",
+  "mobileView": "واجهه جوال"
 }

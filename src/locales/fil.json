@@ -44,5 +44,7 @@
     "notSupported": "Ang pahinang ito ay hindi sumusuporta sa awtomatikong pagpapadala. Mangyaring kopyahin ang mensahe at manu -manong ipadala ito."
   },
   "openSidebar": "Buksan ang sidebar",
-  "searchPlaceholder": "Maghanap o mag-type ng URL"
+  "searchPlaceholder": "Maghanap o mag-type ng URL",
+  "setShortcutKeys": "Itakda ang mga shortcut key",
+  "mobileView": "Mobile view"
 }

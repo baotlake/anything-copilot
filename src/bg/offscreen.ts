@@ -1,6 +1,3 @@
-import { MessageType, ServiceFunc, type ParseDocOptions } from "@/types"
-import { Invoke } from "@/utils/invoke"
-
 let creating: Promise<void> | null // A global promise to avoid concurrency issues
 
 export async function setupOffscreenDocument(path: string) {
@@ -37,39 +34,3 @@ export async function setupOffscreenDocument(path: string) {
 }
 
 export const offscreenHtmlPath = "/offscreen.html"
-
-class Offscreen extends Invoke {
-  public readonly path: string
-
-  constructor(path: string) {
-    super("offscreen")
-    this.path = path
-  }
-
-  public async send(req: any): Promise<{ key: string; response: any }> {
-    const key = this.key
-    await this.setup()
-
-    console.log("offscreen send: ", key, req)
-
-    const response = await chrome.runtime.sendMessage({
-      type: MessageType.toOffscreen,
-      key,
-      ...req,
-    })
-    return { key, response }
-  }
-
-  public handleResMsg(message: any): void {
-    const { type, key, payload, success } = message
-    if (type === MessageType.fromOffscreen) {
-      this.setReturnValue(key, success, payload)
-    }
-  }
-
-  public setup() {
-    return setupOffscreenDocument(this.path)
-  }
-}
-
-export const offscreen = new Offscreen(offscreenHtmlPath)

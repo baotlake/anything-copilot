@@ -3,56 +3,123 @@ import { ref, computed, watch, onMounted, onUnmounted } from "vue"
 import IconMinimize from "@/components/icons/IconMinimize.vue"
 import IconSplitRight from "@/components/icons/IconSplitscreenRight.vue"
 import IconClose from "@/components/icons/IconClose.vue"
-import { ContentEventType, MessageType } from "@/types"
+import { ContentEventType, MessageType, ServiceFunc } from "@/types"
 import { pipWindow } from "@/store/content"
 import { throttle } from "lodash-es"
 import IconRefresh from "./icons/IconRefresh.vue"
 import { dispatchContentEvent } from "@/content/event"
 import { useI18n } from "@/utils/i18n"
 import IconHide from "./icons/IconHide.vue"
+import { pip } from "@/content/pip"
+import { getPageIcon } from "@/utils/dom"
+import { contentInvoke } from "@/utils/invoke"
+import IconKeyboard from "@/components/icons/IconKeyboard.vue"
+import IconEdit from "@/components/icons/IconEdit.vue"
 
-const open = ref(false)
-const pinOpen = ref(false)
-const timer = ref(0)
-const wrapper = ref<HTMLDivElement>()
-const { t } = useI18n()
+const logoUrl = chrome.runtime.getURL("/logo.svg")
+const globeImg = chrome.runtime.getURL("img/globe.svg")
 
 const isWindows = navigator.userAgentData?.platform == "Windows"
 const modiferKey = isWindows ? "ctrl" : "⌘"
+let timer = 0
+let sheet: CSSStyleSheet | null = null
 
-const pipRect = computed(() => {
-  const winInfo = pipWindow.windowsWindow
-  const { width } = screen
+const open = ref(false)
+const pinOpen = ref(false)
+const wrapper = ref<HTMLDivElement>()
+const { t } = useI18n()
+const rect = ref({
+  w: 0,
+  h: 0,
+  l: 0,
+  t: 0,
+  r: 0,
+  b: 0,
+})
+const toggleMinimizeCommand = ref()
+const normalRect = ref({ w: 420, h: 800, l: 0, t: 0, r: 0, b: 0 })
 
-  return {
-    width: winInfo?.width || 0,
-    height: winInfo?.height || 0,
-    left: winInfo?.left || 0,
-    right: width - (winInfo?.left || 0) - (winInfo?.width || 0),
+const isMinimized = computed(() => {
+  const { w, h } = rect.value
+  return w > 0 && w < 300 && h > 0 && h < 100
+})
+
+watch(open, (value, oldValue, onCleanup) => {
+  updateWindowInfo()
+  if (value) {
+    window.addEventListener("click", handleClickAway)
+    onCleanup(() => {
+      window.removeEventListener("click", handleClickAway)
+    })
   }
 })
 
-const updateWindowInfo = throttle(() => {
-  const id = pipWindow.windowsWindow?.id
-  console.log("updateWindowInfo", id)
-  if (id) {
-    chrome.runtime.sendMessage({
-      type: MessageType.getPipWinInfo,
-      options: {
-        windowId: id,
-      },
-    })
+watch(isMinimized, (value) => {
+  const doc = pipWindow.window?.document
+  const CSSStyleSheet = doc!.defaultView!.CSSStyleSheet
+  if (!doc) {
+    return
   }
-}, 3000)
+  if (!sheet) {
+    sheet = new CSSStyleSheet()
+    const style = `html { overflow: hidden; }`
+    sheet.replace(style)
+    doc.adoptedStyleSheets = [...doc.adoptedStyleSheets, sheet]
+  }
+  sheet.disabled = !value
 
-const clickMenu = (e: MouseEvent) => {
+  contentInvoke.getAllCommands().then((commands) => {
+    const command = commands.find((c) => c.name == "toggleMinimize")
+    if (command) {
+      toggleMinimizeCommand.value = command
+    }
+  })
+
+  chrome.storage.local.set({})
+})
+
+onMounted(() => {
+  pipWindow.window?.addEventListener("keydown", handleKeydown)
+  pipWindow.window?.addEventListener("resize", updateWindowInfo)
+  updateWindowInfo()
+
+  contentInvoke.register(ServiceFunc.toggleMinimize, () => {
+    console.log("invoke toggleMinimize")
+    toggleMinimize()
+  })
+})
+onUnmounted(() => {
+  pipWindow.window?.removeEventListener("keydown", handleKeydown)
+  pipWindow.window?.removeEventListener("resize", updateWindowInfo)
+})
+
+function updateWindowInfo() {
+  const win = pipWindow.window
+  if (!win) {
+    return
+  }
+
+  const { outerWidth: w, outerHeight: h, screenX: l, screenY: t } = win
+  const s = win.screen
+  const sw = s.width
+  const sh = s.height
+  const r = s.width - l - w
+  const b = s.height - t - h
+
+  if (w > 300 && h > 500) {
+    normalRect.value = { w, h, l, t, r, b }
+  }
+  rect.value = { w, h, l, t, r, b }
+}
+
+function clickMenu(e: MouseEvent) {
   open.value = true
   if (e.ctrlKey || e.metaKey) {
     pinOpen.value = true
   }
 }
 
-const handleClickAway = (e: MouseEvent) => {
+function handleClickAway(e: MouseEvent) {
   const target = e.composedPath()[0] as Element
   if (wrapper.value?.contains(target)) {
     return
@@ -60,47 +127,65 @@ const handleClickAway = (e: MouseEvent) => {
   open.value = false
 }
 
-watch(open, (value, oldValue, onCleanup) => {
-  value && updateWindowInfo()
-  window.addEventListener("click", handleClickAway)
-  onCleanup(() => {
-    window.removeEventListener("click", handleClickAway)
-  })
-})
-
 const menuPointerEnter = () => {
-  clearTimeout(timer.value)
-  timer.value = window.setTimeout(() => (open.value = true), 200)
+  clearTimeout(timer)
+  timer = window.setTimeout(() => (open.value = true), 200)
 }
 const menuPointerLeave = () => {
-  clearTimeout(timer.value)
-  timer.value = window.setTimeout(() => (open.value = false), 200)
+  clearTimeout(timer)
+  timer = window.setTimeout(() => (open.value = false), 200)
 }
 
 const btnPointerEnter = () => {
-  clearTimeout(timer.value)
+  clearTimeout(timer)
 }
 
 const btnPointerLeave = () => {
   if (pinOpen.value) {
     return
   }
-  timer.value = window.setTimeout(() => (open.value = false), 350)
+  timer = window.setTimeout(() => (open.value = false), 350)
 }
 
-const minimize = () => {
+const toggleMinimize = () => {
   open.value = false
   const windowId = pipWindow.windowsWindow?.id
   if (!windowId) {
     console.log("windowId is not set", pipWindow.windowsWindow)
     return
   }
+
+  updateWindowInfo()
+
+  let left, top, width, height
+
+  const s = pipWindow.window?.screen || screen
+  if (!isMinimized.value) {
+    // minimize
+    let { r, l, t, b } = rect.value
+    width = 255
+    height = 94
+    left = r > l ? Math.max(l, -85) : Math.min(s.width - r - 255, s.width - 170)
+    top = Math.min(s.height - b - 94, s.height - 94)
+  } else {
+    // restore
+    const { r, l, t, b } = rect.value
+    const { w, h } = normalRect.value
+    left = r > l ? Math.max(l, 0) : Math.min(s.width - w - r, s.width - w)
+    top = Math.max(b > t ? t : s.height - h - b, 0)
+    width = w
+    height = h
+  }
+
   chrome.runtime.sendMessage({
     type: MessageType.updateWindow,
     options: {
       windowId: windowId,
       windowInfo: {
-        state: "minimized",
+        left,
+        top,
+        width,
+        height,
       },
     },
   })
@@ -115,9 +200,7 @@ const moveAside = (value?: number) => {
   }
 
   const left =
-    pipRect.value.right > pipRect.value.left
-      ? screen.width - 60 - pipRect.value.width
-      : 60
+    rect.value.r > rect.value.l ? screen.width - 60 - rect.value.w : 60
 
   chrome.runtime.sendMessage({
     type: MessageType.updateWindow,
@@ -153,11 +236,11 @@ const handleKeydown = (e: KeyboardEvent) => {
     }
 
     if (e.code == "KeyM") {
-      return minimize()
+      return toggleMinimize()
     }
 
     if (e.code == "ArrowRight") {
-      return moveAside(screen.width - 60 - pipRect.value.width)
+      return moveAside(screen.width - 60 - rect.value.w)
     }
 
     if (e.code == "ArrowLeft") {
@@ -166,30 +249,42 @@ const handleKeydown = (e: KeyboardEvent) => {
   }
 }
 
-onMounted(() => {
-  pipWindow.window?.addEventListener("keydown", handleKeydown)
-})
-onUnmounted(() => {
-  pipWindow.window?.removeEventListener("keydown", handleKeydown)
-})
+const handleEditCommand = (e: MouseEvent) => {
+  e.preventDefault()
+  e.stopPropagation()
+  const desc = chrome.i18n.getMessage("toggle_minimize_desc")
+  const text = encodeURIComponent(desc)
+  contentInvoke.createTab({
+    url: `chrome://extensions/shortcuts#:~:text=${text}`,
+  })
+}
 </script>
 
 <template>
   <div ref="wrapper">
     <button
-      class="multitasking-menu flex gap-1 px-2 py-1.5 z-[9999]"
+      :class="[
+        'group fixed flex top-1 left-1/2 -translate-x-1/2 gap-1 px-2 py-1.5 z-[9999]',
+      ]"
       @click="clickMenu"
       @pointerenter="menuPointerEnter"
       @pointerleave="menuPointerLeave"
     >
-      <div class="dot w-1.5 h-1.5 rounded-full"></div>
-      <div class="dot w-1.5 h-1.5 rounded-full"></div>
-      <div class="dot w-1.5 h-1.5 rounded-full"></div>
+      <div
+        class="absolute w-full h-full top-0 left-0 rounded-full group-hover:backdrop-blur-sm group-hover:backdrop-invert-[5%]"
+      ></div>
+      <div
+        v-for="i in 3"
+        class="size-1.5 rounded-full backdrop-invert-[20%] group-hover:backdrop-invert-[50%]"
+      ></div>
     </button>
 
     <div
       v-if="open"
-      class="btn-group flex flex-col px-2 py-2 gap-2 fixed rounded-lg shadow-lg left-6 z-[9999]"
+      :class="[
+        'btn-group flex flex-col top-6 left-1/2 -translate-x-1/2 px-2 py-2 gap-2 ',
+        'fixed rounded-lg shadow-lg z-[9999] bg-background/65 text-foreground',
+      ]"
       @pointerenter="btnPointerEnter"
       @pointerleave="btnPointerLeave"
     >
@@ -197,14 +292,14 @@ onUnmounted(() => {
         <input
           autofocus
           placeholder="search"
-          class="search text-xs rounded h-6 leading-6 px-2"
+          class="bg-background-soft border text-xs rounded h-6 leading-6 px-2"
         />
       </div>
 
       <button
         tabindex="1"
         class="btn-item"
-        @click="minimize"
+        @click="toggleMinimize"
         :aria-label="t('minimize')"
       >
         <IconHide class="shrink-0 scale-95" />
@@ -219,17 +314,12 @@ onUnmounted(() => {
         :aria-label="t('moveAside')"
       >
         <IconSplitRight
-          :class="[
-            'shrink-0 scale-95',
-            { 'rotate-180': pipRect.right < pipRect.left },
-          ]"
+          :class="['shrink-0 scale-95', { 'rotate-180': rect.r < rect.l }]"
         />
         <span class="truncate">{{ t("moveAside") }}</span>
         <span class="shortcut">
           <span class="key">{{ modiferKey }}</span> +
-          <span class="key">{{
-            pipRect.right < pipRect.left ? "←" : "→"
-          }}</span>
+          <span class="key">{{ rect.r < rect.l ? "←" : "→" }}</span>
         </span>
       </button>
       <button class="btn-item" @click="close" :aria-label="t('close')">
@@ -247,47 +337,50 @@ onUnmounted(() => {
         </span>
       </button>
     </div>
+
+    <div
+      v-if="isMinimized"
+      :class="[
+        'group z-[99999] fixed w-screen h-screen bottom-0 left-0 flex gap-3 items-center ',
+        'justify-center box-border px-6 bg-background/70 hover:bg-background/80 ',
+        'backdrop-blur max-h-20 cursor-pointer transition',
+      ]"
+      @click="toggleMinimize"
+    >
+      <img :src="getPageIcon()" :data-fallback="globeImg" class="size-6" />
+      <div class="flex flex-col flex-1 w-0">
+        <div class="truncate text-sm font-bold">
+          {{ pipWindow.window?.document.title || "Anything Copilot" }}
+        </div>
+        <div class="flex gap-2 items-center">
+          <IconKeyboard class="size-4" />
+          <span
+            v-if="toggleMinimizeCommand?.shortcut"
+            class="text-xs font-bold"
+          >
+            {{ toggleMinimizeCommand?.shortcut }}
+          </span>
+          <button v-else class="text-xs" @click="handleEditCommand">
+            {{ t("setShortcutKeys") }}
+          </button>
+          <button
+            class="hidden group-hover:flex p-0.5 -m-0.5 rounded hover:bg-background-soft"
+            @click="handleEditCommand"
+          >
+            <IconEdit class="size-3.5" />
+          </button>
+        </div>
+      </div>
+      <img :src="logoUrl" class="absolute size-3 bottom-2 right-2" />
+    </div>
   </div>
 </template>
 
 <style scoped>
-.multitasking-menu {
-  top: 4px;
-  position: fixed;
-  left: 50%;
-  transform: translateX(-50%);
-}
-.multitasking-menu:hover::before {
-  backdrop-filter: blur(5px) invert(5%);
-}
-.multitasking-menu::before {
-  content: "";
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  border-radius: 999px;
-  top: 0;
-  left: 0;
-}
-.multitasking-menu:hover dot {
-  backdrop-filter: invert(50%);
-}
-.dot {
-  backdrop-filter: invert(20%);
-}
-
-.search {
-  background: var(--color-background-soft);
-  border: 1px solid var(--color-border);
-}
-
 .btn-group {
   backdrop-filter: blur(10px) invert(5%);
-  top: 24px;
   border: 1px solid var(--color-border);
   color: var(--color-text);
-  left: 50%;
-  transform: translateX(-50%);
   background-color: rgba(var(--bg-rgb), 0.65);
   animation: 200ms ease-out fadein;
   max-width: 100%;

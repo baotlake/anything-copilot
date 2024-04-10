@@ -44,5 +44,7 @@
     "notSupported": "Ta strona nie obsługuje automatycznego wysyłania. Skopiuj wiadomość i wysyłaj ją ręcznie."
   },
   "openSidebar": "Otwórz pasek boczny",
-  "searchPlaceholder": "Wyszukaj lub wpisz adres URL"
+  "searchPlaceholder": "Wyszukaj lub wpisz adres URL",
+  "setShortcutKeys": "Ustaw klawisze skrótu",
+  "mobileView": "Widok mobilny"
 }

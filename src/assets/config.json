@@ -1,6 +1,6 @@
 {
   "data": {
-    "configVersion": 20240330,
+    "configVersion": 20240406,
     "chatDocSites": [
       {
         "host": "huggingface.co",
@@ -140,7 +140,8 @@
       "defaultUA": "",
       "hostUA": {
         "www.google.com": 1,
-        "bing.com": 1
+        "bing.com": 1,
+        "copilot.microsoft.com": 0
       }
     }
   }

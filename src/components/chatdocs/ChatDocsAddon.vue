@@ -171,7 +171,7 @@ onUnmounted(() => {
       </div>
       <p class="text-center text-sm mt-2">{{ t("chatDocs.supportFormat") }}</p>
       <div :class="['absolute text-xs flex items-center bottom-2 right-2']">
-        <img :src="logoUrl" class="w-3 h-3" />
+        <img :src="logoUrl" class="size-3" />
       </div>
     </div>
   </div>

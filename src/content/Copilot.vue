@@ -4,6 +4,11 @@ import PipSplash from "@/components/PipSplash.vue"
 import { pipLoading } from "@/store/content"
 import LoadingBar from "@/components/LoadingBar.vue"
 import ChatDocsAddon from "@/components/chatdocs/ChatDocsAddon.vue"
+
+// const isDev =
+//   process.env.NODE_ENV === "development" &&
+//   location.host == chrome.runtime.id &&
+//   location.pathname == "/dev.html"
 </script>
 
 <template>

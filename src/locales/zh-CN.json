@@ -44,5 +44,7 @@
     "notSupported": "此页面不支持自动发送，请复制消息发送"
   },
   "openSidebar": "打开侧边栏",
-  "searchPlaceholder": "搜索或输入 URL"
+  "searchPlaceholder": "搜索或输入 URL",
+  "setShortcutKeys": "设置快捷键",
+  "mobileView": "移动端视图"
 }

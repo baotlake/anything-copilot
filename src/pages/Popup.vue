@@ -49,17 +49,24 @@ const host = computed({
 watch(
   () => pipWindow.id,
   async (id) => {
-    console.log("pip window tabs: ", id)
     if (id) {
-      const tabs = await chrome.tabs.query({ windowId: id })
-      if (tabs && tabs.length == 1) {
-        pipWindow.tab = tabs[0]
-      }
       const win = await chrome.windows.get(id)
       pipWindow.windowsWindow = win
-      return
+    } else {
+      pipWindow.windowsWindow = null
     }
-    pipWindow.tab = null
+  }
+)
+
+watch(
+  () => pipWindow.tabId,
+  async (tabId) => {
+    if (tabId) {
+      const tab = await chrome.tabs.get(tabId)
+      pipWindow.tab = tab
+    } else {
+      pipWindow.tab = null
+    }
   }
 )
 
@@ -73,16 +80,19 @@ onMounted(() => {
     })
   })
 
-  getLocal({ pipWindowId: null, popularSites: config.data.popularSites }).then(
-    ({ pipWindowId: id, popularSites }) => {
-      if (id) {
-        pipWindow.id = id
-      }
-      if (Array.isArray(popularSites)) {
-        popularItems.splice(0, popularItems.length, ...popularSites)
-      }
+  getLocal({
+    pipWindow: null as null | { windowId: number; tabId: number; icon: string },
+    popularSites: config.data.popularSites,
+  }).then(({ pipWindow: pip, popularSites }) => {
+    if (pip) {
+      pipWindow.id = pip.windowId
+      pipWindow.tabId = pip.tabId
+      pipWindow.icon = pip.icon
     }
-  )
+    if (Array.isArray(popularSites)) {
+      popularItems.splice(0, popularItems.length, ...popularSites)
+    }
+  })
 
   chrome.storage.local.onChanged.addListener(handleLocalChange)
   window.addEventListener("keydown", handleKeydown)
@@ -98,7 +108,7 @@ onUnmounted(() => {
 function handleKeydown(e: KeyboardEvent) {
   if (e.code == "KeyP" && (e.ctrlKey || e.metaKey)) {
     e.preventDefault()
-    handleWriteHtml()
+    handlePipPopup()
   }
   if (e.code == "Backslash" && (e.ctrlKey || e.metaKey)) {
     e.preventDefault()
@@ -125,12 +135,13 @@ function hanldeKeyup(e: KeyboardEvent) {
 const handleLocalChange = (changes: {
   [key: string]: chrome.storage.StorageChange
 }) => {
-  if (changes.pipWindowId) {
-    pipWindow.id = changes.pipWindowId.newValue
+  if (changes.pipWindow) {
+    pipWindow.id = changes.pipWindow.newValue.windowId
+    pipWindow.tabId = changes.pipWindow.newValue.tabId
   }
 }
 
-async function handleWriteHtml() {
+async function handlePipPopup() {
   const tabs = await chrome.tabs.query({ active: true, currentWindow: true })
   const tab = tabs[0]
   if (tab) {
@@ -142,6 +153,8 @@ async function handleWriteHtml() {
       },
     })
   }
+
+  window.close()
 }
 
 async function openSidebar(url = "") {
@@ -270,11 +283,11 @@ function showChatDocs() {
       ]"
     >
       <button
-        v-if="!pipWindow.tab"
+        v-if="!(pipWindow.tab && pipWindow.windowsWindow)"
         class="hover:bg-background-mute bg-background-soft disabled:bg-background-soft disabled:opacity-50 disabled:cursor-not-allowed"
         :disabled="!avaiable"
         :title="t('openInPip')"
-        @click="handleWriteHtml"
+        @click="handlePipPopup"
       >
         <IconAmpStories class="size-8 shrink-0" />
         <div class="flex items-center justify-between flex-1 w-2/3 gap-2">

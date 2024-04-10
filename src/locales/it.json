@@ -44,5 +44,7 @@
     "notSupported": "Questa pagina non supporta l'invio automatico. Si prega di copiare il messaggio e inviarlo manualmente."
   },
   "openSidebar": "Apri la barra laterale",
-  "searchPlaceholder": "Cerca o digita un URL"
+  "searchPlaceholder": "Cerca o digita un URL",
+  "setShortcutKeys": "Imposta i tasti di scelta rapida",
+  "mobileView": "Visualizzazione mobile"
 }

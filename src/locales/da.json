@@ -44,5 +44,7 @@
     "notSupported": "Denne side understøtter ikke automatisk afsendelse. Kopier meddelelsen og send den manuelt."
   },
   "openSidebar": "Åbn sidebjælken",
-  "searchPlaceholder": "Søg eller skriv en URL"
+  "searchPlaceholder": "Søg eller skriv en URL",
+  "setShortcutKeys": "Indstil genvejstaster",
+  "mobileView": "Mobil visning"
 }

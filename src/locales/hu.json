@@ -44,5 +44,7 @@
     "notSupported": "Ez az oldal nem támogatja az automatikus küldéseket. Kérjük, másolja az üzenetet, és küldje el manuálisan."
   },
   "openSidebar": "Nyissa ki az oldalsávot",
-  "searchPlaceholder": "Keressen vagy írjon be egy URL-t"
+  "searchPlaceholder": "Keressen vagy írjon be egy URL-t",
+  "setShortcutKeys": "Gyorsbillentyűk beállítása",
+  "mobileView": "Mobil nézet"
 }

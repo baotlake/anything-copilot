@@ -44,5 +44,7 @@
     "notSupported": "Halaman ini tidak menyokong penghantaran automatik. Sila salin mesej dan hantarkan secara manual."
   },
   "openSidebar": "Buka bar sisi",
-  "searchPlaceholder": "Cari atau taip URL"
+  "searchPlaceholder": "Cari atau taip URL",
+  "setShortcutKeys": "Tetapkan kekunci pintasan",
+  "mobileView": "Paparan mudah alih"
 }

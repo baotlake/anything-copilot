@@ -1,9 +1,11 @@
 <script setup lang="ts">
-import ContentSidebarAddon from "@/components/sidebar/ContentSidebarAddon.vue"
+import Webview from "@/components/Webview.vue"
 </script>
 
 <template>
-  <!-- <ContentSidebarAddon /> -->
+  <!-- <div class="w-screen h-screen">
+    <Webview url="https://github.com" />
+  </div> -->
 </template>
 
 <style scoped></style>

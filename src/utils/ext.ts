@@ -327,3 +327,22 @@ export function isProtectedUrl(url: string) {
 
   return true
 }
+
+export async function getPipWindow({
+  windowId,
+  width,
+  height,
+}: {
+  windowId?: number
+  width?: number
+  height?: number
+}) {
+  if (windowId) {
+    const win = await chrome.windows.get(windowId)
+    return win
+  }
+
+  const windows = await chrome.windows.getAll({})
+  const win = windows.find((w) => w.width === width && w.height === height)
+  return win
+}
