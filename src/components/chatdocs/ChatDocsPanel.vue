@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { watch, computed, reactive, ref, onMounted, watchEffect } from "vue"
 import { chatDocsPanel } from "@/store/content"
-import { contentInvoke } from "@/utils/invoke"
+import { messageInvoke } from "@/utils/invoke"
 import { convertBlobToBase64, semanticClip } from "@/utils/utils"
 import ScrollView from "@/components/ScrollView.vue"
 import IconArrowBack from "@/components/icons/IconArrowBack.vue"
@@ -126,8 +126,8 @@ watch(
 
     if (maxInputType !== "token") return
     if (!message) return
-    await contentInvoke.setupOffscreen()
-    const tokenLength = await contentInvoke.calcTokens(message)
+    await messageInvoke.setupOffscreen()
+    const tokenLength = await messageInvoke.calcTokens(message)
     const rate = (message.length / tokenLength) * 0.95
     const exceedMaxInput = tokenLength > maxInput
     if (exceedMaxInput) {
@@ -173,8 +173,8 @@ watch(
 
         if (item.kind == "file" && typeof item.data != "string") {
           const url = await convertBlobToBase64(item.data)
-          await contentInvoke.setupOffscreen()
-          const results = await contentInvoke.parseDoc({
+          await messageInvoke.setupOffscreen()
+          const results = await messageInvoke.parseDoc({
             key: item.key,
             type: item.type,
             size: item.data.size,

@@ -5,7 +5,11 @@ import {
   ContentScriptId,
 } from "@/types"
 import { waitMessage, tabUpdated, getLocal, getPipWindow } from "@/utils/ext"
-import { setupOffscreenDocument, offscreenHtmlPath } from "./offscreen"
+import {
+  createOffscreenDocument,
+  offscreenHtmlPath,
+  setupOffscreen,
+} from "./offscreen"
 import {
   registerContentSidebar,
   unregisterContentSidebar,
@@ -14,7 +18,7 @@ import {
 import config from "@/assets/config.json"
 import { allFrameScript, contentMainScript } from "@/manifest"
 import { getIsEdge } from "@/utils/ext"
-import { contentInvoke } from "@/utils/invoke"
+import { messageInvoke } from "@/utils/invoke"
 
 type Config = typeof config
 
@@ -81,10 +85,8 @@ async function updateWindow({ windowId, windowInfo }: UpdatePipWinOption) {
 
 let currentSender: chrome.runtime.MessageSender | null = null
 
-contentInvoke
-  .register(ServiceFunc.setupOffscreen, () =>
-    setupOffscreenDocument(offscreenHtmlPath)
-  )
+messageInvoke
+  .register(ServiceFunc.setupOffscreen, () => setupOffscreen())
   .register(ServiceFunc.getAllCommands, () => chrome.commands.getAll())
   .register(ServiceFunc.createTab, (p: chrome.tabs.CreateProperties) =>
     chrome.tabs.create(p)
@@ -99,7 +101,7 @@ async function handleInvokeRequest(
   sender: chrome.runtime.MessageSender
 ) {
   currentSender = sender
-  let result = await contentInvoke.handleReqMsg(message)
+  let result = await messageInvoke.handleReqMsg(message)
 
   if (!sender.tab?.id) {
     console.error("sender tab id is undefined", sender)
@@ -134,6 +136,9 @@ function handleMessage(message: any, sender: chrome.runtime.MessageSender) {
     case MessageType.invokeRequest:
       handleInvokeRequest(message, sender)
       break
+    case MessageType.invokeResponse:
+      messageInvoke.handleResMsg(message)
+      break
     case MessageType.contentMounted:
       handleContentMounted(sender.tab!.id!)
       break
@@ -154,7 +159,7 @@ async function handleToggleMinimize() {
 
   const tabId = pipWindow.tabId
 
-  contentInvoke.invoke({
+  messageInvoke.invoke({
     tabId,
     func: ServiceFunc.toggleMinimize,
     args: [],

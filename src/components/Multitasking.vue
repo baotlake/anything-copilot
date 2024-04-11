@@ -12,7 +12,7 @@ import { useI18n } from "@/utils/i18n"
 import IconHide from "./icons/IconHide.vue"
 import { pip } from "@/content/pip"
 import { getPageIcon } from "@/utils/dom"
-import { contentInvoke } from "@/utils/invoke"
+import { messageInvoke } from "@/utils/invoke"
 import IconKeyboard from "@/components/icons/IconKeyboard.vue"
 import IconEdit from "@/components/icons/IconEdit.vue"
 
@@ -68,7 +68,7 @@ watch(isMinimized, (value) => {
   }
   sheet.disabled = !value
 
-  contentInvoke.getAllCommands().then((commands) => {
+  messageInvoke.getAllCommands().then((commands) => {
     const command = commands.find((c) => c.name == "toggleMinimize")
     if (command) {
       toggleMinimizeCommand.value = command
@@ -83,7 +83,7 @@ onMounted(() => {
   pipWindow.window?.addEventListener("resize", updateWindowInfo)
   updateWindowInfo()
 
-  contentInvoke.register(ServiceFunc.toggleMinimize, () => {
+  messageInvoke.register(ServiceFunc.toggleMinimize, () => {
     console.log("invoke toggleMinimize")
     toggleMinimize()
   })
@@ -254,7 +254,7 @@ const handleEditCommand = (e: MouseEvent) => {
   e.stopPropagation()
   const desc = chrome.i18n.getMessage("toggle_minimize_desc")
   const text = encodeURIComponent(desc)
-  contentInvoke.createTab({
+  messageInvoke.createTab({
     url: `chrome://extensions/shortcuts#:~:text=${text}`,
   })
 }

@@ -6,7 +6,7 @@ import IconArrowCircleRight from "@/components/icons/IconArrowCircleRight.vue"
 import IconClose from "@/components/icons/IconClose.vue"
 import { MessageType, ServiceFunc } from "@/types"
 import { computed } from "vue"
-import { contentInvoke } from "@/utils/invoke"
+import { messageInvoke } from "@/utils/invoke"
 import { handleImgError } from "@/utils/dom"
 
 const globeImg = chrome.runtime.getURL("img/globe.svg")
@@ -20,7 +20,7 @@ const isMinimized = computed(() => {
 })
 
 async function toggleMinimize() {
-  await contentInvoke.invoke({
+  await messageInvoke.invoke({
     tabId: pipWindow.tabId,
     func: ServiceFunc.toggleMinimize,
     args: [],

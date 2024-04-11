@@ -6,7 +6,7 @@ import TurndownService from "turndown"
 import { MessageType, ServiceFunc, type ParseDocOptions } from "@/types"
 import { Tiktoken } from "tiktoken/lite"
 import cl100k_base from "tiktoken/encoders/cl100k_base.json"
-import { contentInvoke } from "@/utils/invoke"
+import { messageInvoke } from "@/utils/invoke"
 
 pdfjs.GlobalWorkerOptions.workerSrc = "/js/pdf.worker.js"
 
@@ -104,8 +104,11 @@ async function handleMessage(
 ) {
   console.log("offscreen message: ", message, sender)
   if (message?.type === MessageType.invokeRequest) {
-    const result = await contentInvoke.handleReqMsg(message)
-    if (result) {
+    const result = await messageInvoke.handleReqMsg(message)
+    if (!result) {
+      return
+    }
+    if (sender.tab?.id) {
       chrome.runtime.sendMessage({
         type: MessageType.forwardToTab,
         tabId: sender.tab?.id,
@@ -114,16 +117,29 @@ async function handleMessage(
           ...result,
         },
       })
+    } else {
+      chrome.runtime.sendMessage({
+        type: MessageType.invokeResponse,
+        ...result,
+      })
     }
   }
 }
 
-contentInvoke
+messageInvoke
   .register(ServiceFunc.parseDoc, parseDoc)
   .register(ServiceFunc.calcTokens, calcTokens)
   .register(ServiceFunc.tokenSlice, tokenSlice)
+  .register(ServiceFunc.waitOffscreen, () => Promise.resolve())
 
 chrome.runtime.onMessage.addListener(handleMessage)
+
+chrome.runtime.sendMessage({
+  type: MessageType.invokeResponse,
+  key: ServiceFunc.waitOffscreen,
+  success: true,
+  value: null,
+})
 
 // for testing purposes
 document.onclick = () => {

@@ -32,6 +32,7 @@ export enum ServiceFunc {
   toggleMinimize = "toggle-minimize",
   getPipWindow = "get-pip-window",
   getMyTab = "get-my-tab",
+  waitOffscreen = "wait-offscreen",
 }
 
 export type ParseDocOptions = {

@@ -1,9 +1,9 @@
 import { MessageType, ServiceFunc, type ParseDocOptions } from "@/types"
 import Invoke, { type InvokeReq } from "./Invoke"
 
-class ContentInvoke extends Invoke {
+class MessageInvoke extends Invoke {
   public async send(req: InvokeReq & { tabId?: number }) {
-    const key = this.key
+    const key = req.key || this.key
 
     if (req.tabId) {
       chrome.tabs.sendMessage(req.tabId, {
@@ -74,6 +74,6 @@ class ContentInvoke extends Invoke {
   }
 }
 
-const contentInvoke = new ContentInvoke("content")
+const messageInvoke = new MessageInvoke("content")
 
-export { ContentInvoke, contentInvoke }
+export { MessageInvoke, messageInvoke }

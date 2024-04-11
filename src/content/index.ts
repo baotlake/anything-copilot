@@ -20,7 +20,7 @@ import {
   addContentEventListener,
   removeContentEventListener,
 } from "@/content/event"
-import { contentInvoke } from "@/utils/invoke"
+import { messageInvoke } from "@/utils/invoke"
 import { getPageIcon } from "@/utils/dom"
 // import { PipEventName } from "@/types/pip"
 
@@ -47,7 +47,7 @@ function handleMessage(
       sendResponse({ type: MessageType.contentHere })
       break
     case MessageType.invokeResponse:
-      contentInvoke.handleResMsg(message)
+      messageInvoke.handleResMsg(message)
       break
     case MessageType.showChatDocs:
       chatDocsPanel.visible = true
@@ -58,7 +58,7 @@ function handleMessage(
       sidebarAddon.url = message.url
       break
     case MessageType.invokeRequest:
-      contentInvoke.handleReqMsg(message).then((result) => {
+      messageInvoke.handleReqMsg(message).then((result) => {
         if (result) {
           chrome.runtime.sendMessage({
             type: MessageType.invokeResponse,
@@ -95,7 +95,7 @@ async function handlePipEvent(event: any) {
       addContentEventListener(ContentEventType.pipLoaded, handlePipLoaded)
     })
 
-    const window = await contentInvoke.invoke({
+    const window = await messageInvoke.invoke({
       func: ServiceFunc.getPipWindow,
       args: [
         {
@@ -105,7 +105,7 @@ async function handlePipEvent(event: any) {
       ],
     })
 
-    const tab = await contentInvoke.invoke({
+    const tab = await messageInvoke.invoke({
       func: ServiceFunc.getMyTab,
       args: [],
     })

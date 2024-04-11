@@ -1,6 +1,9 @@
+import { ServiceFunc } from "@/types"
+import { messageInvoke } from "@/utils/invoke"
+
 let creating: Promise<void> | null // A global promise to avoid concurrency issues
 
-export async function setupOffscreenDocument(path: string) {
+export async function createOffscreenDocument(path: string) {
   // Check all windows controlled by the service worker to see if one
   // of them is the offscreen document with the given path
   const offscreenUrl = chrome.runtime.getURL(path)
@@ -34,3 +37,12 @@ export async function setupOffscreenDocument(path: string) {
 }
 
 export const offscreenHtmlPath = "/offscreen.html"
+
+export async function setupOffscreen() {
+  await createOffscreenDocument(offscreenHtmlPath)
+  await messageInvoke.invoke({
+    key: ServiceFunc.waitOffscreen,
+    func: ServiceFunc.waitOffscreen,
+    args: [],
+  })
+}
