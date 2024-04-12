@@ -22,7 +22,7 @@ const emit = defineEmits({
   <div class="flex flex-col p-6 w-full max-w-md mx-auto">
     <div class="flex flex-col items-center gap-2 mx-auto mt-16">
       <img :src="logoUrl" class="size-16" />
-      <span class="text-2xl font-bold my-2">{{ t("sidebar") }}</span>
+      <span class="text-2xl font-bold my-2">Anything Copilot</span>
     </div>
 
     <div class="my-12">

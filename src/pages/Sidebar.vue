@@ -12,20 +12,9 @@ import Webview, { type PageInfo } from "@/components/Webview.vue"
 import { useI18n } from "@/utils/i18n"
 import { MessageType } from "@/types"
 import SidebarHome from "@/components/sidebar/SidebarHome.vue"
-import IconClose from "@/components/icons/IconClose.vue"
-import IconSplitscreenRight from "@/components/icons/IconSplitscreenRight.vue"
-import IconNavigateBefore from "@/components/icons/IconNavigateBefore.vue"
-import IconNavigateNext from "@/components/icons/IconNavigateNext.vue"
-import IconRefresh from "@/components/icons/IconRefresh.vue"
-import IconHome from "@/components/icons/IconHome.vue"
-import IconPhone from "@/components/icons/IconPhone.vue"
-import IconHide from "@/components/icons/IconHide.vue"
-import { handleImgError } from "@/utils/dom"
+import Navbar from "@/components/sidebar/Navbar.vue"
 import { FrameMessageType } from "@/types"
-import { homeUrl } from "@/utils/const"
 
-const logoUrl = chrome.runtime.getURL("/logo.svg")
-const globeImg = chrome.runtime.getURL("img/globe.svg")
 const { t } = useI18n()
 const mobileUA =
   "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1"
@@ -320,123 +309,20 @@ function handlePointerLeave() {
     @pointerenter="handlePointerEnter"
     @pointerleave="handlePointerLeave"
   >
-    <div
-      :class="[
-        'flex gap-1 items-center justify-between h-9 px-1 z-10 shadow-sm',
-        '*:size-7 *:flex *:items-center *:justify-center ',
-      ]"
-    >
-      <a
-        @click="(e) => (e.preventDefault(), (active = -1))"
-        :href="homeUrl"
-        title="Anything Copilot"
-        :class="[
-          'group rounded-full relative box-border border',
-          active === -1
-            ? 'bg-primary/10 border-primary-500'
-            : 'border-transparent hover:bg-background-mute bg-background-soft',
-        ]"
-      >
-        <img
-          :class="[
-            'size-4 group-hover:opacity-85 transition-all pointer-events-none',
-            false ? 'opacity-85' : 'opacity-50',
-          ]"
-          :src="logoUrl"
-        />
-        <!-- <IconHome class="size-5 group-active:scale-90 transition-transform" /> -->
-      </a>
-
-      <a
-        v-for="(page, i) of pages"
-        @click="(e) => (e.preventDefault(), (active = i))"
-        :href="pagesInfo[i]?.url"
-        :title="pagesInfo[i]?.title"
-        :class="[
-          'group rounded-full relative box-border border',
-          active === i
-            ? 'bg-primary/10 border-primary-500'
-            : 'border-transparent hover:bg-background-mute bg-background-soft',
-        ]"
-      >
-        <img
-          class="size-4 pointer-events-none"
-          loading="lazy"
-          :src="pagesInfo[i]?.icon || globeImg"
-          :data-fallback="globeImg"
-          @error="handleImgError"
-        />
-        <span
-          v-if="active === i"
-          class="absolute hidden group-hover:block rounded-full bg-primary-500 text-white -top-0.5 -right-0.5 transition-all p-0.5"
-          @click="
-            (e) => {
-              e.preventDefault()
-              e.stopPropagation()
-              closeWebview(i)
-            }
-          "
-        >
-          <IconClose class="size-2" />
-        </span>
-      </a>
-
-      <span class="mx-auto"></span>
-      <!-- <button
-        @click="goBack()"
-        class="group hover:bg-background-soft rounded-full"
-      >
-        <IconNavigateBefore
-          class="size-5 scale-125 group-active:-translate-x-1 transition-transform"
-        />
-      </button>
-      <button
-        @click="goForward()"
-        class="group hover:bg-background-soft rounded-full"
-      >
-        <IconNavigateNext
-          class="size-5 scale-125 group-active:translate-x-1 transition-transform"
-        />
-      </button> -->
-      <button
-        @click="reload()"
-        :title="t('refresh')"
-        class="group hover:bg-background-soft rounded-full"
-      >
-        <IconRefresh
-          class="size-5 group-active:rotate-180 transition-transform"
-        />
-      </button>
-      <button
-        @click="toggleMobileUA"
-        :title="t('mobileView')"
-        :class="[
-          'group hover:bg-background-soft rounded-full transition ease-in-out delay-200',
-          { 'bg-background-soft text-primary-500 ': isMobileUA },
-          isPointerIn ? '' : ' opacity-75',
-        ]"
-      >
-        <IconPhone class="size-4 group-active:scale-90 transition-transform" />
-      </button>
-      <button
-        v-if="mode == 'content'"
-        @click="collapseSidebar()"
-        :title="t('minimize')"
-        class="group hover:bg-background-soft rounded-full"
-      >
-        <IconHide
-          class="size-5 scale-95 group-active:scale-90 transition-transform"
-        />
-      </button>
-      <button
-        v-if="mode == 'content'"
-        @click="closeSidebar()"
-        :title="t('close')"
-        class="group hover:bg-background-soft rounded-full"
-      >
-        <IconClose class="size-5 group-active:scale-90 transition-transform" />
-      </button>
-    </div>
+    <Navbar
+      :active="active"
+      :pages="pages"
+      :pagesInfo="pagesInfo"
+      :isMobileUA="isMobileUA"
+      :isPointerIn="isPointerIn"
+      :closeWebview="closeWebview"
+      :reload="reload"
+      :toggleMobileUA="toggleMobileUA"
+      :collapseSidebar="mode == 'content' ? collapseSidebar : undefined"
+      :closeSidebar="mode == 'content' ? closeSidebar : undefined"
+      @switch="active = $event"
+      @drop="go"
+    />
 
     <div :class="['w-full h-full', { hidden: active != -1 }]">
       <SidebarHome

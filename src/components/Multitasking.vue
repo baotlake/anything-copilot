@@ -406,9 +406,8 @@ const handleEditCommand = (e: MouseEvent) => {
   text-wrap: nowrap;
 }
 .shortcut .key {
-  padding: 2px 4px;
-  border-radius: 4px;
   background: var(--color-background-soft);
+  @apply text-xs uppercase px-1 py-0.5 rounded;
 }
 
 @keyframes fadein {

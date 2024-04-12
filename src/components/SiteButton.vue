@@ -26,6 +26,7 @@ defineEmits(["click", "remove"])
     ]"
     @click="(e) => (e.preventDefault(), $emit('click'))"
     :href="url"
+    draggable="true"
   >
     <div class="p-2.5 rounded-full bg-background-soft">
       <img
@@ -57,13 +58,7 @@ defineEmits(["click", "remove"])
         'size-4 absolute top-[-4px] right-[-4px] opacity-0 group-hover:opacity-65 rounded-full',
         'bg-background-soft hover:bg-red-100 hover:text-red-600 hover:scale-105 flex items-center justify-center',
       ]"
-      @click="
-        (e) => {
-          e.stopPropagation()
-          e.preventDefault()
-          $emit('remove')
-        }
-      "
+      @click="(e) => (e.stopPropagation(), $emit('remove'))"
     >
       <IconClose class="size-3" />
     </div>

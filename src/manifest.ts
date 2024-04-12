@@ -24,7 +24,7 @@ export const defaultSidebarPath = "sidebar.html"
 const manifest = {
   // maximum of 45 characters
   name: "__MSG_name__",
-  version: "1.2.9",
+  version: "1.2.10",
   // edge 12 characters
   // short_name: "__MSG_short_name__",
   // no more than 132 characters
