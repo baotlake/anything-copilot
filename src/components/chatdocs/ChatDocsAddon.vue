@@ -31,7 +31,7 @@ const siteConfig: SiteConfig = reactive({
   selector: null,
 })
 
-let timer = 0
+let count = 0
 
 watchEffect(() => {
   const { valid, rect, tx, ty } = position
@@ -43,11 +43,19 @@ watchEffect(() => {
   }
 })
 
-function onDragOver(e: DragEvent) {
+function onDragEnter() {
   if (!siteConfig.selector) return
+  count++
   docsAddon.visible = true
-  clearTimeout(timer)
-  timer = window.setTimeout(() => (docsAddon.visible = false), 180)
+}
+
+function onDragLeave() {
+  if (!siteConfig.selector) return
+  count--
+  if (count <= 0) {
+    count = 0
+    docsAddon.visible = false
+  }
 }
 
 async function onDrop(e: DragEvent) {
@@ -115,7 +123,8 @@ function adjustPosition() {
 
 onMounted(() => {
   const doc = div.value?.ownerDocument || document
-  doc.addEventListener("dragover", onDragOver, true)
+  doc.addEventListener("dragenter", onDragEnter, true)
+  doc.addEventListener("dragleave", onDragLeave, true)
   doc.defaultView?.addEventListener("resize", adjustPosition)
   const defaultChatDocSites = config.data.chatDocSites
 
@@ -141,7 +150,8 @@ onMounted(() => {
 
 onUnmounted(() => {
   const doc = div.value?.ownerDocument || document
-  doc.removeEventListener("dragover", onDragOver, true)
+  doc.removeEventListener("dragenter", onDragEnter, true)
+  doc.removeEventListener("dragleave", onDragLeave, true)
   doc.removeEventListener("resize", adjustPosition)
   doc.defaultView?.removeEventListener("resize", adjustPosition)
 })
@@ -212,4 +222,3 @@ onUnmounted(() => {
 </template>
 
 <style scoped></style>
-@/utils/const
