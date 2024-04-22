@@ -32,6 +32,7 @@ const emit = defineEmits({
     <div class="flex flex-wrap gap-x-4 gap-y-4 justify-center">
       <SiteButton
         v-for="item of recentItems.slice(0, 12)"
+        :key="item.url"
         :icon="item.icon"
         :title="item.title"
         :url="item.url"
@@ -48,6 +49,7 @@ const emit = defineEmits({
         v-for="item of popularItems"
         :icon="item.icon"
         :title="item.title"
+        :url="item.url"
         @click="emit('go', item.url)"
       />
     </div>

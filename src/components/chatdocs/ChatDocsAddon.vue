@@ -62,6 +62,7 @@ async function onDrop(e: DragEvent) {
   e.preventDefault()
   docsAddon.active = false
   docsAddon.visible = false
+  count = 0
 
   if (e.dataTransfer) {
     const items = await getDocItem(e.dataTransfer.items)

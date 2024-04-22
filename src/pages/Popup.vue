@@ -18,6 +18,7 @@ import IconGppMaybe from "@/components/icons/IconGppMaybe.vue"
 import IconHide from "@/components/icons/IconHide.vue"
 import IconArrowCircleRight from "@/components/icons/IconArrowCircleRight.vue"
 import IconSplitscreenRight from "@/components/icons/IconSplitscreenRight.vue"
+import IconLogo from "@/components/icons/IconLogo.vue"
 import SiteButton from "@/components/SiteButton.vue"
 import { getIsEdge } from "@/utils/ext"
 import { handleImgError } from "@/utils/dom"
@@ -224,11 +225,13 @@ function showChatDocs() {
 <template>
   <main class="w-[300px] p-4 mx-auto bg-background">
     <div class="flex">
-      <div class="mr-auto">
-        <span class="font-bold opacity-50" @click="goHome">
-          Anything Copilot
-        </span>
-        <span class="mx-2 text-sm opacity-50">{{ manifest.version }}</span>
+      <div
+        class="mr-auto flex items-center gap-2 cursor-pointer"
+        @click="goHome"
+      >
+        <IconLogo class="size-5" />
+        <span class="font-bold opacity-65">Anything Copilot</span>
+        <!-- <span class="mx-2 text-sm opacity-50">{{ manifest.version }}</span> -->
       </div>
       <div class="flex items-center gap-1">
         <button
@@ -249,7 +252,7 @@ function showChatDocs() {
 
     <div
       :class="[
-        'flex gap-2 items-center text-sm my-2 px-2',
+        'flex gap-2 items-center text-sm mt-6 my-2 px-0',
         {
           'text-rose-800': !avaiable,
         },

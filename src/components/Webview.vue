@@ -25,7 +25,8 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits<{
-  load: [PageInfo]
+  load: []
+  loaded: [PageInfo]
 }>()
 
 defineExpose({
@@ -68,6 +69,7 @@ async function loadFrame(url: string, ua?: string) {
   const iframe = frame.value
   if (!url || !iframe) return
 
+  emit("load")
   const tab = await chrome.tabs.getCurrent()
   await updateFrameNetRules({
     ua: ua,
@@ -159,7 +161,7 @@ function handleFrameMessage(e: MessageEvent) {
       pageInfo.url = e.data.url
       pageInfo.title = e.data.title
       pageInfo.icon = e.data.icon
-      emit("load", pageInfo)
+      emit("loaded", pageInfo)
       break
     case FrameMessageType.invokeResponse:
       webviewInvoke.value?.handleResMsg(e.data)
@@ -169,6 +171,7 @@ function handleFrameMessage(e: MessageEvent) {
 
 function reload() {
   console.log("reload", pageInfo.url)
+  emit("load")
   webviewInvoke.value
     ?.invoke({
       func: WebviewFunc.reload,

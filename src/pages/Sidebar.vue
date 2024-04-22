@@ -42,7 +42,7 @@ const webviewsAttr = computed(() => {
   })
 })
 const active = ref(-1)
-const pagesInfo = reactive<(PageInfo | null)[]>([])
+const pagesInfo = reactive<((PageInfo & { loading?: boolean }) | null)[]>([])
 const hostUA = reactive<Record<string, number>>(config.data.embedView.hostUA)
 
 const isPointerIn = ref(false)
@@ -153,8 +153,12 @@ async function handleMessage(message: any) {
   }
 }
 
-async function handlePageLoad(i: number, pageInfo: PageInfo) {
-  pagesInfo[i] = pageInfo
+function handlePageLoad(i: number) {
+  pagesInfo[i] = { ...pagesInfo[i]!, loading: true }
+}
+
+async function handlePageLoaded(i: number, pageInfo: PageInfo) {
+  pagesInfo[i] = { ...pageInfo, loading: false }
 
   if (mode.value === "content") {
     chrome.runtime.sendMessage({
@@ -335,10 +339,7 @@ function handlePointerLeave() {
 
     <div
       v-for="(attr, i) of webviewsAttr"
-      :class="[
-        'w-full h-full rounded-sm overflow-hidden',
-        { hidden: active != i },
-      ]"
+      :class="['w-full h-full overflow-hidden', { hidden: active != i }]"
     >
       <Webview
         ref="webviews"
@@ -347,7 +348,8 @@ function handlePointerLeave() {
         :ua="defaultUA"
         :preload-url="attr.preloadUrl"
         :preload-candidates="attr.preloadCandidates"
-        @load="(info) => handlePageLoad(i, info)"
+        @load="handlePageLoad(i)"
+        @loaded="(info) => handlePageLoaded(i, info)"
       />
     </div>
   </div>

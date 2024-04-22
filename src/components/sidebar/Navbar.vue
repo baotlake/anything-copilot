@@ -16,7 +16,7 @@ import IconAdd from "@/components/icons/IconAdd.vue"
 defineProps<{
   active: number
   pages: { url: string }[]
-  pagesInfo: (PageInfo | null)[]
+  pagesInfo: ((PageInfo & { loading?: boolean }) | null)[]
   isMobileUA: boolean
   isPointerIn: boolean
   closeWebview?: (index: number) => void
@@ -66,6 +66,7 @@ const handleDragOver = (e: DragEvent) => {
 const handleDrop = (e: DragEvent) => {
   e.preventDefault()
   dragActive.value = false
+  count = 0
 
   if (!e.dataTransfer) {
     return
@@ -96,14 +97,14 @@ const handleDrop = (e: DragEvent) => {
       :class="[
         'group rounded-full relative box-border border',
         active === -1
-          ? 'bg-primary/10 border-primary-500'
+          ? 'bg-primary/20 border-primary/10'
           : 'border-transparent hover:bg-background-mute bg-background-soft',
       ]"
     >
       <img
         :class="[
           'size-4 group-hover:opacity-85 transition-all pointer-events-none',
-          false ? 'opacity-85' : 'opacity-50',
+          false ? 'opacity-85' : 'opacity-60',
         ]"
         :src="logoUrl"
       />
@@ -119,7 +120,7 @@ const handleDrop = (e: DragEvent) => {
       :class="[
         'group rounded-full relative box-border border',
         active === i
-          ? 'bg-primary/10 border-primary-500'
+          ? 'bg-primary/20 border-primary/10'
           : 'border-transparent hover:bg-background-mute bg-background-soft',
       ]"
     >
@@ -130,6 +131,10 @@ const handleDrop = (e: DragEvent) => {
         :data-fallback="globeImg"
         @error="handleImgError"
       />
+      <div
+        v-if="pagesInfo[i]?.loading"
+        class="absolute rounded-full size-7 border-2 border-primary border-b-transparent animate-spin"
+      ></div>
       <span
         v-if="active === i && closeWebview"
         class="absolute hidden group-hover:block rounded-full bg-primary-500 text-white -top-0.5 -right-0.5 transition-all p-0.5"
@@ -142,7 +147,7 @@ const handleDrop = (e: DragEvent) => {
     </a>
     <a
       v-if="dragActive"
-      class="rounded-full box-border border border-primary-500 bg-primary/10 text-primary"
+      class="rounded-full box-border border border-primary/10 bg-primary/10 text-primary"
     >
       <IconAdd class="size-5 group-active:scale-90 transition-transform" />
     </a>

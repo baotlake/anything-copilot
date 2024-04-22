@@ -55,8 +55,9 @@ defineEmits(["click", "remove"])
     <div
       v-if="badge === 'remove'"
       :class="[
-        'size-4 absolute top-[-4px] right-[-4px] opacity-0 group-hover:opacity-65 rounded-full',
-        'bg-background-soft hover:bg-red-100 hover:text-red-600 hover:scale-105 flex items-center justify-center',
+        'size-4 absolute top-0.5 right-0.5 opacity-0 rounded-full bg-background-soft',
+        'hover:scale-105 flex items-center justify-center hover:bg-red-100 hover:text-red-600',
+        'group-hover:opacity-65 group-active:opacity-0',
       ]"
       @click="(e) => (e.stopPropagation(), $emit('remove'))"
     >
