@@ -20,6 +20,14 @@ export declare global {
       platform: string
     }
   }
+
+  interface PromiseConstructor {
+    withResolvers: () => {
+      promise: Promise<any>
+      resolve: (value: any) => void
+      reject: (reason: any) => void
+    }
+  }
 }
 
 export {}

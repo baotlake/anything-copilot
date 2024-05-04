@@ -1,29 +1,46 @@
 import { MessageType } from "@/types"
+import { messageInvoke } from "@/utils/invoke"
+import { ServiceFunc } from "@/types"
+import { openSidebar } from "@/utils/ext"
 
-type ContentSidebar = {
+type ContentSidebarItem = {
+  visible: boolean
   tabId: number
-  url?: string
+  urls: string[]
 }
 
-const contentSidebarMap = new Map<number, ContentSidebar>()
+const contentSidebarMap = new Map<number, ContentSidebarItem>()
 
-export function registerContentSidebar({ tabId, url }: ContentSidebar) {
-  contentSidebarMap.set(tabId, { tabId, url })
+export function registerContentSidebar(
+  tabId: number,
+  info: Partial<ContentSidebarItem>
+) {
+  const item = contentSidebarMap.get(tabId) || { visible: false, urls: [] }
+  contentSidebarMap.set(tabId, {
+    ...item,
+    ...info,
+    tabId,
+  })
 }
 
-export function unregisterContentSidebar(tabId: number) {
-  contentSidebarMap.delete(tabId)
-}
+export async function handleContentMounted(
+  sender: chrome.runtime.MessageSender
+) {
+  if (sender.frameId !== 0) return
+  if (!sender.tab) return
+  const tabId = sender.tab.id!
 
-export async function handleContentMounted(tabId: number) {
-  const sidebar = contentSidebarMap.get(tabId)
-  if (sidebar) {
-    await chrome.storage.session.set({
-      sidebarInitUrl: { content: sidebar.url },
-    })
-    chrome.tabs.sendMessage(tabId, {
-      type: MessageType.openContentSidebar,
-      url: sidebar.url,
+  const item = contentSidebarMap.get(tabId)
+  console.log("handleContentMounted", item)
+  if (item && item.visible) {
+    openSidebar({
+      urls: item.urls,
+      tab: sender.tab,
+      sidePanel: false,
     })
   }
+}
+
+export function getContentSidebarItem(tabId: number) {
+  return contentSidebarMap.get(tabId)
 }

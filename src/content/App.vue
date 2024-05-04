@@ -12,7 +12,9 @@ const { t } = useI18n()
 const topFrame = window.parent == window
 
 onMounted(() => {
-  chrome.runtime?.sendMessage({ type: MessageType.contentMounted })
+  if (topFrame) {
+    chrome.runtime?.sendMessage({ type: MessageType.contentMounted })
+  }
 })
 </script>
 

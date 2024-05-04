@@ -29,7 +29,7 @@ const emit = defineEmits({
       <Search @go="(url) => emit('go', url)" />
     </div>
 
-    <div class="flex flex-wrap gap-x-4 gap-y-4 justify-center">
+    <div class="flex flex-wrap gap-x-3 gap-y-4 justify-center">
       <SiteButton
         v-for="item of recentItems.slice(0, 12)"
         :key="item.url"
@@ -44,7 +44,7 @@ const emit = defineEmits({
 
     <!-- <div class="text-center my-3">Popular</div> -->
     <div class="w-full my-6 border-b border-background-soft h-0"></div>
-    <div class="flex flex-wrap gap-x-4 gap-y-4 justify-center">
+    <div class="flex flex-wrap gap-x-3 gap-y-4 justify-center">
       <SiteButton
         v-for="item of popularItems"
         :icon="item.icon"

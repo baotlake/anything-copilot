@@ -23,8 +23,7 @@ export const docsAddon = reactive({
 
 export const sidebarAddon = reactive({
   visible: false,
-  hidden: false,
-  url: "",
+  collapse: false,
 })
 
 type DocInputItem = {

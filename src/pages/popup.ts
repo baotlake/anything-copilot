@@ -16,5 +16,8 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     case MessageType.invokeResponse:
       messageInvoke.handleResMsg(message)
       break
+    case MessageType.invokeRequest:
+      messageInvoke.handleReqMsg(message, sender)
+      break
   }
 })

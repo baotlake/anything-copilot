@@ -6,20 +6,14 @@ export enum MessageType {
   bgPipLaunch = "bg-pip-launch",
   pipLaunch = "pip-launch",
   contentMounted = "content-mount",
-  // getPipWinInfo = "get-pip-win-info",
-  // pipWinInfo = "pip-win-info",
   updateWindow = "update-window",
   removeWindow = "remove-window",
   forwardToTab = "forward-to-tab",
-  // toOffscreen = "to-offscreen",
-  // fromOffscreen = "from-offscreen",
   invokeRequest = "invoke-request",
   invokeResponse = "invoke-Response",
   showChatDocs = "show-chat-docs",
   openInSidebar = "open-in-sidebar",
   registerContentSidebar = "register-content-sidebar",
-  unregisterContentSidebar = "unregister-content-sidebar",
-  openContentSidebar = "open-content-sidebar",
 }
 
 export enum ServiceFunc {
@@ -33,6 +27,10 @@ export enum ServiceFunc {
   getPipWindow = "get-pip-window",
   getMyTab = "get-my-tab",
   waitOffscreen = "wait-offscreen",
+  toggleSidebar = "toggle-sidebar",
+  toggleContentSidebar = "toggle-content-sidebar",
+  waitSidebar = "wait-sidebar",
+  openInSidebar = "open-in-sidebar",
 }
 
 export type ParseDocOptions = {

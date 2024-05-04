@@ -81,7 +81,7 @@ const handleDrop = (e: DragEvent) => {
 <template>
   <div
     :class="[
-      'flex gap-1 items-center justify-between h-9 px-1 z-10 shadow-sm',
+      'flex gap-1 items-center justify-between h-9 px-1 z-10 shadow-sm shrink-0',
       '*:size-7 *:flex *:items-center *:justify-center ',
     ]"
     @dragenter="handleDragEnter"

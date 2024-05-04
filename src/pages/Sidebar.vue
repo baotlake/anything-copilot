@@ -10,7 +10,8 @@ import {
 import config from "@/assets/config.json"
 import Webview, { type PageInfo } from "@/components/Webview.vue"
 import { useI18n } from "@/utils/i18n"
-import { MessageType } from "@/types"
+import { messageInvoke } from "@/utils/invoke"
+import { MessageType, ServiceFunc } from "@/types"
 import SidebarHome from "@/components/sidebar/SidebarHome.vue"
 import Navbar from "@/components/sidebar/Navbar.vue"
 import { FrameMessageType } from "@/types"
@@ -121,37 +122,33 @@ onMounted(() => {
     }
   )
 
-  getSession({
-    sidebarInitUrl: {} as Record<string, string>,
-  }).then(({ sidebarInitUrl }) => {
-    console.log("[sidebar]", sidebarInitUrl, mode.value)
-    const url = sidebarInitUrl?.[mode.value]
-    if (url && !isProtectedUrl(url)) {
-      go(url)
-    }
-  })
-
   chrome.tabs.getCurrent().then((t) => {
     currentTab.tabId = t?.id || -1
   })
 
-  chrome.runtime.onMessage.addListener(handleMessage)
-})
-
-onUnmounted(() => {
-  chrome.runtime.onMessage.removeListener(handleMessage)
-})
-
-async function handleMessage(message: any) {
-  switch (message.type) {
-    case MessageType.openInSidebar:
-      const url = message.url
-      if (message.tabId == currentTab.tabId && !isProtectedUrl(url)) {
-        go(url)
+  const mountedAt = Date.now()
+  messageInvoke
+    .register(ServiceFunc.waitSidebar, () => {})
+    .register(ServiceFunc.toggleSidebar, () => {
+      if (Date.now() - mountedAt > 200) {
+        window.close()
       }
-      break
-  }
-}
+    })
+    .register(ServiceFunc.openInSidebar, ({ urls }: { urls: string[] }) => {
+      urls.forEach((url) => {
+        if (!isProtectedUrl(url)) {
+          go(url)
+        }
+      })
+    })
+
+  chrome.runtime.sendMessage({
+    type: MessageType.invokeResponse,
+    key: ServiceFunc.waitSidebar,
+    success: true,
+    value: null,
+  })
+})
 
 function handlePageLoad(i: number) {
   pagesInfo[i] = { ...pagesInfo[i]!, loading: true }
@@ -163,7 +160,9 @@ async function handlePageLoaded(i: number, pageInfo: PageInfo) {
   if (mode.value === "content") {
     chrome.runtime.sendMessage({
       type: MessageType.registerContentSidebar,
-      pages: pages,
+      info: {
+        urls: pages.map((p) => p.url),
+      },
     })
   }
 
@@ -328,7 +327,12 @@ function handlePointerLeave() {
       @drop="go"
     />
 
-    <div :class="['w-full h-full', { hidden: active != -1 }]">
+    <div
+      :class="[
+        'scrollbar w-full h-full flex-1 overflow-auto ',
+        { hidden: active != -1 },
+      ]"
+    >
       <SidebarHome
         :recentItems="recentItems"
         :popularItems="popularItems"

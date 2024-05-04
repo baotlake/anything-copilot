@@ -12,8 +12,8 @@ import {
 } from "./offscreen"
 import {
   registerContentSidebar,
-  unregisterContentSidebar,
   handleContentMounted,
+  getContentSidebarItem,
 } from "./sidebar"
 import config from "@/assets/config.json"
 import { allFrameScript, contentMainScript } from "@/manifest"
@@ -39,10 +39,26 @@ chrome.commands.onCommand.addListener(handleCommand)
 chrome.runtime.onStartup.addListener(() => {
   updateConfig()
 })
+chrome.runtime.onInstalled.addListener(handleOnInstalled)
+chrome.contextMenus.onClicked.addListener(handleContextMenusClicked)
 
-if (isEdge) {
+if (isEdge && chrome.sidePanel) {
   chrome.sidePanel.setOptions({
     enabled: false,
+  })
+}
+
+async function handleOnInstalled(details: chrome.runtime.InstalledDetails) {
+  chrome.contextMenus.create({
+    contexts: ["action"],
+    id: "toggle-sidebar",
+    title: "Toggle Sidebar",
+  })
+
+  chrome.contextMenus.create({
+    contexts: ["link"],
+    id: "open-in-sidebar",
+    title: "Open Link in Sidebar",
   })
 }
 
@@ -101,16 +117,16 @@ async function handleInvokeRequest(
   sender: chrome.runtime.MessageSender
 ) {
   currentSender = sender
-  let result = await messageInvoke.handleReqMsg(message)
+  let res = await messageInvoke.handleReqMsg(message)
 
   if (!sender.tab?.id) {
     console.error("sender tab id is undefined", sender)
   }
 
-  if (result) {
+  if (res) {
     chrome.tabs.sendMessage(sender.tab?.id!, {
       type: MessageType.invokeResponse,
-      ...result,
+      ...res,
     })
   }
 }
@@ -134,24 +150,22 @@ function handleMessage(message: any, sender: chrome.runtime.MessageSender) {
       chrome.tabs.sendMessage(message.tabId, message.message)
       break
     case MessageType.invokeRequest:
-      handleInvokeRequest(message, sender)
+      currentSender = sender
+      messageInvoke.handleReqMsg(message, sender)
       break
     case MessageType.invokeResponse:
       messageInvoke.handleResMsg(message)
       break
     case MessageType.contentMounted:
-      handleContentMounted(sender.tab!.id!)
+      handleContentMounted(sender)
       break
     case MessageType.registerContentSidebar:
-      registerContentSidebar({ tabId: sender.tab!.id!, url: message.url })
-      break
-    case MessageType.unregisterContentSidebar:
-      unregisterContentSidebar(sender.tab!.id!)
+      registerContentSidebar(sender.tab!.id!, message.info)
       break
   }
 }
 
-async function handleToggleMinimize() {
+async function toggleMinimize() {
   const { pipWindow } = await chrome.storage.local.get({ pipWindow: null })
   if (!pipWindow) return
   const windowInfo = await chrome.windows.get(pipWindow.windowId)
@@ -160,17 +174,65 @@ async function handleToggleMinimize() {
   const tabId = pipWindow.tabId
 
   messageInvoke.invoke({
-    tabId,
     func: ServiceFunc.toggleMinimize,
+    args: [],
+    tabId,
+  })
+}
+
+async function toggleSidebar(tab?: chrome.tabs.Tab) {
+  if (tab?.windowId) {
+    chrome.sidePanel.open({
+      windowId: tab?.windowId,
+    })
+  }
+  messageInvoke.invoke({
+    func: ServiceFunc.toggleSidebar,
     args: [],
   })
 }
 
-function handleCommand(command: string) {
+async function openInSidebar(url: string, tab?: chrome.tabs.Tab) {
+  let contentMode = isEdge || !chrome.sidePanel
+
+  const contentSidebar = getContentSidebarItem(tab?.id!)
+  if (contentSidebar && contentSidebar.visible) {
+    contentMode = true
+  }
+
+  if (contentMode) {
+    await messageInvoke.invoke({
+      func: ServiceFunc.toggleContentSidebar,
+      args: [{ visible: true, collapse: false }],
+      tabId: tab?.id,
+    })
+  } else {
+    await chrome.sidePanel.open({
+      windowId: tab?.windowId!,
+    })
+  }
+
+  await messageInvoke.invoke({
+    key: ServiceFunc.waitSidebar,
+    func: ServiceFunc.waitSidebar,
+    args: [],
+    timeout: 300,
+  })
+
+  await messageInvoke.invoke({
+    func: ServiceFunc.openInSidebar,
+    args: [{ urls: [url] }],
+  })
+}
+
+function handleCommand(command: string, tab?: chrome.tabs.Tab) {
   console.log("command: ", command)
   switch (command) {
     case "toggleMinimize":
-      handleToggleMinimize()
+      toggleMinimize()
+      break
+    case "toggleSidebar":
+      toggleSidebar(tab)
       break
   }
 }
@@ -233,4 +295,19 @@ async function updateConfig() {
     popularSites,
     loadCandidates,
   })
+}
+
+async function handleContextMenusClicked(
+  info: chrome.contextMenus.OnClickData,
+  tab?: chrome.tabs.Tab
+) {
+  console.log(info)
+  switch (info.menuItemId) {
+    case "toggle-sidebar":
+      toggleSidebar(tab)
+      break
+    case "open-in-sidebar":
+      openInSidebar(info.linkUrl!, tab)
+      break
+  }
 }

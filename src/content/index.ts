@@ -46,16 +46,15 @@ function handleMessage(
       })
       sendResponse({ type: MessageType.contentHere })
       break
-    case MessageType.invokeResponse:
-      messageInvoke.handleResMsg(message)
-      break
     case MessageType.showChatDocs:
       chatDocsPanel.visible = true
       break
-    case MessageType.openContentSidebar:
-      sidebarAddon.visible = true
-      sidebarAddon.hidden = false
-      sidebarAddon.url = message.url
+    // case MessageType.openContentSidebar:
+    //   sidebarAddon.visible = true
+    //   sidebarAddon.collapse = false
+    //   break
+    case MessageType.invokeResponse:
+      messageInvoke.handleResMsg(message)
       break
     case MessageType.invokeRequest:
       messageInvoke.handleReqMsg(message).then((result) => {
@@ -172,12 +171,12 @@ function handleFrameMessage(e: MessageEvent) {
         detail: { url: e.data.url },
       })
     case FrameMessageType.invokeRequest:
-      handleInvokeRequest(e.data, e.source as Window)
+      handleWebviewInvokeRequest(e.data, e.source as Window)
       break
   }
 }
 
-async function handleInvokeRequest(message: any, source: Window) {
+async function handleWebviewInvokeRequest(message: any, source: Window) {
   const { key, func, args } = message
   let result = null
   let error = null

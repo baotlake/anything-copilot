@@ -77,6 +77,7 @@ const manifest = {
     "sidePanel",
     "declarativeNetRequestWithHostAccess",
     "declarativeNetRequestFeedback",
+    "contextMenus",
     // "cookies",
   ],
   optional_permissions: [],
@@ -90,6 +91,12 @@ const manifest = {
       description: "__MSG_toggle_minimize_desc__",
       global: true,
     },
+    toggleSidebar: {
+      suggested_key: {
+        default: "Ctrl+0",
+      },
+      description: "Toggle Sidebar",
+    },
   },
   web_accessible_resources: [
     {
@@ -100,9 +107,9 @@ const manifest = {
   ],
   content_security_policy: {
     extension_pages: __DEV__
-      ? `script-src 'self' http://localhost:3000 'wasm-unsafe-eval';`
+      ? `script-src 'self' http://localhost:5173 'wasm-unsafe-eval';`
       : `script-src 'self' 'wasm-unsafe-eval'`,
   },
-} satisfies Manifest as unknown as chrome.runtime.Manifest
+} satisfies Manifest as any
 
 export default manifest

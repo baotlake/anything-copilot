@@ -1,7 +1,7 @@
 declare namespace chrome.declarativeNetRequest {
   export function getSessionRules(filter: {
     ruleIds: number[]
-  }): Promise<Rule[]>
+  }): Promise<chrome.declarativeNetRequest.Rule[]>
 }
 
 declare interface ManifestPatch {

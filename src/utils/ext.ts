@@ -1,5 +1,6 @@
 import { contentMainScript } from "@/manifest"
-import { MessageType } from "@/types"
+import { MessageType, ServiceFunc } from "@/types"
+import { messageInvoke } from "./invoke"
 
 type MessageSender = chrome.runtime.MessageSender
 
@@ -345,4 +346,61 @@ export async function getPipWindow({
   const windows = await chrome.windows.getAll({})
   const win = windows.find((w) => w.width === width && w.height === height)
   return win
+}
+
+export async function openSidebar({
+  urls,
+  tab,
+  sidePanel,
+}: {
+  urls: string[]
+  tab?: chrome.tabs.Tab
+  sidePanel?: boolean
+}) {
+  sidePanel = sidePanel ?? !!chrome.sidePanel
+  if (sidePanel) {
+    let windowId = tab?.windowId
+    if (!windowId) {
+      const win = await chrome.windows.getCurrent()
+      windowId = win.id
+    }
+    await chrome.sidePanel.open({
+      windowId: windowId!,
+    })
+
+    await messageInvoke.invoke({
+      key: ServiceFunc.waitSidebar,
+      func: ServiceFunc.waitSidebar,
+      args: [],
+      timeout: 300,
+    })
+
+    messageInvoke.invoke({
+      func: ServiceFunc.openInSidebar,
+      args: [{ urls }],
+    })
+
+    return
+  }
+
+  let tabId = tab?.id
+  if (!tabId) {
+    const tabs = await chrome.tabs.query({
+      active: true,
+      currentWindow: true,
+    })
+    tabId = tabs[0].id
+  }
+
+  await messageInvoke.invoke({
+    func: ServiceFunc.toggleContentSidebar,
+    args: [{ visible: true, collapse: false }],
+    tabId: tabId,
+  })
+
+  messageInvoke.invoke({
+    func: ServiceFunc.openInSidebar,
+    args: [{ urls }],
+    tabId: tabId,
+  })
 }

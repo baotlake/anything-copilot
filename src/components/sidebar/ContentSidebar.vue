@@ -109,6 +109,9 @@ onMounted(() => {
   window.addEventListener("message", handleMessage)
   chrome.runtime.sendMessage({
     type: MessageType.registerContentSidebar,
+    info: {
+      visible: true,
+    },
   })
 })
 
@@ -118,8 +121,12 @@ onUnmounted(() => {
   window.removeEventListener("keyup", handleKeyUp)
   window.removeEventListener("message", handleMessage)
   chrome.runtime.sendMessage({
-    type: MessageType.unregisterContentSidebar,
+    type: MessageType.registerContentSidebar,
+    info: {
+      visible: false,
+    },
   })
+  console.log("content sidebar unmounted")
 })
 </script>
 

@@ -20,7 +20,7 @@ import IconArrowCircleRight from "@/components/icons/IconArrowCircleRight.vue"
 import IconSplitscreenRight from "@/components/icons/IconSplitscreenRight.vue"
 import IconLogo from "@/components/icons/IconLogo.vue"
 import SiteButton from "@/components/SiteButton.vue"
-import { getIsEdge } from "@/utils/ext"
+import { getIsEdge, openSidebar } from "@/utils/ext"
 import { handleImgError } from "@/utils/dom"
 import { homeUrl, feedbackUrl } from "@/utils/const"
 
@@ -113,7 +113,9 @@ function handleKeydown(e: KeyboardEvent) {
   }
   if (e.code == "Backslash" && (e.ctrlKey || e.metaKey)) {
     e.preventDefault()
-    openSidebar()
+    openSidebar({
+      urls: [],
+    }).then(() => close())
   }
 
   if (e.code == "ControlLeft" || e.code == "ControlRight") {
@@ -158,30 +160,7 @@ async function handlePipPopup() {
   window.close()
 }
 
-async function openSidebar(url = "") {
-  chrome.runtime.sendMessage({
-    type: MessageType.openInSidebar,
-    tabId: -1,
-    url,
-  })
-  const win = await chrome.windows.getCurrent()
-  await chrome.storage.session.set({
-    sidebarInitUrl: { sidepanel: url },
-  })
-  await chrome.sidePanel.open({ windowId: win.id! })
-
-  window.close()
-}
-
-async function openContentSidebar(url = "") {
-  await chrome.storage.session.set({
-    sidebarInitUrl: { content: url },
-  })
-  await chrome.tabs.sendMessage(activeTab.value.id!, {
-    type: MessageType.openContentSidebar,
-    tabId: activeTab.value.id,
-    url,
-  })
+function close() {
   window.close()
 }
 
@@ -308,17 +287,18 @@ function showChatDocs() {
         :disabled="isEdge && !avaiable"
         :title="t('openInSidebar')"
         @click="
-          () => {
-            if (isEdge || keyboard.ctrl) {
-              return openContentSidebar()
-            }
-            openSidebar(activeTab.url)
+        (e) => {
+            openSidebar({
+              urls: [activeTab.url!],
+              sidePanel: !(isEdge || e.ctrlKey || e.metaKey),
+              tab: activeTab,
+            }).then(() => close())
           }
         "
       >
         <IconSplitscreenRight class="size-8 shrink-0 scale-95" />
         <div class="flex items-center justify-between flex-1 w-2/3 gap-2">
-          <span class="text-sm font-bold leading-4 truncate">
+          <span class="text-base font-bold leading-4 truncate">
             {{ isEdge ? t("openSidebar") : t("openInSidebar") }}
           </span>
           <span class="text-xs">CTRL + \</span>
@@ -372,10 +352,10 @@ function showChatDocs() {
               return handleClickLaunch(item.url)
             }
 
-            if (isEdge || keyboard.ctrl) {
-              return openContentSidebar(item.url)
-            }
-            openSidebar(item.url)
+            openSidebar({
+              urls: [item.url],
+              sidePanel: !(isEdge || keyboard.ctrl),
+            }).then(() => close())
           }
         "
       />

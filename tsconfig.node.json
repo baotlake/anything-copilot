@@ -3,6 +3,7 @@
   "include": [
     "utils",
     "./src/manifest.ts",
+    "./src/types/**/*.ts",
     "package.json",
     "vite.config.*",
     "vitest.config.*",
@@ -14,6 +15,9 @@
     "composite": true,
     "module": "ESNext",
     "moduleResolution": "Bundler",
-    "types": ["node"]
+    "types": [
+      "node",
+      "@types/chrome"
+    ]
   }
 }

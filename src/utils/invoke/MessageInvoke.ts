@@ -1,5 +1,5 @@
 import { MessageType, ServiceFunc, type ParseDocOptions } from "@/types"
-import Invoke, { type InvokeReq } from "./Invoke"
+import Invoke, { type InvokeReq, type InvokeRes } from "./Invoke"
 
 class MessageInvoke extends Invoke {
   public async send(req: InvokeReq & { tabId?: number }) {
@@ -22,10 +22,21 @@ class MessageInvoke extends Invoke {
     return { key }
   }
 
-  public handleResMsg(message: any) {
-    if (message?.type === MessageType.invokeResponse) {
-      const { key, success, value } = message
-      this.setReturnValue(key, success, value)
+  public sendRes(res: InvokeRes, sender?: chrome.runtime.MessageSender) {
+    if (!sender) {
+      return
+    }
+
+    if (sender.tab?.id) {
+      chrome.tabs.sendMessage(sender.tab.id, {
+        type: MessageType.invokeResponse,
+        ...res,
+      })
+    } else {
+      chrome.runtime.sendMessage({
+        type: MessageType.invokeResponse,
+        ...res,
+      })
     }
   }
 
