@@ -1,49 +1,58 @@
 <div align="center">
-  <img width="200" src="public/logo.svg" alt="Logo">
-  <h1>Anything Copilot - Any web page as copilot</h1>
-  <p>Use the official ChatGPT website or any other webpage for free as your AI copilot, including GPTs, GPT-4, or any new features. </p>
+  <img width="120" src="public/logo.svg" alt="Anything Copilot Logo">
+  <h1>Anything Copilot: Powerfull Multi-tab Sidebar,Split-Screen</h1>
+  <p>Bringing AI closer. Use any of your favorite AI tools for free in the sidebar or a Mini Window. </p>
+</div>
+<div align="center">
+  <a href="https://chromewebstore.google.com/u/1/detail/anything-copilot-any-web/lilckelmopbcffmglfmfhelaajhjpcff" target="_blank">
+    <img height="48" src="docs/assets/available_in_the_chrome_web_store.png" >
+  </a>
+  <a href="https://microsoftedge.microsoft.com/addons/detail/anything-copilot/lbeehbkcmjaopnlccpjcdgamcabhnanl" target="_blank">
+    <img height="48" src="docs/assets/edge_get_the_add_on.svg" >
+  </a>
 </div>
 
-## Install/Download - Edge Add-ons & Chrome web store
+## Get the Extension
 
-- [Edge Add-ons - Anything Copilot](https://microsoftedge.microsoft.com/addons/detail/anything-copilot/lbeehbkcmjaopnlccpjcdgamcabhnanl)
+Works with Chrome, Edge, Opera, Vivaldi, and more.
+
 - [Chrome web store - Anything Copilot](https://chromewebstore.google.com/u/1/detail/anything-copilot-any-web/lilckelmopbcffmglfmfhelaajhjpcff)
+- [Edge Add-ons - Anything Copilot](https://microsoftedge.microsoft.com/addons/detail/anything-copilot/lbeehbkcmjaopnlccpjcdgamcabhnanl)
 
-Open any web page in a Copilot window and seamlessly multitask with other pages or applications.
+- [ZIZIYI - Anything Copilot](https://ziziyi.com/anything-copilot)
 
 ## Screenshots & Video
 
 <table>
   <tr>
     <td>
-      <img src="docs/assets/1280x800_1.png" alt="Anything Copilot screenshot 1" >
+      <img src="docs/assets/en-1280x800_1.png" alt="Anything Copilot screenshot 1" >
     </td>
     <td>
-      <img src="docs/assets/1280x800_2.png" alt="Anything Copilot screenshot 1" >
+      <img src="docs/assets/en-1280x800_2.png" alt="Anything Copilot screenshot 2" >
     </td>
   </tr>
 </table>
 
-[📺 Youtube - Anything Copilot demo](https://youtu.be/RnOUGg-WiH0?si=8YHPLGvczmUTsVqU)
+[📺 Youtube - Mini Window](https://youtube.com/shorts/46GFbzAzboE)
 
-## Recommended IDE Setup
+## Features
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+### Multi-tab Sidebar: Tabbed Sidebar for Ultimate Convenience.
 
-## Type Support for `.vue` Imports in TS
+<p align="center">
+  <img width="380" src="docs/assets/ai-sidebar.mp4.jpg" >
+</p>
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin) to make the TypeScript language service aware of `.vue` types.
+Access and use multiple AI assistants and tools at the same time, right from the sidebar. Consolidate your subscriptions and seamlessly use ChatGPT Plus, Claude Pro, Gemini Pro, and others all in one place with Anything Copilot.
 
-If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has also implemented a [Take Over Mode](https://github.com/johnsoncodehk/volar/discussions/471#discussioncomment-1361669) that is more performant. You can enable it by the following steps:
+### Mini Window: System-Wide AI with a Floating Assistant
 
-1. Disable the built-in TypeScript Extension
-   1. Run `Extensions: Show Built-in Extensions` from VSCode's command palette
-   2. Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
-2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
+<p align="center">
+  <img width="380" src="docs/assets/mini-window.mp4.jpg" >
+</p>
 
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+We’ve brought the power of AI out of the browser and placed it right on your desktop. Our intelligent floating window stays on top of all your applications, giving you a familiar AI assistant in Office, design software, and everywhere else you work.
 
 ## Project Setup
 

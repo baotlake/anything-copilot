@@ -16,9 +16,6 @@ coverage
 public/js
 package
 
-/cypress/videos/
-/cypress/screenshots/
-
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
@@ -28,3 +25,12 @@ package
 *.njsproj
 *.sln
 *.sw?
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+
+/cypress/videos/
+/cypress/screenshots/
